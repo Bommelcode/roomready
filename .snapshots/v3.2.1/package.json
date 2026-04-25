@@ -1,0 +1,17 @@
+{
+  "name": "roomready",
+  "version": "3.2.1",
+  "description": "RoomReady — AV kamertester voor Logitech MeetUp / Rally",
+  "main": "main.js",
+  "scripts": { "start": "electron .", "dist": "electron-builder --win portable" },
+  "build": {
+    "appId": "nl.silstranders.roomready",
+    "productName": "RoomReady",
+    "icon": "icon.ico",
+    "extraResources": [
+      { "from": "samples", "to": "samples", "filter": ["**/*"] }
+    ],
+    "win": { "target": "portable", "icon": "icon.ico" }
+  },
+  "devDependencies": { "electron": "^29.0.0", "electron-builder": "^24.0.0" }
+}

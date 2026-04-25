@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>RoomReady — AV Inventaris</title>
+<style>
+:root {
+  --bg:       #0e1219;
+  --surface:  #181d27;
+  --surface2: #1f2532;
+  --border:   #2a3142;
+  --border2:  #3a4356;
+  --text:     #e6ebf3;
+  --muted:    #8a94a6;
+  --accent:   #4a9eff;
+  --accent-h: #6cb2ff;
+  --green:    #4ade80;
+  --yellow:   #fbbf24;
+  --red:      #f87171;
+  --radius:   6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+button {
+  font: inherit;
+  padding: 6px 12px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--border2); background: var(--surface); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #001127; font-weight: 600; }
+button.primary:hover:not(:disabled) { background: var(--accent-h); border-color: var(--accent-h); }
+button.danger { color: var(--red); }
+input[type=text], input[type=password], textarea {
+  font: inherit;
+  padding: 6px 10px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+}
+input[type=checkbox] { accent-color: var(--accent); margin-right: 4px; }
+
+/* ── top bar ─────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.topbar h1 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  flex: 1;
+}
+.topbar .muted { color: var(--muted); font-size: 12px; }
+
+/* ── layout ────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.col + .col { border-left: 1px solid var(--border); }
+.pane {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.pane h2 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.pane.grow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── rooms list ─────────────────────────────── */
+.rooms {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.room-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.room-item:last-child { border-bottom: 0; }
+.room-item:hover { background: var(--surface2); }
+.room-item.sel { background: rgba(74, 158, 255, 0.12); border-left: 3px solid var(--accent); padding-left: 9px; }
+.room-item .num {
+  font-family: 'DM Mono', Consolas, monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.room-item .name { font-weight: 500; }
+.btn-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.btn-row button { flex: 1; font-size: 12px; padding: 5px 8px; }
+
+/* ── scan controls ──────────────────────────── */
+.scan-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.scan-row label { display: flex; align-items: center; gap: 2px; cursor: pointer; }
+.progress {
+  font-family: 'DM Mono', Consolas, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-height: 16px;
+  margin-bottom: 6px;
+}
+.progress.err { color: var(--red); }
+
+/* ── device table ───────────────────────────── */
+.table-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+table.devices {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+table.devices th, table.devices td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.devices th {
+  position: sticky;
+  top: 0;
+  background: var(--surface2);
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+table.devices td.serial {
+  font-family: 'DM Mono', Consolas, monospace;
+  font-size: 11px;
+}
+table.devices td.firmware {
+  font-family: 'DM Mono', Consolas, monospace;
+  font-size: 11px;
+}
+table.devices tr.row { cursor: pointer; }
+table.devices tr.row:hover { background: var(--surface2); }
+table.devices tr.row.sel { background: rgba(74, 158, 255, 0.12); }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge.logi { background: #004e8f; color: #cfe3ff; }
+.badge.usb  { background: #7c2d12; color: #fde4c2; }
+.badge.disp { background: #065f46; color: #bef3d6; }
+.badge.none { background: var(--border); color: var(--muted); }
+
+.hint { color: var(--muted); font-size: 11px; line-height: 1.4; margin-top: 6px; }
+
+/* ── modal ──────────────────────────────────── */
+.modal-back {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal-back.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 420px;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow: auto;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+.modal h3 { font-size: 15px; margin-bottom: 14px; }
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.form-row label { font-size: 12px; color: var(--muted); }
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* ── firmware dialog specifics ──────────────── */
+#fw-dialog textarea { min-height: 100px; font-family: 'DM Mono', monospace; font-size: 11px; }
+
+/* ── row edit button ────────────────────────── */
+button.row-edit {
+  font-size: 10px;
+  padding: 1px 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  float: right;
+}
+button.row-edit:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>RoomReady — AV Inventaris</h1>
+  <span class="muted" id="store-info"></span>
+  <button id="btn-firmware">Firmware…</button>
+  <button id="btn-export">Exporteer CSV</button>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT: rooms -->
+  <div class="col">
+    <div class="pane grow">
+      <h2>Ruimtes</h2>
+      <div class="rooms" id="room-list"></div>
+      <div class="btn-row">
+        <button id="btn-add-room">+ Nieuw</button>
+        <button id="btn-edit-room">Bewerk</button>
+        <button id="btn-del-room" class="danger">Verwijder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="col">
+    <div class="pane" style="flex-shrink: 0;">
+      <div class="scan-row">
+        <label><input type="checkbox" id="chk-hid" checked> Logitech</label>
+        <label><input type="checkbox" id="chk-usb" checked> USB peripherals</label>
+        <label><input type="checkbox" id="chk-disp" checked> Displays (EDID)</label>
+        <label><input type="checkbox" id="chk-fw"> +Firmware lookup</label>
+        <div style="flex:1"></div>
+        <button id="btn-scan" class="primary">Scan</button>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="pane grow">
+      <h2>Niet toegewezen / laatste scan</h2>
+      <div class="table-wrap">
+        <table class="devices" id="tbl-unassigned">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Model</th>
+              <th>Serienummer / ID</th>
+              <th>Firmware</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="hint">
+        Dubbelklik een device om het aan de geselecteerde ruimte toe te wijzen.
+        <br>Voor displays: koppel HDMI direct van laptop naar scherm — BYOD-passthrough geeft de tussendoos terug, niet het paneel.
+      </div>
+    </div>
+
+    <div class="pane grow" style="border-bottom: 0;">
+      <h2>Devices in geselecteerde ruimte</h2>
+      <div class="table-wrap">
+        <table class="devices" id="tbl-room">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Model</th>
+              <th>Serienummer / ID</th>
+              <th>Firmware</th>
+              <th>Details / bewerk</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="btn-row" style="max-width: 260px;">
+        <button id="btn-unassign">Toewijzing verwijderen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- room dialog -->
+<div class="modal-back" id="room-back">
+  <div class="modal" style="min-width: 540px;">
+    <h3 id="room-dialog-title">Nieuwe ruimte</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;">
+      <div class="form-row" style="margin-bottom:0;"><label>Kamernummer *</label><input type="text" id="rd-number"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Ruimte naam *</label><input type="text" id="rd-name"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Stad</label><input type="text" id="rd-stad"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Adres</label><input type="text" id="rd-adres"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>SAP nummer</label><input type="text" id="rd-sap"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>SAP sub nummer</label><input type="text" id="rd-sap-sub"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Stroom groep</label><input type="text" id="rd-stroom"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Data aansluiting</label><input type="text" id="rd-data"></div>
+    </div>
+    <div class="form-row" style="margin-top:12px;"><label>Notities</label><textarea id="rd-notes" rows="3"></textarea></div>
+    <div class="modal-actions">
+      <button id="rd-cancel">Annuleren</button>
+      <button id="rd-ok" class="primary">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- device edit dialog -->
+<div class="modal-back" id="dev-back">
+  <div class="modal" style="min-width: 540px;">
+    <h3 id="dev-dialog-title">Device-gegevens bewerken</h3>
+    <div class="form-row" style="margin-bottom:10px;color:var(--muted);font-size:11px;">
+      <span id="dev-readonly-summary"></span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;">
+      <div class="form-row" style="margin-bottom:0;"><label>Artikel nummer</label><input type="text" id="dev-artikel-nr"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Artikel omschrijving</label><input type="text" id="dev-artikel-desc"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>IP adres</label><input type="text" id="dev-ip"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>MAC adres</label><input type="text" id="dev-mac"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>CMDB nummer</label><input type="text" id="dev-cmdb"></div>
+      <div class="form-row" style="margin-bottom:0;"><label>Firmwareversie (override)</label><input type="text" id="dev-fw"></div>
+    </div>
+    <div class="form-row" style="margin-top:12px;"><label>Opmerking</label><textarea id="dev-opmerking" rows="3"></textarea></div>
+    <div class="modal-actions">
+      <button id="dev-cancel">Annuleren</button>
+      <button id="dev-ok" class="primary">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- firmware config dialog -->
+<div class="modal-back" id="fw-back">
+  <div class="modal">
+    <h3>Firmware lookup instellen</h3>
+    <p class="hint" style="margin-bottom: 12px;">
+      Logitech Sync werkt voor alle enrolled Logitech devices (cloud-lookup op SN).
+      CollabOS xAPI werkt alleen voor Rally Bar / RoomMate met bekend IP-adres.
+    </p>
+    <div class="form-row">
+      <label>Logitech Sync bearer token</label>
+      <input type="password" id="fw-token" placeholder="(leeg laten om Sync over te slaan)">
+    </div>
+    <div class="form-row">
+      <label>Sync API base URL</label>
+      <input type="text" id="fw-base" value="https://api.sync.logitech.com">
+    </div>
+    <div class="form-row">
+      <label>xAPI SN → IP mapping (één per regel, formaat: SN=IP)</label>
+      <textarea id="fw-map" rows="5" placeholder="2310AB1234=192.168.1.45&#10;2310AB5678=192.168.1.46"></textarea>
+    </div>
+    <div class="form-row">
+      <label>xAPI username / password</label>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="fw-user" placeholder="admin" style="flex:1">
+        <input type="password" id="fw-pass" placeholder="wachtwoord" style="flex:1">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="fw-cancel">Annuleren</button>
+      <button id="fw-ok" class="primary">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// State
+// ══════════════════════════════════════════════════════════════
+
+const state = {
+  rooms: {},          // id → Room
+  devices: {},        // uid → DeviceSnapshot
+  selectedRoomId: null,
+  fw: { token: '', base: 'https://api.sync.logitech.com', map: '', user: 'admin', pass: '' },
+}
+
+const SOURCE_LABELS = {
+  logitech_hid: { text: 'Logitech', cls: 'logi' },
+  usb_uvc:      { text: 'USB cam',  cls: 'usb'  },
+  display:      { text: 'Display',  cls: 'disp' },
+}
+
+// ══════════════════════════════════════════════════════════════
+// Helpers
+// ══════════════════════════════════════════════════════════════
+
+function uuid4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
+function roomOf(uid) {
+  for (const r of Object.values(state.rooms)) {
+    if (r.device_unique_ids.includes(uid)) return r
+  }
+  return null
+}
+
+function unassignedIds() {
+  const assigned = new Set()
+  for (const r of Object.values(state.rooms)) {
+    for (const uid of r.device_unique_ids) assigned.add(uid)
+  }
+  return Object.keys(state.devices).filter(uid => !assigned.has(uid))
+}
+
+async function saveStore() {
+  await window.rrBridge.invStoreSave({
+    rooms: Object.values(state.rooms),
+    devices: state.devices,
+    fw: state.fw,
+  })
+}
+
+const ROOM_DEFAULTS = {
+  stad: '', adres: '', sap_nummer: '', sap_sub_nummer: '',
+  stroom_groep: '', data_aansluiting: '', notes: '',
+}
+const DEVICE_USER_DEFAULTS = {
+  artikel_nummer: '', artikel_omschrijving: '',
+  ip_adres: '', mac_adres: '', cmdb_nummer: '',
+  opmerking: '', firmware_override: '',
+}
+
+async function loadStore() {
+  const data = await window.rrBridge.invStoreLoad()
+  state.rooms = {}
+  for (const r of data.rooms || []) {
+    if (r.device_serials && !r.device_unique_ids) {  // Python v0.1/0.2 migratie
+      r.device_unique_ids = r.device_serials
+      delete r.device_serials
+    }
+    r.device_unique_ids = r.device_unique_ids || []
+    // Migratie: oud `location` veld → adres als adres leeg is
+    if (r.location && !r.adres) r.adres = r.location
+    // Defaults aanvullen voor nieuwe velden
+    for (const [k, v] of Object.entries(ROOM_DEFAULTS)) {
+      if (r[k] === undefined || r[k] === null) r[k] = v
+    }
+    state.rooms[r.id] = r
+  }
+  state.devices = {}
+  for (const [uid, d] of Object.entries(data.devices || {})) {
+    d.source = d.source || 'logitech_hid'
+    d.unique_id = d.unique_id || uid
+    d.extra = d.extra || {}
+    for (const [k, v] of Object.entries(DEVICE_USER_DEFAULTS)) {
+      if (d[k] === undefined || d[k] === null) d[k] = v
+    }
+    state.devices[uid] = d
+  }
+  if (data.fw) state.fw = { ...state.fw, ...data.fw }
+}
+
+// ══════════════════════════════════════════════════════════════
+// Snapshot builders — matchen inventory/room_store.py schema
+// ══════════════════════════════════════════════════════════════
+
+function snapshotFromLogitech(d) {
+  // unique_id = serienummer; fallback naar hele pnpDeviceId
+  const uid = d.serialNumber || d.pnpDeviceId
+  return {
+    unique_id: uid,
+    source: 'logitech_hid',
+    model: guessLogiModel(d),
+    serial_number: d.serialNumber || '',
+    firmware_version: null,
+    firmware_secondary: null,
+    product_string: d.name || '',
+    extra: {
+      pid: parseInt(d.pid, 16),
+      vid: d.vid,
+      family: logiFamily(d.pid),
+      pnp_class: d.pnpClass || '',
+      service: d.service || '',
+      pnp_device_id: d.pnpDeviceId,
+      has_real_serial: !!d.hasRealSerial,
+    },
+  }
+}
+
+// Catalogus 1:1 uit inventory/hid_scanner.py (hex → lower)
+const LOGI_CATALOG = {
+  '0866': { model: 'MeetUp',           family: 'usb_peripheral' },
+  '086D': { model: 'MeetUp 2',         family: 'usb_peripheral' },
+  '089B': { model: 'Rally Camera',     family: 'usb_peripheral' },
+  '085E': { model: 'Brio',             family: 'usb_peripheral' },
+  '08D3': { model: 'Rally Bar',        family: 'collabos' },
+  '08D7': { model: 'Rally Bar Mini',   family: 'collabos' },
+  '08E3': { model: 'Rally Bar Huddle', family: 'collabos' },
+  '08D5': { model: 'RoomMate',         family: 'collabos' },
+  '0876': { model: 'Rally Speaker',    family: 'usb_peripheral' },
+  '0877': { model: 'Rally Mic Pod',    family: 'usb_peripheral' },
+  '08D6': { model: 'Tap',              family: 'controller' },
+  '08E4': { model: 'Tap IP',           family: 'controller' },
+}
+function guessLogiModel(d) {
+  const entry = LOGI_CATALOG[d.pid]
+  if (entry) return entry.model
+  return (d.name || '').replace(/^Logitech\s+/i, '') || 'Unknown'
+}
+function logiFamily(pid) {
+  return (LOGI_CATALOG[pid] && LOGI_CATALOG[pid].family) || 'unknown'
+}
+
+function snapshotFromUsb(u) {
+  const uid = `usb:${u.vid || '????'}:${u.pid || '????'}:${u.instance || 'nomatch'}`
+  return {
+    unique_id: uid,
+    source: 'usb_uvc',  // naam is historisch; dekt nu alle non-Logitech USB
+    model: u.modelHint || u.name || 'USB device',
+    serial_number: u.hasRealSerial ? (u.serialNumber || '') : (u.partialMac || ''),
+    firmware_version: null,
+    firmware_secondary: null,
+    product_string: u.name || '',
+    extra: {
+      vid: u.vid, pid: u.pid, brand: u.brand,
+      manufacturer: u.manufacturer || '',
+      service: u.service || '',
+      pnp_class: u.pnpClass || '',
+      partial_mac: u.partialMac || '',
+      has_real_serial: !!u.hasRealSerial,
+      pnp_device_id: u.pnpDeviceId,
+    },
+  }
+}
+
+function snapshotFromDisplay(disp) {
+  const uid = disp.instanceName || `display:${disp.manufacturerCode}:${disp.productCode}`
+  const model = disp.model || disp.productCode || 'Display'
+  return {
+    unique_id: uid,
+    source: 'display',
+    model: `${disp.manufacturer} ${model}`.trim(),
+    serial_number: disp.serialNumber || '',
+    firmware_version: null,
+    firmware_secondary: null,
+    product_string: model,
+    extra: {
+      manufacturer: disp.manufacturer,
+      manufacturer_code: disp.manufacturerCode,
+      product_code: disp.productCode,
+      year: disp.year,
+      week: disp.week,
+    },
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// Scan
+// ══════════════════════════════════════════════════════════════
+
+async function runScan() {
+  const doHid  = document.getElementById('chk-hid').checked
+  const doUsb  = document.getElementById('chk-usb').checked
+  const doDisp = document.getElementById('chk-disp').checked
+  const doFw   = document.getElementById('chk-fw').checked
+
+  const btn = document.getElementById('btn-scan')
+  const prog = document.getElementById('progress')
+  btn.disabled = true
+  btn.textContent = 'Scannen…'
+  prog.classList.remove('err')
+
+  const snaps = []
+  if (doHid) {
+    prog.textContent = 'Logitech HID scannen…'
+    const r = await window.rrBridge.invScanLogitech()
+    if (!r.ok) { prog.textContent = 'HID-fout: ' + r.error; prog.classList.add('err') }
+    else snaps.push(...r.devices.map(snapshotFromLogitech))
+  }
+  if (doUsb) {
+    prog.textContent = 'USB cameras scannen…'
+    const r = await window.rrBridge.invScanUsb()
+    if (!r.ok) { prog.textContent = 'USB-fout: ' + r.error; prog.classList.add('err') }
+    else snaps.push(...r.devices.map(snapshotFromUsb))
+  }
+  if (doDisp) {
+    prog.textContent = 'Displays scannen…'
+    const r = await window.rrBridge.invScanDisplays()
+    if (!r.ok) { prog.textContent = 'Display-fout: ' + r.error; prog.classList.add('err') }
+    else snaps.push(...r.displays.map(snapshotFromDisplay))
+  }
+
+  // Upsert — bewaar user-edits + eerder gevonden firmware. Scan-resultaten
+  // overschrijven alleen scan-fields (model, serial_number, extra), niet wat
+  // de gebruiker handmatig heeft ingevuld.
+  const PRESERVE = ['firmware_version', 'firmware_secondary',
+    'artikel_nummer', 'artikel_omschrijving', 'ip_adres', 'mac_adres',
+    'cmdb_nummer', 'opmerking', 'firmware_override']
+  for (const s of snaps) {
+    const prev = state.devices[s.unique_id]
+    if (prev) {
+      for (const k of PRESERVE) {
+        if (prev[k]) s[k] = prev[k]
+      }
+    }
+    // Defaults aanvullen voor nieuwe velden (eerste scan)
+    for (const [k, v] of Object.entries(DEVICE_USER_DEFAULTS)) {
+      if (s[k] === undefined || s[k] === null) s[k] = v
+    }
+    state.devices[s.unique_id] = s
+  }
+
+  if (doFw && snaps.length) {
+    await enrichFirmware(snaps, prog)
+  }
+
+  await saveStore()
+  renderDevices()
+
+  prog.textContent = `${snaps.length} device(s) gevonden, ${Object.keys(state.devices).length} totaal in opslag`
+  btn.disabled = false
+  btn.textContent = 'Scan'
+}
+
+async function enrichFirmware(snaps, prog) {
+  const logitechSnaps = snaps.filter(s => s.source === 'logitech_hid' && s.serial_number)
+  if (logitechSnaps.length === 0) return
+
+  // 1. Sync-API: haalt alle enrolled op in één call, index op SN
+  if (state.fw.token) {
+    prog.textContent = 'Firmware via Logitech Sync…'
+    const r = await window.rrBridge.invFirmwareSync({
+      bearerToken: state.fw.token, baseUrl: state.fw.base,
+    })
+    if (r.ok && r.index) {
+      for (const s of logitechSnaps) {
+        const fw = r.index[s.serial_number]
+        if (fw) {
+          s.firmware_version = fw
+          state.devices[s.unique_id] = s
+        }
+      }
+    }
+  }
+
+  // 2. xAPI per collabos-device waarvan we het IP weten
+  const ipMap = {}
+  for (const line of (state.fw.map || '').split(/\r?\n/)) {
+    const m = /^([^=]+)=(.+)$/.exec(line.trim())
+    if (m) ipMap[m[1].trim()] = m[2].trim()
+  }
+  const xapiSnaps = logitechSnaps.filter(s => s.extra.family === 'collabos' && ipMap[s.serial_number])
+  for (const s of xapiSnaps) {
+    prog.textContent = `xAPI firmware voor ${s.model}…`
+    const r = await window.rrBridge.invFirmwareXapi({
+      ip: ipMap[s.serial_number],
+      username: state.fw.user,
+      password: state.fw.pass,
+    })
+    if (r.ok && r.firmware) {
+      // Behoud Sync-resultaat als primair, zet xAPI als secundair (2 bronnen is interessant)
+      if (s.firmware_version && s.firmware_version !== r.firmware) {
+        s.firmware_secondary = r.firmware
+      } else {
+        s.firmware_version = r.firmware
+      }
+      state.devices[s.unique_id] = s
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// Room CRUD
+// ══════════════════════════════════════════════════════════════
+
+function openRoomDialog(room) {
+  const back = document.getElementById('room-back')
+  document.getElementById('room-dialog-title').textContent = room ? 'Ruimte bewerken' : 'Nieuwe ruimte'
+  const fields = {
+    'rd-number':   room ? room.room_number       : '',
+    'rd-name':     room ? room.name              : '',
+    'rd-stad':     room ? (room.stad || '')              : '',
+    'rd-adres':    room ? (room.adres || room.location || '') : '',
+    'rd-sap':      room ? (room.sap_nummer || '')        : '',
+    'rd-sap-sub':  room ? (room.sap_sub_nummer || '')    : '',
+    'rd-stroom':   room ? (room.stroom_groep || '')      : '',
+    'rd-data':     room ? (room.data_aansluiting || '')  : '',
+    'rd-notes':    room ? (room.notes || '')             : '',
+  }
+  for (const [id, val] of Object.entries(fields)) {
+    document.getElementById(id).value = val
+  }
+  back.classList.add('open')
+  back.dataset.editId = room ? room.id : ''
+  document.getElementById('rd-number').focus()
+}
+function closeRoomDialog() { document.getElementById('room-back').classList.remove('open') }
+
+async function saveRoomDialog() {
+  const back = document.getElementById('room-back')
+  const g = id => document.getElementById(id).value.trim()
+  const number  = g('rd-number')
+  const name    = g('rd-name')
+  if (!number || !name) { alert('Kamernummer en ruimte naam zijn verplicht.'); return }
+  const patch = {
+    room_number:      number,
+    name:             name,
+    stad:             g('rd-stad'),
+    adres:            g('rd-adres'),
+    sap_nummer:       g('rd-sap'),
+    sap_sub_nummer:   g('rd-sap-sub'),
+    stroom_groep:     g('rd-stroom'),
+    data_aansluiting: g('rd-data'),
+    notes:            g('rd-notes'),
+  }
+  const editId = back.dataset.editId
+  if (editId) {
+    Object.assign(state.rooms[editId], patch)
+  } else {
+    const id = uuid4()
+    state.rooms[id] = { id, ...patch, device_unique_ids: [] }
+    state.selectedRoomId = id
+  }
+  await saveStore()
+  closeRoomDialog()
+  renderRooms()
+  renderDevices()
+}
+
+async function deleteSelectedRoom() {
+  const r = state.rooms[state.selectedRoomId]
+  if (!r) return
+  if (!confirm(`Ruimte '${r.name}' verwijderen?`)) return
+  delete state.rooms[state.selectedRoomId]
+  state.selectedRoomId = null
+  await saveStore()
+  renderRooms()
+  renderDevices()
+}
+
+async function assignDevice(uid) {
+  const room = state.rooms[state.selectedRoomId]
+  if (!room) { alert('Selecteer eerst een ruimte links.'); return }
+  // Eerst uit andere ruimtes halen
+  for (const r of Object.values(state.rooms)) {
+    r.device_unique_ids = r.device_unique_ids.filter(x => x !== uid)
+  }
+  if (!room.device_unique_ids.includes(uid)) room.device_unique_ids.push(uid)
+  await saveStore()
+  renderDevices()
+}
+
+async function unassignSelected() {
+  const tbl = document.getElementById('tbl-room')
+  const row = tbl.querySelector('tr.sel')
+  if (!row) return
+  const uid = row.dataset.uid
+  for (const r of Object.values(state.rooms)) {
+    r.device_unique_ids = r.device_unique_ids.filter(x => x !== uid)
+  }
+  await saveStore()
+  renderDevices()
+}
+
+// ══════════════════════════════════════════════════════════════
+// Render
+// ══════════════════════════════════════════════════════════════
+
+function renderRooms() {
+  const list = document.getElementById('room-list')
+  list.innerHTML = ''
+  const sorted = Object.values(state.rooms).sort((a, b) =>
+    a.room_number.localeCompare(b.room_number) || a.name.localeCompare(b.name))
+  for (const r of sorted) {
+    const div = document.createElement('div')
+    div.className = 'room-item' + (r.id === state.selectedRoomId ? ' sel' : '')
+    div.innerHTML = `<span class="num">${escapeHtml(r.room_number)}</span><span class="name">${escapeHtml(r.name)}</span>`
+    div.onclick = () => { state.selectedRoomId = r.id; renderRooms(); renderDevices() }
+    list.appendChild(div)
+  }
+  document.getElementById('store-info').textContent =
+    `${Object.keys(state.rooms).length} ruimte(s) • ${Object.keys(state.devices).length} device(s)`
+}
+
+function deviceRow(uid, dblClickHandler) {
+  const d = state.devices[uid]
+  if (!d) return null
+  const src = SOURCE_LABELS[d.source] || { text: d.source, cls: 'none' }
+  const tr = document.createElement('tr')
+  tr.className = 'row'
+  tr.dataset.uid = uid
+  // Firmware-override van user wint boven scan-waarde
+  const fwShow = d.firmware_override || d.firmware_version
+  const fw = fwShow
+    ? (d.firmware_secondary && !d.firmware_override ? `${fwShow} / ${d.firmware_secondary}` : fwShow)
+    : '—'
+  const serialCol = d.serial_number || uid
+  const details = formatDetails(d)
+  // Extra indicatoren als user-fields ingevuld zijn
+  const badges = []
+  if (d.cmdb_nummer) badges.push(`<span class="badge none" title="CMDB">C:${escapeHtml(d.cmdb_nummer)}</span>`)
+  if (d.ip_adres)    badges.push(`<span class="badge none" title="IP">${escapeHtml(d.ip_adres)}</span>`)
+  const userBadges = badges.length ? `<br><span style="font-size:10px;">${badges.join(' ')}</span>` : ''
+  tr.innerHTML = `
+    <td><span class="badge ${src.cls}">${src.text}</span></td>
+    <td>${escapeHtml(d.model)}${userBadges}</td>
+    <td class="serial">${escapeHtml(serialCol)}</td>
+    <td class="firmware">${escapeHtml(fw)}</td>
+    <td>${escapeHtml(details)} <button class="row-edit" title="Gegevens bewerken">✎</button></td>
+  `
+  if (dblClickHandler) tr.ondblclick = () => dblClickHandler(uid)
+  tr.onclick = () => {
+    tr.parentElement.querySelectorAll('tr.sel').forEach(x => x.classList.remove('sel'))
+    tr.classList.add('sel')
+  }
+  tr.querySelector('.row-edit').onclick = (e) => {
+    e.stopPropagation()
+    openDeviceDialog(uid)
+  }
+  return tr
+}
+
+function renderDevices() {
+  // Unassigned
+  const tbU = document.querySelector('#tbl-unassigned tbody')
+  tbU.innerHTML = ''
+  for (const uid of unassignedIds()) {
+    const tr = deviceRow(uid, assignDevice)
+    if (tr) tbU.appendChild(tr)
+  }
+  // In room
+  const tbR = document.querySelector('#tbl-room tbody')
+  tbR.innerHTML = ''
+  const room = state.rooms[state.selectedRoomId]
+  if (room) {
+    for (const uid of room.device_unique_ids) {
+      const tr = deviceRow(uid, null)
+      if (tr) tbR.appendChild(tr)
+    }
+  }
+}
+
+function formatDetails(d) {
+  if (d.source === 'display') {
+    const parts = []
+    if (d.extra.product_code) parts.push(`code=${d.extra.product_code}`)
+    if (d.extra.year) parts.push(`${d.extra.year}`)
+    return parts.join('  ')
+  }
+  if (d.source === 'usb_uvc') {
+    const parts = []
+    if (d.extra.pnp_class) parts.push(d.extra.pnp_class)
+    parts.push(`VID=${d.extra.vid || '?'}`)
+    parts.push(`PID=${d.extra.pid || '?'}`)
+    return parts.join('  ')
+  }
+  if (d.source === 'logitech_hid') {
+    const parts = []
+    if (d.extra.pnp_class) parts.push(d.extra.pnp_class)
+    if (typeof d.extra.pid === 'number') parts.push(`PID=0x${d.extra.pid.toString(16).padStart(4, '0')}`)
+    return parts.join('  ')
+  }
+  return ''
+}
+
+function escapeHtml(s) {
+  return (s == null ? '' : String(s))
+    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+}
+
+// ══════════════════════════════════════════════════════════════
+// Device edit dialog
+// ══════════════════════════════════════════════════════════════
+
+function openDeviceDialog(uid) {
+  const d = state.devices[uid]
+  if (!d) return
+  const back = document.getElementById('dev-back')
+  back.dataset.uid = uid
+  document.getElementById('dev-dialog-title').textContent = `Device bewerken — ${d.model}`
+  const src = SOURCE_LABELS[d.source] || { text: d.source }
+  const autoSummary = [
+    `Type: ${src.text}`,
+    `Model: ${d.model}`,
+    `SN (scan): ${d.serial_number || '—'}`,
+    `Firmware (scan): ${d.firmware_version || '—'}`,
+  ].join(' • ')
+  document.getElementById('dev-readonly-summary').textContent = autoSummary
+  document.getElementById('dev-artikel-nr').value   = d.artikel_nummer        || ''
+  document.getElementById('dev-artikel-desc').value = d.artikel_omschrijving  || ''
+  document.getElementById('dev-ip').value           = d.ip_adres              || ''
+  document.getElementById('dev-mac').value          = d.mac_adres             || ''
+  document.getElementById('dev-cmdb').value         = d.cmdb_nummer           || ''
+  document.getElementById('dev-fw').value           = d.firmware_override     || ''
+  document.getElementById('dev-opmerking').value    = d.opmerking             || ''
+  back.classList.add('open')
+  document.getElementById('dev-artikel-nr').focus()
+}
+function closeDeviceDialog() { document.getElementById('dev-back').classList.remove('open') }
+
+async function saveDeviceDialog() {
+  const back = document.getElementById('dev-back')
+  const uid = back.dataset.uid
+  const d = state.devices[uid]
+  if (!d) { closeDeviceDialog(); return }
+  const g = id => document.getElementById(id).value.trim()
+  d.artikel_nummer        = g('dev-artikel-nr')
+  d.artikel_omschrijving  = g('dev-artikel-desc')
+  d.ip_adres              = g('dev-ip')
+  d.mac_adres             = g('dev-mac')
+  d.cmdb_nummer           = g('dev-cmdb')
+  d.firmware_override     = g('dev-fw')
+  d.opmerking             = g('dev-opmerking')
+  await saveStore()
+  closeDeviceDialog()
+  renderDevices()
+}
+
+// ══════════════════════════════════════════════════════════════
+// Firmware dialog
+// ══════════════════════════════════════════════════════════════
+
+function openFirmwareDialog() {
+  document.getElementById('fw-token').value = state.fw.token || ''
+  document.getElementById('fw-base').value  = state.fw.base  || 'https://api.sync.logitech.com'
+  document.getElementById('fw-map').value   = state.fw.map   || ''
+  document.getElementById('fw-user').value  = state.fw.user  || 'admin'
+  document.getElementById('fw-pass').value  = state.fw.pass  || ''
+  document.getElementById('fw-back').classList.add('open')
+}
+function closeFirmwareDialog() { document.getElementById('fw-back').classList.remove('open') }
+async function saveFirmwareDialog() {
+  state.fw = {
+    token: document.getElementById('fw-token').value,
+    base:  document.getElementById('fw-base').value.trim() || 'https://api.sync.logitech.com',
+    map:   document.getElementById('fw-map').value,
+    user:  document.getElementById('fw-user').value.trim() || 'admin',
+    pass:  document.getElementById('fw-pass').value,
+  }
+  await saveStore()
+  closeFirmwareDialog()
+}
+
+// ══════════════════════════════════════════════════════════════
+// CSV export
+// ══════════════════════════════════════════════════════════════
+
+function buildCsvRows() {
+  const rows = []
+  const sorted = Object.values(state.rooms).sort((a, b) =>
+    a.room_number.localeCompare(b.room_number) || a.name.localeCompare(b.name))
+  for (const room of sorted) {
+    if (!room.device_unique_ids.length) {
+      rows.push(rowFor(room, null)); continue
+    }
+    for (const uid of room.device_unique_ids) {
+      const d = state.devices[uid]
+      rows.push(rowFor(room, d))
+    }
+  }
+  // Niet-toegewezen devices onderaan
+  for (const uid of unassignedIds()) {
+    const d = state.devices[uid]
+    rows.push(rowFor(null, d))
+  }
+  return rows
+}
+
+function rowFor(room, device) {
+  // Row-velden komen 1:1 overeen met CSV_HEADERS in main.js
+  const row = {
+    stad:                 room ? (room.stad || '')             : '',
+    adres:                room ? (room.adres || '')            : '',
+    ruimte_naam:          room ? room.name                     : '(niet toegewezen)',
+    sap_nummer:           room ? (room.sap_nummer || '')       : '',
+    sap_sub_nummer:       room ? (room.sap_sub_nummer || '')   : '',
+    artikel_nummer:       '',
+    artikel_omschrijving: '',
+    ip_adres:             '',
+    mac_adres:            '',
+    firmwareversie:       '',
+    serienummer:          '',
+    cmdb_nummer:          '',
+    opmerking:            room ? (room.notes || '')            : '',
+    stroom_groep:         room ? (room.stroom_groep || '')     : '',
+    data_aansluiting:     room ? (room.data_aansluiting || '') : '',
+    kamernummer:          room ? room.room_number              : '',
+    type: '', model: '', manufacturer: '', vid: '', pid: '',
+  }
+  if (!device) return row
+
+  // Device-level user-edits hebben voorrang, scan-waarden als fallback
+  const e = device.extra || {}
+  row.type                 = (SOURCE_LABELS[device.source] || {}).text || device.source
+  row.model                = device.model
+  row.serienummer          = device.serial_number || device.unique_id
+  row.firmwareversie       = device.firmware_override
+    || (device.firmware_secondary
+        ? `${device.firmware_version || ''} / ${device.firmware_secondary}`.trim()
+        : (device.firmware_version || ''))
+  row.artikel_nummer       = device.artikel_nummer       || ''
+  row.artikel_omschrijving = device.artikel_omschrijving || ''
+  row.ip_adres             = device.ip_adres             || ''
+  row.mac_adres            = device.mac_adres            || ''
+  row.cmdb_nummer          = device.cmdb_nummer          || ''
+  // Device-opmerking wint van room-notes als allebei bestaan — anders blijft room-notes
+  if (device.opmerking) {
+    row.opmerking = room ? `${room.notes ? room.notes + ' | ' : ''}${device.opmerking}` : device.opmerking
+  }
+
+  if (device.source === 'display') {
+    row.manufacturer = e.manufacturer || ''
+  } else if (device.source === 'usb_uvc') {
+    row.manufacturer = e.manufacturer || (e.brand === 'avonic' ? 'Avonic' : '')
+    row.vid          = e.vid || ''
+    row.pid          = e.pid || ''
+  } else if (device.source === 'logitech_hid') {
+    row.manufacturer = 'Logitech'
+    row.pid          = typeof e.pid === 'number' ? '0x' + e.pid.toString(16).padStart(4, '0') : ''
+    row.vid          = e.vid || '046D'
+  }
+  return row
+}
+
+async function exportCsv() {
+  const rows = buildCsvRows()
+  if (!rows.length) { alert('Geen data om te exporteren.'); return }
+  const r = await window.rrBridge.invExportCsv({ rows })
+  if (r.canceled) return
+  if (!r.ok) { alert('Export mislukt: ' + r.error); return }
+  alert(`${r.count} rij(en) geschreven naar:\n${r.path}`)
+}
+
+// ══════════════════════════════════════════════════════════════
+// Wire up
+// ══════════════════════════════════════════════════════════════
+
+document.getElementById('btn-scan').onclick         = runScan
+document.getElementById('btn-add-room').onclick     = () => openRoomDialog(null)
+document.getElementById('btn-edit-room').onclick    = () => {
+  const r = state.rooms[state.selectedRoomId]
+  if (r) openRoomDialog(r)
+}
+document.getElementById('btn-del-room').onclick     = deleteSelectedRoom
+document.getElementById('btn-unassign').onclick     = unassignSelected
+document.getElementById('btn-firmware').onclick     = openFirmwareDialog
+document.getElementById('btn-export').onclick       = exportCsv
+
+document.getElementById('rd-cancel').onclick        = closeRoomDialog
+document.getElementById('rd-ok').onclick            = saveRoomDialog
+document.getElementById('fw-cancel').onclick        = closeFirmwareDialog
+document.getElementById('fw-ok').onclick            = saveFirmwareDialog
+document.getElementById('dev-cancel').onclick       = closeDeviceDialog
+document.getElementById('dev-ok').onclick           = saveDeviceDialog
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeRoomDialog(); closeFirmwareDialog(); closeDeviceDialog()
+  }
+})
+
+;(async () => {
+  await loadStore()
+  renderRooms()
+  renderDevices()
+})()
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Dev-tree only — niet shippen via asar of git
+node_modules/
+.node/
+.claude/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Build output (van electron-builder)
+dist/
+out/
+
+# Local logs / temp
+*.log
+.tmp/

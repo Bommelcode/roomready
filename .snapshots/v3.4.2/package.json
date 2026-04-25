@@ -1,0 +1,15 @@
+{
+  "name": "roomready",
+  "version": "3.4.2",
+  "description": "RoomReady — AV kamertester voor Logitech MeetUp / Rally",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "node pack.js",
+    "smoke": "electron test-runner.js"
+  },
+  "devDependencies": {
+    "@electron/asar": "^4.2.0",
+    "electron": "^29.4.6"
+  }
+}

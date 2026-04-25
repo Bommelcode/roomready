@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>RoomReady</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    cursor: none;
+  }
+
+  /* ═══════════════ COLOR BARS (default idle state) ═══════════════ */
+  #colorbars {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    background: #000;
+  }
+  /* Upper 75% — 8 classic TV test-card bars (SMPTE/EBU 100%) */
+  #bars-main {
+    flex: 8;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+  }
+  #bars-main > div {
+    width: 100%; height: 100%;
+  }
+  /* Lower 25% — castellations / PLUGE bar */
+  #bars-lower {
+    flex: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 2fr repeat(4, 1fr);
+  }
+  #bars-lower > div {
+    width: 100%; height: 100%;
+  }
+
+  /* Moving shimmer sweep — subtiele bewegende glans */
+  #bars-shimmer {
+    position: fixed; top: 0; bottom: 0; width: 15%;
+    background: linear-gradient(to right,
+      transparent 0%,
+      rgba(255,255,255,0.06) 35%,
+      rgba(255,255,255,0.18) 50%,
+      rgba(255,255,255,0.06) 65%,
+      transparent 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: shimmer 14s linear infinite;
+  }
+  @keyframes shimmer {
+    0%   { left: -20%; }
+    100% { left: 105%; }
+  }
+
+  /* Center logo badge op bars */
+  #idle-logo {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.72);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 24px;
+    padding: 38px 70px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+    animation: logoFade 4s ease-in-out infinite;
+  }
+  @keyframes logoFade {
+    0%,100% { opacity: 0.85; }
+    50%     { opacity: 1; }
+  }
+  #idle-logo-text {
+    font-size: 6vw; font-weight: 900;
+    letter-spacing: 0.3vw;
+    line-height: 1;
+    color: #fff;
+  }
+  #idle-logo-text b { color: #4ade80; }
+  #idle-logo-sub {
+    font-size: 1.2vw; font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.4vw;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+
+  /* Klok onderin */
+  #idle-clock {
+    position: fixed; bottom: 40px; left: 0; right: 0;
+    text-align: center;
+    font-size: 1.6vw; font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+    background: rgba(0,0,0,0.5);
+    padding: 6px 0;
+  }
+  #idle-date {
+    display: inline-block;
+    margin-left: 24px;
+    color: rgba(255,255,255,0.5);
+    text-transform: capitalize;
+  }
+
+  /* ═══════════════ OTHER STATES (overlay on colorbars) ═══════════════ */
+  .state-overlay {
+    position: fixed; inset: 0;
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 30px;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(8px);
+    opacity: 0; transition: opacity 0.5s ease;
+  }
+  body.state-ready   #overlay-ready   { display: flex; opacity: 1; background: radial-gradient(ellipse at center, rgba(13,51,36,0.96) 0%, rgba(6,21,16,0.98) 100%); }
+  body.state-testing #overlay-testing { display: flex; opacity: 1; }
+  body.state-failed  #overlay-failed  { display: flex; opacity: 1; background: radial-gradient(ellipse at center, rgba(42,26,26,0.96) 0%, rgba(24,10,10,0.98) 100%); }
+
+  #ready-text {
+    font-size: 18vw; font-weight: 900;
+    letter-spacing: 0.5vw; line-height: 0.9;
+    color: #4ade80;
+    text-shadow:
+      0 0 30px rgba(74,222,128,0.6),
+      0 0 80px rgba(74,222,128,0.4),
+      0 0 140px rgba(74,222,128,0.2);
+    animation: readyPulse 2.5s ease-in-out infinite;
+  }
+  #ready-sub {
+    font-size: 2.5vw; font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.2vw;
+  }
+  @keyframes readyPulse {
+    0%,100% { text-shadow: 0 0 30px rgba(74,222,128,0.6), 0 0 80px rgba(74,222,128,0.4), 0 0 140px rgba(74,222,128,0.2); }
+    50%     { text-shadow: 0 0 50px rgba(74,222,128,0.8), 0 0 120px rgba(74,222,128,0.5), 0 0 180px rgba(74,222,128,0.3); }
+  }
+
+  .testing-spinner {
+    width: 10vw; height: 10vw;
+    border: 0.6vw solid rgba(100,140,220,0.2);
+    border-top-color: #6080e0;
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #testing-text {
+    font-size: 4vw; font-weight: 300;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.1vw;
+  }
+  #testing-sub {
+    font-size: 1.5vw; font-weight: 300;
+    color: rgba(255,255,255,0.5);
+  }
+
+  #failed-text {
+    font-size: 7vw; font-weight: 700;
+    color: #f59e0b;
+    letter-spacing: 0.2vw;
+  }
+  #failed-sub {
+    font-size: 2vw; font-weight: 300;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* Esc hint */
+  #esc-hint {
+    position: fixed; top: 15px; right: 20px;
+    font-size: 0.8vw; font-weight: 300;
+    color: rgba(255,255,255,0.1);
+    z-index: 100;
+  }
+</style>
+</head>
+<body class="state-idle">
+
+<!-- Idle: Color bars -->
+<div id="colorbars">
+  <div id="bars-main">
+    <div style="background:#ffffff;"></div>
+    <div style="background:#ffff00;"></div>
+    <div style="background:#00ffff;"></div>
+    <div style="background:#00ff00;"></div>
+    <div style="background:#ff00ff;"></div>
+    <div style="background:#ff0000;"></div>
+    <div style="background:#0000ff;"></div>
+    <div style="background:#000000;"></div>
+  </div>
+  <div id="bars-lower">
+    <!-- PLUGE-achtige rij: donkere blauw/zwart/magenta/cyan + gradient -->
+    <div style="background:#0000ff;"></div>
+    <div style="background:#000000;"></div>
+    <div style="background:#ff00ff;"></div>
+    <div style="background:#000000;"></div>
+    <div style="background:linear-gradient(to right, #000 0%, #808080 50%, #fff 100%);"></div>
+    <div style="background:#000000;"></div>
+    <div style="background:#0a0a0a;"></div>
+    <div style="background:#141414;"></div>
+    <div style="background:#1e1e1e;"></div>
+  </div>
+</div>
+<div id="bars-shimmer"></div>
+
+<!-- Logo badge + clock always visible op de bars -->
+<div id="idle-logo">
+  <div id="idle-logo-text"><b>Room</b>Ready</div>
+  <div id="idle-logo-sub">Standby · AV systeem actief</div>
+</div>
+
+<div id="idle-clock">
+  <span id="clock-time">––:––</span>
+  <span id="idle-date">–</span>
+</div>
+
+<!-- Ready state overlay -->
+<div id="overlay-ready" class="state-overlay">
+  <div id="ready-text">Room = Ready</div>
+  <div id="ready-sub">De vergaderruimte is gereed voor gebruik</div>
+</div>
+
+<!-- Testing state overlay -->
+<div id="overlay-testing" class="state-overlay">
+  <div class="testing-spinner"></div>
+  <div id="testing-text">Kamer wordt voorbereid</div>
+  <div id="testing-sub">Een moment geduld alstublieft</div>
+</div>
+
+<!-- Failed state overlay -->
+<div id="overlay-failed" class="state-overlay">
+  <div id="failed-text">⚠ Kamer wordt nagekeken</div>
+  <div id="failed-sub">Uw technicus is op de hoogte</div>
+</div>
+
+<div id="esc-hint">Esc om te sluiten</div>
+
+<script>
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') window.close() })
+
+  const clockEl = document.getElementById('clock-time')
+  const dateEl  = document.getElementById('idle-date')
+  function updateClock() {
+    const d = new Date()
+    clockEl.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    const dags = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag']
+    const mnds = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december']
+    dateEl.textContent = `${dags[d.getDay()]} ${d.getDate()} ${mnds[d.getMonth()]}`
+  }
+  updateClock(); setInterval(updateClock, 10000)
+
+  // BroadcastChannel voor state-sync met hoofdvenster
+  const bc = new BroadcastChannel('roomready-state')
+  bc.onmessage = e => {
+    if (e.data?.state) {
+      document.body.className = 'state-' + e.data.state
+    }
+  }
+  bc.postMessage({ query: 'state' })
+</script>
+</body>
+</html>

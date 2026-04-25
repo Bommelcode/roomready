@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Logitech Device Tester</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #12131a;
+  color: #e0e0e0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: #1e1f2e;
+  border-bottom: 1px solid #2a2b3d;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-height: 46px;
+}
+
+.app-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+.device-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.device-icon { font-size: 13px; flex-shrink: 0; }
+
+select {
+  background: #252636;
+  border: 1px solid #3a3b4d;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  flex: 1;
+  min-width: 0;
+  max-width: 220px;
+}
+
+select:focus { outline: none; border-color: #4a9eff; }
+
+option[data-logi="1"] { color: #4a9eff; }
+
+.logitech-badge {
+  background: #1e1f2e;
+  border: 1px solid #3a3b4d;
+  color: #555;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.logitech-badge.ok  { background: #0f2a1a; border-color: #1a6b3a; color: #2ecc71; }
+.logitech-badge.err { background: #2a1a0f; border-color: #6b3a1a; color: #e67e22; }
+
+.btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: filter 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.15); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-blue  { background: #1a5cbf; color: #fff; }
+.btn-green { background: #1a6b3a; color: #fff; }
+.btn-red   { background: #6b1a1a; color: #fff; }
+.btn-ghost { background: transparent; border: 1px solid #3a3b4d; color: #888; }
+
+/* ── MAIN LAYOUT ── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── CAMERA PANEL ── */
+.camera-col {
+  width: 54%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #2a2b3d;
+  background: #0d0e14;
+  position: relative;
+}
+
+.panel-hdr {
+  background: #1a1b27;
+  border-bottom: 1px solid #2a2b3d;
+  padding: 7px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #333;
+  flex-shrink: 0;
+}
+.dot.on  { background: #2ecc71; box-shadow: 0 0 6px #2ecc7188; }
+.dot.err { background: #e74c3c; }
+
+video {
+  flex: 1;
+  width: 100%;
+  object-fit: contain;
+  background: #000;
+  min-height: 0;
+}
+
+.cam-footer {
+  background: #1a1b27;
+  border-top: 1px solid #2a2b3d;
+  padding: 5px 14px;
+  font-size: 10px;
+  color: #555;
+  display: flex;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.cam-footer span { color: #888; }
+
+.start-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 14, 20, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+}
+.start-overlay p { color: #555; font-size: 13px; }
+
+/* ── TEST PANELS ── */
+.tests-col {
+  width: 46%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #12131a; }
+::-webkit-scrollbar-thumb { background: #2a2b3d; border-radius: 2px; }
+
+.test-card { border-bottom: 1px solid #2a2b3d; flex-shrink: 0; }
+
+.test-body {
+  padding: 14px 16px;
+  background: #13141e;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hint {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* ── LEVEL METER ── */
+.meter-wrap { display: flex; flex-direction: column; gap: 3px; }
+
+.meter-lbl {
+  font-size: 10px;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+}
+.meter-lbl span { color: #777; }
+
+.meter-bg {
+  height: 10px;
+  background: #1e1f2e;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #27ae60 0%, #f39c12 72%, #e74c3c 100%);
+  width: 0%;
+  transition: width 40ms linear;
+}
+
+.meter-peak {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(255,255,255,0.5);
+  left: 0%;
+  transition: left 600ms ease-out;
+}
+
+/* ── ROW ── */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── TOGGLE ── */
+.tgl { position: relative; display: inline-block; width: 34px; height: 17px; flex-shrink: 0; }
+.tgl input { display: none; }
+.tgl-sl {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #252636;
+  border-radius: 17px;
+  transition: .2s;
+}
+.tgl-sl:before {
+  content: '';
+  position: absolute;
+  width: 11px; height: 11px;
+  left: 3px; bottom: 3px;
+  background: #555;
+  border-radius: 50%;
+  transition: .2s;
+}
+.tgl input:checked + .tgl-sl { background: #1a5cbf; }
+.tgl input:checked + .tgl-sl:before { transform: translateX(17px); background: #fff; }
+.tgl-lbl { font-size: 11px; color: #777; }
+
+/* ── RESULT BOX ── */
+.result {
+  padding: 7px 11px;
+  border-radius: 4px;
+  font-size: 11px;
+  background: #1e1f2e;
+  color: #555;
+  border: 1px solid #2a2b3d;
+  line-height: 1.4;
+}
+.result.good { background: #0c2016; border-color: #1a5c30; color: #2ecc71; }
+.result.warn { background: #201c0c; border-color: #5c4e1a; color: #f39c12; }
+.result.bad  { background: #200c0c; border-color: #5c1a1a; color: #e74c3c; }
+
+/* btn row */
+.btn-row { display: flex; gap: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <span class="app-title">Logitech Tester</span>
+
+  <div class="device-group">
+    <span class="device-icon">📷</span>
+    <select id="camSel"></select>
+  </div>
+  <div class="device-group">
+    <span class="device-icon">🎤</span>
+    <select id="micSel"></select>
+  </div>
+  <div class="device-group">
+    <span class="device-icon">🔊</span>
+    <select id="spkSel"></select>
+  </div>
+
+  <span class="logitech-badge" id="lgBadge">Scannen…</span>
+  <button class="btn btn-blue" id="startBtn">▶ Start</button>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- CAMERA -->
+  <div class="camera-col">
+    <div class="panel-hdr">
+      <span class="panel-title">Camera</span>
+      <div style="display:flex;align-items:center;gap:7px">
+        <span style="font-size:10px;color:#444" id="camStatus">Gestopt</span>
+        <div class="dot" id="camDot"></div>
+      </div>
+    </div>
+    <div class="start-overlay" id="overlay">
+      <p>Selecteer apparaten en klik ▶ Start</p>
+    </div>
+    <video id="video" autoplay muted playsinline></video>
+    <div class="cam-footer">
+      <span>Res: <span id="camRes">—</span></span>
+      <span>FPS: <span id="camFps">—</span></span>
+      <span id="camName" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+    </div>
+  </div>
+
+  <!-- TESTS -->
+  <div class="tests-col">
+
+    <!-- 1. MIC LEVEL -->
+    <div class="test-card">
+      <div class="panel-hdr">
+        <span class="panel-title">Microfoon</span>
+        <div class="dot" id="micDot"></div>
+      </div>
+      <div class="test-body">
+        <div class="meter-wrap">
+          <div class="meter-lbl">Ingangsniveau <span id="micDb">— dB</span></div>
+          <div class="meter-bg">
+            <div class="meter-fill" id="micFill"></div>
+            <div class="meter-peak" id="micPeak"></div>
+          </div>
+        </div>
+        <div class="result" id="micResult">Wacht op signaal…</div>
+      </div>
+    </div>
+
+    <!-- 2. ECHO CANCELLATION -->
+    <div class="test-card">
+      <div class="panel-hdr">
+        <span class="panel-title">Echo Cancellation (AEC)</span>
+        <div class="dot" id="ecDot"></div>
+      </div>
+      <div class="test-body">
+        <p class="hint">Speelt een 1 kHz testtoon af via de speaker. De hardware AEC in de MeetUp/Rally filtert dit uit de microfoon. Mic-niveau blijft laag = AEC werkt.</p>
+
+        <div class="row">
+          <label class="tgl">
+            <input type="checkbox" id="aecTgl" checked>
+            <span class="tgl-sl"></span>
+          </label>
+          <span class="tgl-lbl" id="aecLbl">Browser AEC: AAN</span>
+          <span style="font-size:10px;color:#444;margin-left:auto">(toggle = vergelijk)</span>
+        </div>
+
+        <div class="meter-wrap">
+          <div class="meter-lbl">Mic-niveau tijdens toon <span id="ecDb">—</span></div>
+          <div class="meter-bg">
+            <div class="meter-fill" id="ecFill"></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-blue" id="ecStart" disabled>▶ Toon afspelen</button>
+          <button class="btn btn-ghost" id="ecStop"  disabled>■ Stop</button>
+        </div>
+
+        <div class="result" id="ecResult">Start de test om AEC te controleren</div>
+      </div>
+    </div>
+
+    <!-- 3. LOOPBACK -->
+    <div class="test-card">
+      <div class="panel-hdr">
+        <span class="panel-title">Gesprek — Loopback</span>
+        <div class="dot" id="lbDot"></div>
+      </div>
+      <div class="test-body">
+        <p class="hint">Mic-signaal wordt direct teruggespeeld via de speaker. Spreek in de MeetUp — je hoort jezelf terug. Bevestigt het complete heen-en-weer audiopad.</p>
+
+        <div class="meter-wrap">
+          <div class="meter-lbl">Mic In <span id="lbInDb">—</span></div>
+          <div class="meter-bg"><div class="meter-fill" id="lbInFill"></div></div>
+        </div>
+        <div class="meter-wrap">
+          <div class="meter-lbl">Speaker Out (signaal) <span id="lbOutDb">—</span></div>
+          <div class="meter-bg"><div class="meter-fill" id="lbOutFill"></div></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-green" id="lbStart" disabled>▶ Start loopback</button>
+          <button class="btn btn-red"   id="lbStop"  disabled>■ Stop</button>
+        </div>
+
+        <div class="result" id="lbResult">Klik Start om te beginnen</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let camStream = null;
+let micCtx = null, micAnalyser = null, micRaf = null;
+let micPeakPct = 0, micPeakTimer = null;
+
+let ecCtx = null, ecMicStream = null, ecAnalyser = null, ecOsc = null, ecRaf = null;
+
+let lbAudio = null, lbMicStream = null, lbCtx = null;
+let lbAnalIn = null, lbAnalOut = null, lbRaf = null;
+
+// ═══════════════════════════════════════════════════════
+//  DEVICE ENUMERATION
+// ═══════════════════════════════════════════════════════
+async function enumDevices() {
+  // Trigger permission dialog upfront
+  try {
+    const t = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    t.getTracks().forEach(tr => tr.stop());
+  } catch (_) {}
+
+  const devs = await navigator.mediaDevices.enumerateDevices();
+  const cams = devs.filter(d => d.kind === 'videoinput');
+  const mics = devs.filter(d => d.kind === 'audioinput');
+  const spks = devs.filter(d => d.kind === 'audiooutput');
+
+  fill(document.getElementById('camSel'), cams);
+  fill(document.getElementById('micSel'), mics);
+  fill(document.getElementById('spkSel'), spks);
+
+  // Badge
+  const allLabels = devs.map(d => d.label.toLowerCase());
+  const found = allLabels.some(l => l.includes('logitech') || l.includes('meetup') || l.includes('rally'));
+  const badge = document.getElementById('lgBadge');
+  if (found) {
+    badge.textContent = '✓ Logitech gedetecteerd';
+    badge.className = 'logitech-badge ok';
+  } else {
+    badge.textContent = '⚠ Geen Logitech gevonden';
+    badge.className = 'logitech-badge err';
+  }
+
+  // Auto-select Logitech entries
+  autoSelect(document.getElementById('camSel'), cams);
+  autoSelect(document.getElementById('micSel'), mics);
+  autoSelect(document.getElementById('spkSel'), spks);
+}
+
+function isLogi(label) {
+  const l = (label || '').toLowerCase();
+  return l.includes('logitech') || l.includes('meetup') || l.includes('rally');
+}
+
+function fill(sel, devices) {
+  sel.innerHTML = '';
+  devices.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.deviceId;
+    const logi = isLogi(d.label);
+    opt.textContent = (logi ? '★ ' : '') + (d.label || `Apparaat (${d.deviceId.slice(0,6)})`);
+    if (logi) opt.setAttribute('data-logi', '1');
+    sel.appendChild(opt);
+  });
+}
+
+function autoSelect(sel, devices) {
+  const idx = devices.findIndex(d => isLogi(d.label));
+  if (idx >= 0) sel.selectedIndex = idx;
+}
+
+navigator.mediaDevices.addEventListener('devicechange', enumDevices);
+
+// ═══════════════════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════════════════
+document.getElementById('startBtn').addEventListener('click', async () => {
+  document.getElementById('overlay').style.display = 'none';
+  await startCamera(document.getElementById('camSel').value);
+  await startMic(document.getElementById('micSel').value);
+  document.getElementById('ecStart').disabled = false;
+  document.getElementById('lbStart').disabled = false;
+});
+
+// ═══════════════════════════════════════════════════════
+//  CAMERA
+// ═══════════════════════════════════════════════════════
+async function startCamera(deviceId) {
+  try {
+    if (camStream) camStream.getTracks().forEach(t => t.stop());
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { deviceId: { exact: deviceId }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+    });
+    const vid = document.getElementById('video');
+    vid.srcObject = camStream;
+    vid.addEventListener('loadedmetadata', () => {
+      document.getElementById('camRes').textContent = `${vid.videoWidth}×${vid.videoHeight}`;
+      const tr = camStream.getVideoTracks()[0];
+      if (tr) {
+        const s = tr.getSettings();
+        document.getElementById('camFps').textContent = Math.round(s.frameRate || 0) + ' fps';
+        document.getElementById('camName').textContent = tr.label.split('(')[0].trim();
+      }
+    }, { once: true });
+    setDot('camDot', 'on');
+    document.getElementById('camStatus').textContent = 'Actief';
+  } catch (e) {
+    setDot('camDot', 'err');
+    document.getElementById('camStatus').textContent = 'Fout: ' + e.message;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  MIC LEVEL
+// ═══════════════════════════════════════════════════════
+async function startMic(deviceId) {
+  try {
+    if (micCtx) micCtx.close();
+    if (micRaf) cancelAnimationFrame(micRaf);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: { exact: deviceId },
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+    micCtx = new AudioContext();
+    micAnalyser = micCtx.createAnalyser();
+    micAnalyser.fftSize = 512;
+    micCtx.createMediaStreamSource(stream).connect(micAnalyser);
+    setDot('micDot', 'on');
+    micPeakPct = 0;
+    animateMic();
+  } catch (e) {
+    setDot('micDot', 'err');
+    document.getElementById('micResult').textContent = 'Fout: ' + e.message;
+    document.getElementById('micResult').className = 'result bad';
+  }
+}
+
+function animateMic() {
+  const buf = new Uint8Array(micAnalyser.frequencyBinCount);
+  function tick() {
+    micRaf = requestAnimationFrame(tick);
+    micAnalyser.getByteTimeDomainData(buf);
+    const peak = getPeak(buf);
+    const pct = toPercent(peak);
+
+    document.getElementById('micFill').style.width = pct + '%';
+    if (pct >= micPeakPct) {
+      micPeakPct = pct;
+      clearTimeout(micPeakTimer);
+      micPeakTimer = setTimeout(() => { micPeakPct = 0; }, 2500);
+    } else {
+      micPeakPct = Math.max(micPeakPct - 0.8, pct);
+    }
+    document.getElementById('micPeak').style.left = micPeakPct + '%';
+    document.getElementById('micDb').textContent = toDb(peak);
+
+    const r = document.getElementById('micResult');
+    if (peak < 0.008) {
+      r.textContent = '🔇 Geen signaal — spreek in de microfoon';
+      r.className = 'result warn';
+    } else if (peak > 0.92) {
+      r.textContent = '⚠ Overload — pas het ingangsniveau aan';
+      r.className = 'result bad';
+    } else {
+      r.textContent = '✓ Microfoon actief — signaalniveau OK';
+      r.className = 'result good';
+    }
+  }
+  tick();
+}
+
+// ═══════════════════════════════════════════════════════
+//  ECHO CANCELLATION
+// ═══════════════════════════════════════════════════════
+document.getElementById('aecTgl').addEventListener('change', function () {
+  document.getElementById('aecLbl').textContent = 'Browser AEC: ' + (this.checked ? 'AAN' : 'UIT');
+});
+
+document.getElementById('ecStart').addEventListener('click', startEcTest);
+document.getElementById('ecStop').addEventListener('click', stopEcTest);
+
+async function startEcTest() {
+  const micId = document.getElementById('micSel').value;
+  const spkId = document.getElementById('spkSel').value;
+  const aec   = document.getElementById('aecTgl').checked;
+
+  document.getElementById('ecStart').disabled = true;
+  document.getElementById('ecStop').disabled  = false;
+  setDot('ecDot', 'on');
+
+  try {
+    ecMicStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: { exact: micId },
+        echoCancellation: aec,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+
+    ecCtx = new AudioContext();
+    if (ecCtx.setSinkId) await ecCtx.setSinkId(spkId).catch(() => {});
+
+    // Mic analyser
+    ecAnalyser = ecCtx.createAnalyser();
+    ecAnalyser.fftSize = 512;
+    ecCtx.createMediaStreamSource(ecMicStream).connect(ecAnalyser);
+
+    // 1 kHz test tone → speaker
+    ecOsc = ecCtx.createOscillator();
+    const gain = ecCtx.createGain();
+    gain.gain.value = 0.28;
+    ecOsc.frequency.value = 1000;
+    ecOsc.type = 'sine';
+    ecOsc.connect(gain);
+    gain.connect(ecCtx.destination);
+    ecOsc.start();
+
+    document.getElementById('ecResult').textContent = '🔊 1 kHz toon speelt af — meting loopt…';
+    document.getElementById('ecResult').className = 'result';
+
+    let frames = 0;
+    const buf = new Uint8Array(ecAnalyser.frequencyBinCount);
+
+    function tick() {
+      ecRaf = requestAnimationFrame(tick);
+      ecAnalyser.getByteTimeDomainData(buf);
+      const peak = getPeak(buf);
+      const pct  = toPercent(peak);
+      document.getElementById('ecFill').style.width = pct + '%';
+      document.getElementById('ecDb').textContent = toDb(peak);
+
+      frames++;
+      if (frames < 45) return; // ~0.75s warmup
+
+      const r = document.getElementById('ecResult');
+      if (peak < 0.04) {
+        r.textContent = '✓ AEC werkt — toon wordt niet opgepikt door microfoon';
+        r.className = 'result good';
+      } else if (peak < 0.18) {
+        r.textContent = '⚠ Zwakke echo — kleine rest hoorbaar, controleer plaatsing';
+        r.className = 'result warn';
+      } else {
+        r.textContent = '✗ AEC werkt niet — microfoon pikt toon duidelijk op';
+        r.className = 'result bad';
+      }
+    }
+    tick();
+  } catch (e) {
+    document.getElementById('ecResult').textContent = 'Fout: ' + e.message;
+    document.getElementById('ecResult').className = 'result bad';
+    stopEcTest();
+  }
+}
+
+function stopEcTest() {
+  if (ecOsc) { try { ecOsc.stop(); } catch (_) {} ecOsc = null; }
+  if (ecCtx) { ecCtx.close(); ecCtx = null; }
+  if (ecMicStream) { ecMicStream.getTracks().forEach(t => t.stop()); ecMicStream = null; }
+  if (ecRaf) { cancelAnimationFrame(ecRaf); ecRaf = null; }
+  document.getElementById('ecStart').disabled = false;
+  document.getElementById('ecStop').disabled  = true;
+  setDot('ecDot', '');
+  document.getElementById('ecFill').style.width = '0%';
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOOPBACK
+// ═══════════════════════════════════════════════════════
+document.getElementById('lbStart').addEventListener('click', startLoopback);
+document.getElementById('lbStop').addEventListener('click',  stopLoopback);
+
+async function startLoopback() {
+  const micId = document.getElementById('micSel').value;
+  const spkId = document.getElementById('spkSel').value;
+
+  document.getElementById('lbStart').disabled = true;
+  document.getElementById('lbStop').disabled  = false;
+  setDot('lbDot', 'on');
+
+  try {
+    lbMicStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        deviceId: { exact: micId },
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+
+    // Route mic → speaker via Audio element
+    lbAudio = new Audio();
+    lbAudio.srcObject = lbMicStream;
+    if (lbAudio.setSinkId) await lbAudio.setSinkId(spkId).catch(() => {});
+    await lbAudio.play();
+
+    // Level meters via AudioContext
+    lbCtx = new AudioContext();
+    const src = lbCtx.createMediaStreamSource(lbMicStream);
+
+    lbAnalIn = lbCtx.createAnalyser();
+    lbAnalIn.fftSize = 512;
+    src.connect(lbAnalIn);
+
+    // Output meter: tap input with small delay to represent signal going out
+    lbAnalOut = lbCtx.createAnalyser();
+    lbAnalOut.fftSize = 512;
+    const delay = lbCtx.createDelay(0.15);
+    delay.delayTime.value = 0.1;
+    src.connect(delay);
+    delay.connect(lbAnalOut);
+
+    document.getElementById('lbResult').textContent = '🎤 Spreek nu — je hoort jezelf terug via de speaker';
+    document.getElementById('lbResult').className = 'result good';
+
+    const bufIn  = new Uint8Array(lbAnalIn.frequencyBinCount);
+    const bufOut = new Uint8Array(lbAnalOut.frequencyBinCount);
+
+    function tick() {
+      lbRaf = requestAnimationFrame(tick);
+      lbAnalIn.getByteTimeDomainData(bufIn);
+      lbAnalOut.getByteTimeDomainData(bufOut);
+
+      const pIn  = getPeak(bufIn);
+      const pOut = getPeak(bufOut);
+
+      document.getElementById('lbInFill').style.width  = toPercent(pIn)  + '%';
+      document.getElementById('lbOutFill').style.width = toPercent(pOut) + '%';
+      document.getElementById('lbInDb').textContent  = toDb(pIn);
+      document.getElementById('lbOutDb').textContent = toDb(pOut);
+    }
+    tick();
+  } catch (e) {
+    document.getElementById('lbResult').textContent = 'Fout: ' + e.message;
+    document.getElementById('lbResult').className = 'result bad';
+    document.getElementById('lbStart').disabled = false;
+    setDot('lbDot', 'err');
+  }
+}
+
+function stopLoopback() {
+  if (lbAudio)     { lbAudio.pause(); lbAudio.srcObject = null; lbAudio = null; }
+  if (lbMicStream) { lbMicStream.getTracks().forEach(t => t.stop()); lbMicStream = null; }
+  if (lbCtx)       { lbCtx.close(); lbCtx = null; }
+  if (lbRaf)       { cancelAnimationFrame(lbRaf); lbRaf = null; }
+  document.getElementById('lbStart').disabled = false;
+  document.getElementById('lbStop').disabled  = true;
+  setDot('lbDot', '');
+  document.getElementById('lbInFill').style.width  = '0%';
+  document.getElementById('lbOutFill').style.width = '0%';
+  document.getElementById('lbResult').textContent = 'Klik Start om te beginnen';
+  document.getElementById('lbResult').className = 'result';
+}
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+function getPeak(buf) {
+  let p = 0;
+  for (let i = 0; i < buf.length; i++) {
+    const v = Math.abs(buf[i] - 128) / 128;
+    if (v > p) p = v;
+  }
+  return p;
+}
+
+function toPercent(peak) { return Math.min(peak * 280, 100); }
+
+function toDb(peak) {
+  return peak > 0.001 ? Math.round(20 * Math.log10(peak)) + ' dB' : '–∞ dB';
+}
+
+function setDot(id, state) {
+  document.getElementById(id).className = 'dot' + (state ? ' ' + state : '');
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+enumDevices();
+</script>
+</body>
+</html>

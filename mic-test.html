@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><title>Mic Test</title></head>
+<body style="font-family:sans-serif;background:#111;color:#fff;padding:40px">
+<h1>Mic Test (minimal)</h1>
+<div id="status" style="font-size:24px;padding:20px;background:#333;border-radius:8px">Initialiseren...</div>
+<div id="meter" style="height:30px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden">
+  <div id="fill" style="height:100%;width:0%;background:#4ade80;transition:width .05s"></div>
+</div>
+<div id="log" style="font-family:monospace;background:#000;padding:15px;margin-top:20px;border-radius:4px;white-space:pre;max-height:300px;overflow:auto;font-size:12px"></div>
+<script>
+const log = (m) => { const el=document.getElementById('log'); el.textContent += new Date().toISOString().slice(11,19)+' '+m+'\n'; el.scrollTop=el.scrollHeight }
+const status = (m, c='#4ade80') => { const s=document.getElementById('status'); s.textContent=m; s.style.background=c }
+
+async function test() {
+  log('Start')
+  try {
+    log('enumerateDevices...')
+    const devs = await navigator.mediaDevices.enumerateDevices()
+    log(devs.filter(d => d.kind==='audioinput').length + ' audioinput devices')
+    devs.filter(d => d.kind==='audioinput').forEach(d => log('  - '+(d.label||'(geen label)')+' id:'+d.deviceId.slice(0,8)))
+    log('getUserMedia audio:true')
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true})
+    log('✓ stream: '+stream.getTracks().map(t=>t.label).join(', '))
+    status('Mic actief — spreek nu','#166534')
+    const ctx = new AudioContext()
+    log('✓ AudioContext '+ctx.sampleRate+' Hz')
+    const src = ctx.createMediaStreamSource(stream)
+    const ana = ctx.createAnalyser()
+    ana.fftSize = 2048
+    src.connect(ana)
+    const buf = new Uint8Array(ana.fftSize)
+    function tick() {
+      ana.getByteTimeDomainData(buf)
+      let s=0
+      for (let i=0;i<buf.length;i++) { const v=(buf[i]-128)/128; s+=v*v }
+      const r = Math.sqrt(s/buf.length)
+      document.getElementById('fill').style.width = Math.min(100, r*400)+'%'
+      requestAnimationFrame(tick)
+    }
+    tick()
+  } catch(e) {
+    log('✗ FOUT: '+e.name+' — '+e.message)
+    status('MIC FOUT: '+e.name,'#7f1d1d')
+  }
+}
+test()
+</script>
+</body></html>

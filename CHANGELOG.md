@@ -12,6 +12,23 @@ cp .snapshots/vX.Y.Z/* /home/claude/logitech-tester/
 
 ---
 
+## v3.4.7 — Scan-overrides voor model/serial/fabrikant + nieuw app-icoon
+
+**Datum:** 2026-04-28
+**Status:** UX-fix gemeld door gebruiker (Samsung-displays met EDID-default serial)
+
+**Probleem 1 — Samsung EDID-default serials:** alle Samsung-monitors gaven hetzelfde serienummer "H1AK500000" terug. Bekend EDID-knelpunt: Samsung schrijft op sommige modellen geen unieke iSerialNumber maar een fabrieks-default in de EDID-block. Windows leest dat door en levert het 1:1 aan onze `Get-CimInstance WmiMonitorID`-scan. Niet op te lossen aan scan-kant.
+
+**Fix:** edit-dialog uitgebreid met **scan-overrides**: nieuwe velden Model, Serienummer, Fabrikant — invullen overruled de scan-waarde. Placeholder toont de scan-waarde voor referentie. Nieuwe velden: `model_override`, `serial_number_override`, `manufacturer_override`. Toegevoegd aan PRESERVE-list zodat re-scans de user-overrides niet overschrijven. Display-logica (`deviceRow`, CSV `rowFor`): `*_override || *_scan`. Dialog reorganiseerd in twee secties (Scan-overrides / Inventaris-velden) zodat duidelijk is welke velden wat doen.
+
+**Probleem 2 — placeholder app-icoon:** `icon.ico` was een 303-byte placeholder.
+
+**Fix:** ICO regenereed uit een echte 1.4 MB RoomReady icon-PNG via `png-to-ico` (multi-resolution: 16/32/48/256). Resulterende `icon.ico` is 278 KB. `icon.png` ook geüpdatet (gebruikt op Linux/macOS en als BrowserWindow-fallback). **NB:** de geïnstalleerde `RoomReady.exe` heeft het oude icoon nog in z'n Windows-resource-section gebakken — dat verandert pas bij een volle `electron-builder --win portable` build, niet bij asar-repack. Het venster-icoon (taskbar tijdens runtime) en het inventaris-venster updaten wél direct.
+
+**Nieuwe devDep:** `png-to-ico@^3.0.1` (4 packages, ~10 KB).
+
+---
+
 ## v3.4.6 — Inventaris UX: alle gescande devices zichtbaar met Ruimte-kolom
 
 **Datum:** 2026-04-25

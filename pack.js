@@ -13,8 +13,11 @@ asar.createPackageWithOptions(src, dst, {
     '**/.node/**',
     '**/.snapshots/**',
     '**/.claude/**',
+    '**/.git/**',
+    '**/.gitignore',
     '**/package-lock.json',
     '**/pack.js',
+    '**/README.md',
   ]},
 }).then(() => {
   const mb = (fs.statSync(dst).size / 1024 / 1024).toFixed(2)

@@ -12,6 +12,50 @@ cp .snapshots/vX.Y.Z/* /home/claude/logitech-tester/
 
 ---
 
+## v3.4.5 — Same-groupId AEC detectie + mute-UX (C-light) + inventaris robustness
+
+**Datum:** 2026-04-25
+**Status:** Diagnostiek-iteratie afgerond op echte hardware; release-clean
+
+**Achtergrond:**
+
+Op een laptop met Realtek mic + Realtek speaker (zelfde audio-chip) bleek de Speaker+Mic test consistent `-100 dB · ruis -100 dB · Δ 0 dB` te geven en de Latency-meting alleen sporadisch een puls te detecteren (alterneert tussen attempts 1 en 5). Oorzaak: hardware-AEC in de gedeelde audio-chip cancelt het testsignaal — de spec-aanpak is gemaakt voor échte conference-bars met fysiek gescheiden mic en speaker. De label-match van `measureLatency` (`echo cancel`/`speakerphone`/`rally`/`meetup`) miste het Realtek-on-Realtek scenario omdat die labels niets met "echo cancel" te maken hebben.
+
+**Fixes:**
+
+**1. Same-groupId detectie** — nieuwe helper `isSameAudioGroup()` die check of de geselecteerde mic en speaker in `enumerateDevices` dezelfde `groupId` rapporteren. Chromium gebruikt `groupId` om devices op dezelfde fysieke audio-chip te koppelen. Toegepast op:
+- `measureLatency`: bestaande `aecDevice` early-return uitgebreid met `sameGroup` als tweede pad
+- `qtTestSpeaker`: nieuwe pre-check vóór de chord wordt afgespeeld
+
+**2. C-light mute-UX** — nieuwe knop "🔊 Geluid…" naast "▶ Test nu" in de Speaker+Mic kaart. Opent direct `ms-settings:sound` via `openExternal` zodat de gebruiker mute/volume kan checken. **Geen** programmatische `IAudioEndpointVolume::SetMute` call (zie spec anti-pattern #2 — die heeft v3.1.x de Windows audio service kapot gemaakt). Speaker+Mic test geeft nu ook expliciet "speaker mogelijk gemute of volume 0%" hint als chord en ruisvloer beide rond -100 dB zijn.
+
+**3. Latency-trigger soepeler** — was `max(baseline*5, baseline+0.02)`, nu `max(baseline*3, baseline+0.005)`. Op laptops met zwakke speaker→mic koppeling blijft de burst-RMS rond 0.01-0.04 boven ~0.005 baseline; oude drempel raakte niet binnen 5 attempts, nieuwe wel binnen 1-2.
+
+**4. Inventaris-scan WMI pre-filter** — `Get-CimInstance Win32_PnPEntity` materialiseert ALLE PnP-devices op de machine (op een kantoorlaptop kan dat 200+ zijn) en doet daarna client-side `Where-Object`-filter. Dat liep regelmatig over de 30s timeout heen → SIGTERM → "killed=true" foutmelding. Nu pre-filter via `-Filter "PNPDeviceID LIKE 'USB\\VID_046D%'"` (resp. `'USB\\%'` voor de generieke USB-scan); WMI doet de filter server-side, ordes sneller.
+
+**5. Verbose PowerShell-fouten in main.js** — `runPowerShellJson` retourneerde alleen `err.message` ("Command failed: ..." — niet nuttig). Nu surface't het exit-code, kill-flag, signal, stderr én eerste 500 chars van stdout zodat een renderer-side error-bericht concrete info geeft.
+
+**Cleanup:** tijdelijke `[LAT-DIAG]`/`[INV-DIAG]` console-warns uit measureLatency en runScan verwijderd (hadden hun werk gedaan).
+
+---
+
+## v3.4.4 — Fix v3.4.3 regressie: auto-restart contention + Snelle Test mic-step
+
+**Datum:** 2026-04-25
+**Status:** Fix voor regressie geïntroduceerd in v3.4.3
+
+**Probleem:**
+
+v3.4.3 stopte `liveMicStream` aan het begin van `measureLatency()` om contention met de eigen test-stream te vermijden. Onverwachte interactie: er staat een `'ended'` event-listener op de live-mic track ([renderer.html:2987](renderer.html#L2987)) die 800ms na disconnect **automatisch** `startLiveMic()` aanroept (legitiem voor unplug-during-monitor recovery). `stopLiveMic()` triggert die listener; tijdens een 2+ seconden durende latency-test fired de setTimeout midden in de meting → live monitor herstart → twee mic-consumers → resultaat onvoorspelbaar én Snelle Test's mic-stap kreeg liveMicStream in een rommelige staat na afloop.
+
+**Fix:**
+
+Nieuwe globale flag `liveMicInhibit`. `measureLatency` zet die op `true` bij het stoppen, de 'ended'-listener slaat auto-restart over zolang de flag staat, en de `finally` van `measureLatency` herstart de live monitor zelf vóór `liveMicInhibit = false`. Knop wordt pas weer enabled na de manual restart, zodat snelle tweede klikken niet in een halve herstart vallen.
+
+**Tijdelijk in deze release:** `[LAT-DIAG]`-logs in `measureLatency` (zichtbaar als `console.warn` in DevTools) om de oorspronkelijke alternatie verder te diagnosticeren mocht die niet automatisch opgelost zijn door dit. Worden verwijderd in v3.4.5 zodra de oorzaak vaststaat.
+
+---
+
 ## v3.4.3 — Latency meting alterneerde: liveMicStream contention opgelost
 
 **Datum:** 2026-04-25

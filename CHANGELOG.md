@@ -12,6 +12,19 @@ cp .snapshots/vX.Y.Z/* /home/claude/logitech-tester/
 
 ---
 
+## v3.4.6 — Inventaris UX: alle gescande devices zichtbaar met Ruimte-kolom
+
+**Datum:** 2026-04-25
+**Status:** UX-fix gemeld door gebruiker
+
+**Probleem:** Bij re-scan gaf de inventaris-pagina "3 devices gevonden", maar de "Niet toegewezen / laatste scan"-tabel was leeg. Oorzaak: alle gevonden devices stonden al toegewezen aan ruimtes uit eerdere sessies, dus filterde `unassignedIds()` ze allemaal weg. Devices waren niet "verloren" — alleen onzichtbaar tenzij je elke ruimte handmatig opende.
+
+**Fix:** Top-tabel toont nu standaard **alle** gescande devices, met een nieuwe **Ruimte**-kolom die per device de toegewezen ruimte (kamernummer · naam) toont, of "—" als het niet toegewezen is. Sortering: niet-toegewezen bovenaan, daarna gegroepeerd per kamernummer. Een checkbox "Alleen niet-toegewezen" naast de tabel-titel beperkt de view naar het oude gedrag voor wie dat wil. Tabel-titel hernoemd naar "Alle gescande devices".
+
+Dubbelklik werkt onveranderd — toewijzen aan de geselecteerde ruimte (her-toewijzing van een device dat al elders zit gaat ook door).
+
+---
+
 ## v3.4.5 — Same-groupId AEC detectie + mute-UX (C-light) + inventaris robustness
 
 **Datum:** 2026-04-25

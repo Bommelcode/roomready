@@ -476,11 +476,15 @@ main.cam-fullscreen > #camera-card {
   top: 10px !important;
   max-height: calc(100vh - 140px) !important;
 }
-/* Histogram-card: kolom 3, rij 1 — natuurlijke hoogte, begrensd */
+/* Histogram-card: kolom 3, rij 1 — sticky aan de top zodat de Video
+   analyse-tile in beeld blijft als de operator naar PTZ-controls scrolt. */
 main.cam-fullscreen > #histogram-card {
   grid-column: 3 !important;
   grid-row: 1 !important;
   align-self: start !important;
+  position: sticky !important;
+  top: 10px !important;
+  z-index: 2 !important;
 }
 main.cam-fullscreen > #histogram-card .card-body > div:first-child {
   min-height: 260px !important;

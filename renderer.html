@@ -410,9 +410,11 @@ main {
 #histogram-card  { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; align-self: stretch; min-width: 0; }
 #camera-card     { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
 #audio-top-col   { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 12px; align-self: stretch; min-width: 0; }
-/* Rij 2: audio-tests | camera-meta | ptz+controls */
+/* Rij 2: audio-tests | camera-meta + display-info | ptz+controls */
 #ptz-camctrl-col { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; gap: 12px; align-self: start; min-width: 0; }
-#meta-card       { grid-column: 2; grid-row: 2; min-width: 0; overflow: hidden; }
+#meta-col        { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; gap: 12px; align-self: start; min-width: 0; }
+#meta-card       { min-width: 0; overflow: hidden; }
+#display-info-card { min-width: 0; overflow: hidden; }
 #audio-tests-col { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 12px; align-self: start; min-width: 0; }
 
 /* Camera-card aspect-ratio wordt via JS ingesteld door ResizeObserver */
@@ -437,7 +439,7 @@ main.cam-fullscreen {
 }
 /* Verberg alles behalve camera, video-analyse, ptz-controls kolom */
 main.cam-fullscreen > #audio-top-col,
-main.cam-fullscreen > #meta-card,
+main.cam-fullscreen > #meta-col,
 main.cam-fullscreen > #audio-tests-col {
   display: none !important;
 }
@@ -1713,10 +1715,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       <span><svg class="icon icon-lg"><use href="#i-camera"/></svg> Camera</span>
       <div style="display:flex;gap:6px;align-items:center;">
         <div class="badge" id="cam-badge">Gestopt</div>
-        <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);cursor:pointer;user-select:none;" title="Diagonale strepen over zones boven 90% IRE — flag voor overbelichting">
-          <input type="checkbox" id="cb-zebra" onchange="zebraEnabled=this.checked;onZebraToggle()" style="accent-color:var(--accent);"> Zebra
-        </label>
-        <button class="btn btn-primary" id="btn-cam-toggle"><svg class="icon icon-fill"><use href="#i-play"/></svg> Camera</button>
+        <button class="btn btn-primary" id="btn-cam-toggle" title="Camera starten" style="padding:4px 7px;"><svg class="icon icon-fill"><use href="#i-play"/></svg></button>
         <button id="btn-cam-fullscreen" title="Volledig scherm camera + PTZ (Esc om te sluiten)" onclick="toggleCamFullscreen()"><svg class="icon"><use href="#i-maximize"/></svg></button>
       </div>
     </div>
@@ -1747,6 +1746,13 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
           <div id="cam-icon" class="big">📷</div>
           <div id="cam-msg">Verbinden…</div>
         </div>
+      </div>
+      <!-- Zebra-toggle direct onder het camerabeeld, rechtsuitgelijnd. -->
+      <div style="display:flex;justify-content:flex-end;align-items:center;padding:4px 8px 0;flex-shrink:0;">
+        <label title="Diagonale strepen over zones boven 90% IRE — flag voor overbelichting"
+               style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);cursor:pointer;user-select:none;">
+          <input type="checkbox" id="cb-zebra" onchange="zebraEnabled=this.checked;onZebraToggle()" style="accent-color:var(--accent);margin:0;"> Zebra
+        </label>
       </div>
     </div>
   </div>
@@ -1934,7 +1940,8 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
     </div>
   </div>
 
-  <!-- KOL 2 RIJ 2: Camera meta -->
+  <!-- KOL 2 RIJ 2: Camera meta + Extern scherm info, gestapeld in 1 kolom -->
+  <div id="meta-col">
   <div class="card" id="meta-card">
     <div class="card-header" style="padding:4px 10px;">
       <span style="display:inline-flex;align-items:center;gap:6px;"><svg class="icon"><use href="#i-barchart"/></svg> Camera info</span>
@@ -1961,6 +1968,28 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       </div>
     </div>
   </div>
+
+  <!-- Extern scherm info — populeert via updateDisplayInfo() vanuit
+       populateDisplays + sel-display change + openExternalPreview. -->
+  <div class="card" id="display-info-card">
+    <div class="card-header" style="padding:4px 10px;">
+      <span style="display:inline-flex;align-items:center;gap:6px;"><svg class="icon"><use href="#i-monitor"/></svg> Extern scherm info</span>
+      <div class="badge" id="disp-meta-badge" style="font-size:9px;">–</div>
+    </div>
+    <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+      <div style="display:flex;flex-direction:column;gap:3px;min-width:0;">
+        <div class="stat-pill highlight"><div class="sl">Apparaat</div><div class="sv" id="sv-disp-name">–</div></div>
+        <div class="stat-pill highlight"><div class="sl">Resolutie</div><div class="sv" id="sv-disp-res">–</div></div>
+        <div class="stat-pill"><div class="sl">Aspect ratio</div><div class="sv" id="sv-disp-aspect">–</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;min-width:0;">
+        <div class="stat-pill"><div class="sl">DPI schaal</div><div class="sv" id="sv-disp-scale">–</div></div>
+        <div class="stat-pill"><div class="sl">Positie</div><div class="sv" id="sv-disp-pos">–</div></div>
+        <div class="stat-pill"><div class="sl">Status</div><div class="sv" id="sv-disp-status">–</div></div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /#meta-col -->
 
   <!-- KOL 3 RIJ 2: Audio tests (Loopback) -->
   <div id="audio-tests-col">
@@ -2274,7 +2303,7 @@ function drawAudioSpectrum(analyser, contextSampleRate) {
   }
   const [freqMin, freqMax] = ranges[specRange] || ranges.full
 
-  const BAR_COUNT = 120
+  const BAR_COUNT = 31  // 31-band EQ-look (1/3-octaaf bij 'full' range)
   const sampleRate = contextSampleRate || 48000
   const nyquist = sampleRate / 2
   const logMin = Math.log10(freqMin)
@@ -3103,12 +3132,17 @@ function _setDisplayBtnState(active) {
   btn.classList.toggle('btn-ghost', !active)
 }
 
+// Cache van laatst-opgehaalde display-list zodat updateDisplayInfo op een
+// dropdown-change of preview-toggle direct kan kijken zonder opnieuw IPC.
+let _displaysCache = []
+
 async function populateDisplays() {
   if (!window.rrBridge?.listDisplays) return
   const sel = document.getElementById('sel-display')
   if (!sel) return
   try {
     const displays = await window.rrBridge.listDisplays()
+    _displaysCache = displays
     const others = displays.filter(d => !d.isPrimary)
     const prev = sel.value
     sel.innerHTML = ''
@@ -3124,6 +3158,7 @@ async function populateDisplays() {
       opt.text  = '(geen tweede scherm — sluit aan en wacht)'
       sel.appendChild(opt)
       if (btn && !externalPreviewActive) btn.disabled = true
+      updateDisplayInfo()
       return
     }
     if (btn) btn.disabled = false
@@ -3135,8 +3170,46 @@ async function populateDisplays() {
       sel.appendChild(opt)
     })
     if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev
+    updateDisplayInfo()
   } catch (e) {
     console.warn('[Display] populate fail:', e?.message || e)
+  }
+}
+
+// Vult de "Extern scherm info"-card op basis van _displaysCache + huidige
+// dropdown-keuze + preview-status. Wordt aangeroepen vanuit populateDisplays,
+// sel-display change, en open/close preview.
+function updateDisplayInfo() {
+  const sel = document.getElementById('sel-display')
+  const idStr = sel?.value
+  const badge = document.getElementById('disp-meta-badge')
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v }
+
+  if (!idStr || !_displaysCache.length) {
+    setVal('sv-disp-name', '–')
+    setVal('sv-disp-res', '–')
+    setVal('sv-disp-aspect', '–')
+    setVal('sv-disp-scale', '–')
+    setVal('sv-disp-pos', '–')
+    setVal('sv-disp-status', 'Geen scherm')
+    if (badge) { badge.textContent = 'Niet verbonden'; badge.className = 'badge warn' }
+    return
+  }
+  const d = _displaysCache.find(x => String(x.id) === idStr)
+  if (!d) return
+  setVal('sv-disp-name', d.label || ('Scherm ' + d.id))
+  if (d.size) {
+    setVal('sv-disp-res', d.size.width + ' × ' + d.size.height)
+    setVal('sv-disp-aspect', aspectRatio(d.size.width, d.size.height))
+  }
+  setVal('sv-disp-scale', d.scaleFactor ? Math.round(d.scaleFactor * 100) + ' %' : '–')
+  if (d.bounds) setVal('sv-disp-pos', d.bounds.x + ', ' + d.bounds.y)
+  if (externalPreviewActive) {
+    setVal('sv-disp-status', 'Preview actief')
+    if (badge) { badge.textContent = 'Live'; badge.className = 'badge ok' }
+  } else {
+    setVal('sv-disp-status', 'Idle')
+    if (badge) { badge.textContent = 'Verbonden'; badge.className = 'badge' }
   }
 }
 
@@ -3148,6 +3221,7 @@ async function openExternalPreview() {
       await window.rrBridge.closePreview()
       externalPreviewActive = false
       _setDisplayBtnState(false)
+      updateDisplayInfo()
       return
     }
     const idStr = sel?.value
@@ -3159,6 +3233,7 @@ async function openExternalPreview() {
     if (result?.ok) {
       externalPreviewActive = true
       _setDisplayBtnState(true)
+      updateDisplayInfo()
       setTimeout(() => setPreviewState(currentPreviewState), 500)
     } else {
       alert('Kon klantscherm niet openen' + (result?.error ? ': ' + result.error : ''))
@@ -3182,6 +3257,8 @@ async function openExternalPreview() {
     // Bij selectie-wissel — als preview al open staat — direct verhuizen
     // naar 't nieuwe scherm. Anders moest de operator Sluit + Open klikken.
     sel.addEventListener('change', async () => {
+      // Info-card altijd bijwerken bij wissel, ook als er geen preview loopt.
+      updateDisplayInfo()
       if (!externalPreviewActive) return
       const newId = sel.value
       if (!newId) return
@@ -3195,6 +3272,7 @@ async function openExternalPreview() {
           if (r?.ok) {
             externalPreviewActive = true
             _setDisplayBtnState(true)
+            updateDisplayInfo()
             setTimeout(() => setPreviewState(currentPreviewState), 500)
           }
         } catch (e) { console.warn('[Display] verplaatsen faalde:', e?.message || e) }
@@ -3964,7 +4042,7 @@ async function startCamera() {
     document.getElementById('cam-badge').textContent = 'Live ●'
     document.getElementById('cam-badge').className = 'badge ok'
     const btn = document.getElementById('btn-cam-toggle')
-    btn.innerHTML = ico('square') + ' Stop'
+    btn.innerHTML = ico('square'); btn.title = 'Camera stoppen'
     btn.className = 'btn btn-danger'
     btn.disabled = false
 
@@ -4049,7 +4127,7 @@ function setCamState(state, msg) {
   // Als placeholder is overschreven (door error-scherm) → enkel badge/btn updaten
   if (!ph || !spin || !icon || !txt) {
     if (badge) { badge.textContent='Geen camera'; badge.className='badge warn' }
-    if (btn)   { btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=false }
+    if (btn)   { btn.innerHTML=ico('play'); btn.title='Camera starten'; btn.className='btn btn-primary'; btn.disabled=false }
     return
   }
   ph.style.display = 'flex'
@@ -4058,13 +4136,13 @@ function setCamState(state, msg) {
     spin.style.display='block'; icon.style.display='none'
     txt.textContent='Camera starten…'
     badge.textContent='Verbinden…'; badge.className='badge warn'
-    btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=true
+    btn.innerHTML=ico('play'); btn.title='Camera starten'; btn.className='btn btn-primary'; btn.disabled=true
   } else if (state === 'idle') {
     if (usb)  usb.style.display='none'
     spin.style.display='none'; icon.style.display='block'
     icon.textContent='📷'; txt.textContent='Camera gestopt'
     badge.textContent='Gestopt'; badge.className='badge'
-    btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=false
+    btn.innerHTML=ico('play'); btn.title='Camera starten'; btn.className='btn btn-primary'; btn.disabled=false
   } else if (state === 'error') {
     if (usb)  usb.style.display='none'
     spin.style.display='none'; icon.style.display='block'
@@ -6081,7 +6159,9 @@ async function resetCamControls() {
     // Sliders → midpoint
     { key: 'brightness' }, { key: 'contrast' },
     { key: 'saturation' }, { key: 'sharpness' },
-    { key: 'colorTemperature' }, { key: 'exposureCompensation' },
+    { key: 'colorTemperature' },
+    // exposureCompensation bewust niet meegereset — operator stelt 'm in
+    // op basis van zaal-belichting en wil 'm niet kwijt bij elke reset.
     { key: 'exposureTime' },     { key: 'iso' },
     { key: 'focusDistance' },    { key: 'frameRate' },
     // Modes → continuous bij voorkeur

@@ -453,7 +453,8 @@ button.row-edit:hover { color: var(--accent); border-color: var(--accent); }
 
 const state = {
   rooms: {},          // id → Room
-  devices: {},        // uid → DeviceSnapshot
+  devices: {},        // uid → DeviceSnapshot — cumulatief over alle scans
+  lastScanUids: [],   // uids die in de meest recente runScan terugkwamen — voor "Laatste scan" tabel
   selectedRoomId: null,
   fw: { token: '', base: 'https://api.sync.logitech.com', map: '', user: 'admin', pass: '' },
 }

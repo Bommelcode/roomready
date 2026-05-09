@@ -12,6 +12,17 @@ contextBridge.exposeInMainWorld('rrBridge', {
   listDisplays:       ()            => ipcRenderer.invoke('list-displays'),
   openPreview:        (opts)        => ipcRenderer.invoke('open-preview', opts),
   closePreview:       ()            => ipcRenderer.invoke('close-preview'),
+  onDisplayChanged:   (cb) => {
+    const fn = () => { try { cb() } catch(_){} }
+    ipcRenderer.on('display-changed', fn)
+    return () => ipcRenderer.removeListener('display-changed', fn)
+  },
+  previewBroadcast:   (payload) => ipcRenderer.invoke('preview-broadcast', payload),
+  onPreviewUpdate:    (cb) => {
+    const fn = (_evt, payload) => { try { cb(payload) } catch(_){} }
+    ipcRenderer.on('preview-update', fn)
+    return () => ipcRenderer.removeListener('preview-update', fn)
+  },
   listSamples:        ()            => ipcRenderer.invoke('list-samples'),
   readSample:         (filename)    => ipcRenderer.invoke('read-sample', filename),
   readQuotesJson:     ()            => ipcRenderer.invoke('read-quotes-json'),
@@ -32,6 +43,12 @@ contextBridge.exposeInMainWorld('rrBridge', {
   invFirmwareSync:    (opts)        => ipcRenderer.invoke('inv-firmware-sync', opts),
   invFirmwareXapi:    (opts)        => ipcRenderer.invoke('inv-firmware-xapi', opts),
   invExportCsv:       (payload)     => ipcRenderer.invoke('inv-export-csv', payload),
+  // ── Windows audio (Core Audio COM helper) ────────────────
+  audioList:          ()            => ipcRenderer.invoke('audio-list'),
+  audioGetDefaults:   ()            => ipcRenderer.invoke('audio-get-defaults'),
+  audioGet:           (id)          => ipcRenderer.invoke('audio-get', id),
+  audioSetVolume:     (id, pct)     => ipcRenderer.invoke('audio-set-volume', id, pct),
+  audioSetMute:       (id, muted)   => ipcRenderer.invoke('audio-set-mute', id, muted),
   getFilePath: (file) => {
     try { if (_webUtils?.getPathForFile) return _webUtils.getPathForFile(file) } catch(e) {}
     try { if (file?.path) return file.path } catch(e) {}

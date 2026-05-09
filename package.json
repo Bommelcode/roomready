@@ -1,6 +1,6 @@
 {
   "name": "roomready",
-  "version": "3.4.7",
+  "version": "3.4.8",
   "description": "RoomReady — AV kamertester voor Logitech MeetUp / Rally",
   "main": "main.js",
   "scripts": {
@@ -11,6 +11,34 @@
   "devDependencies": {
     "@electron/asar": "^4.2.0",
     "electron": "^29.4.6",
-    "png-to-ico": "^3.0.1"
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5",
+    "to-ico": "^1.1.5"
+  },
+  "build": {
+    "appId": "com.bommelcode.roomready",
+    "productName": "RoomReady",
+    "win": {
+      "icon": "icon.ico",
+      "target": ["portable"]
+    },
+    "files": [
+      "**/*",
+      "!**/.snapshots/**",
+      "!**/.claude/**",
+      "!**/.node/**",
+      "!node_modules/**",
+      "!**/*.bak",
+      "!**/*.broken-*",
+      "!maak-exe.bat",
+      "!rr-make-icon.mjs",
+      "!rr-fix-ico.mjs",
+      "!dist/**",
+      "!test-runner.js",
+      "!pack.js",
+      "!make-icon.js",
+      "!mic-test.html",
+      "!index.html"
+    ]
   }
 }

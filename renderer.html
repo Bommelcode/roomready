@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -57,65 +57,9 @@
    LIGHT THEME VARIANTEN
 ═══════════════════════════════════════════════ */
 
-/* Air — helder blauw (huidig standaard) */
-body.light-air, body:not(.dark):not(.light-broadcast):not(.light-sage):not(.light-linen):not(.light-studio):not(.light-nordic) {
-  --bg: #eef2f7; --surface: #ffffff; --surface2: #f8fafc;
-  --border: #e2e8f0; --text: #0f172a; --muted: #64748b;
-  --accent: #2563eb; --green: #059669; --yellow: #d97706; --red: #dc2626;
-  --font-body: 'DM Sans', system-ui, sans-serif; --font-val: 'DM Mono', monospace;
-  --lbl-font: 'DM Sans', sans-serif; --lbl-size: 10px; --lbl-weight: 500;
-  --lbl-transform: none; --lbl-spacing: 0.2px;
-  --ch-font: 'DM Sans', sans-serif; --ch-size: 12px; --ch-weight: 600;
-  --ch-transform: none; --ch-spacing: 0;
-  --btn-radius: 6px; --meter-h: 8px; --meter-radius: 4px;
-  --micbar-bg: #f0f9ff; --micbar-border: #bae6fd; --micbar-color: #0369a1;
-  --select-bb: none; --select-radius: 6px;
-  --stat-bg: #f8fafc; --stat-border: #e2e8f0;
-  --stat-hl-bg: #eff6ff; --stat-hl-border: #bfdbfe;
-}
-
-/* Linen — warm crème + indigo accent + mosterd */
-body.light-linen {
-  --bg: #f5f4ef; --surface: #faf9f4; --surface2: #ebe9e1;
-  --border: #d9d7cf; --text: #1a1a1a; --muted: #6b6a66;
-  --accent: #3a5a8f; --green: #4a7c5a; --yellow: #c9b072; --red: #a84545;
-  --font-body: 'DM Sans', system-ui, sans-serif; --font-val: 'DM Mono', monospace;
-  --lbl-font: 'DM Sans', sans-serif; --lbl-size: 10px; --lbl-weight: 500;
-  --lbl-transform: uppercase; --lbl-spacing: 1px;
-  --ch-font: 'DM Sans', sans-serif; --ch-size: 12px; --ch-weight: 600;
-  --ch-transform: none; --ch-spacing: 0;
-  --btn-radius: 4px; --meter-h: 8px; --meter-radius: 3px;
-  --micbar-bg: #e8edf5; --micbar-border: #b8c7dc; --micbar-color: #3a5a8f;
-  --select-bb: none; --select-radius: 4px;
-  --stat-bg: #ebe9e1; --stat-border: #d9d7cf;
-  --stat-hl-bg: #e8edf5; --stat-hl-border: #b8c7dc;
-  --radius: 4px;
-}
-body.light-linen .card { border-radius: 4px !important; }
-
-/* Studio — bijna-wit + functioneel blauw + success-groen + monospace */
-body.light-studio {
-  --bg: #fafafa; --surface: #ffffff; --surface2: #f0f0f0;
-  --border: #e0e0e0; --text: #0e0e0e; --muted: #6e6e6e;
-  --accent: #0066cc; --green: #00a86b; --yellow: #d58900; --red: #cb4b16;
-  --font-body: 'DM Mono', ui-monospace, monospace; --font-val: 'DM Mono', monospace;
-  --lbl-font: 'DM Mono', monospace; --lbl-size: 10px; --lbl-weight: 500;
-  --lbl-transform: uppercase; --lbl-spacing: 1px;
-  --ch-font: 'DM Mono', monospace; --ch-size: 12px; --ch-weight: 500;
-  --ch-transform: uppercase; --ch-spacing: 1.5px;
-  --btn-radius: 2px; --meter-h: 8px; --meter-radius: 1px;
-  --micbar-bg: #e6f5ed; --micbar-border: #9ec8a8; --micbar-color: #00a86b;
-  --select-bb: 1px solid var(--border); --select-radius: 2px;
-  --stat-bg: #f0f0f0; --stat-border: #e0e0e0;
-  --stat-hl-bg: #e6f5ed; --stat-hl-border: #9ec8a8;
-  --radius: 2px;
-}
-body.light-studio .card { border-radius: 2px !important; }
-body.light-studio .card-header { border-bottom: 1px solid var(--border) !important; font-family: 'DM Mono', monospace; text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; }
-body.light-studio .btn, body.light-studio .btn-ghost { border-radius: 2px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* Nordic — ijsblauw canvas + diepblauw + amber */
-body.light-nordic {
+/* Nordic — ijsblauw canvas + diepblauw + amber (huidige default light) */
+body.light-nordic,
+body:not(.dark):not(.light-broadcast) {
   --bg: #eef2f7; --surface: #f6f9fd; --surface2: #dde5ee;
   --border: #d2dae5; --text: #0f1b2d; --muted: #5a6b80;
   --accent: #1d4f8f; --green: #3f7c3f; --yellow: #d4a24a; --red: #b74a4a;
@@ -153,27 +97,6 @@ body.light-broadcast {
 body.light-broadcast .card { border-radius: 2px !important; }
 body.light-broadcast .card-header { border-bottom: 1px solid var(--border) !important; font-family: 'DM Mono', monospace; text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; }
 body.light-broadcast .btn, body.light-broadcast .btn-ghost { border-radius: 2px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* Sage — mint groen + warm kastanje, rustig en open */
-body.light-sage {
-  --bg: #f2f5f3; --surface: #ffffff; --surface2: #e4ebe6;
-  --border: #d5ddd7; --text: #1a2e22; --muted: #5c6f63;
-  --accent: #a05b3c; --green: #4a7c63; --yellow: #b8860b; --red: #a04040;
-  --font-body: 'DM Sans', system-ui, sans-serif; --font-val: 'DM Mono', monospace;
-  --lbl-font: 'DM Sans', sans-serif; --lbl-size: 10px; --lbl-weight: 500;
-  --lbl-transform: uppercase; --lbl-spacing: 1px;
-  --ch-font: 'DM Sans', sans-serif; --ch-size: 12px; --ch-weight: 600;
-  --ch-transform: none; --ch-spacing: 0;
-  --btn-radius: 6px; --meter-h: 8px; --meter-radius: 4px;
-  --micbar-bg: #dfe9e2; --micbar-border: #9fbcad; --micbar-color: #4a7c63;
-  --select-bb: none; --select-radius: 6px;
-  --stat-bg: #e4ebe6; --stat-border: #d5ddd7;
-  --stat-hl-bg: #dfe9e2; --stat-hl-border: #9fbcad;
-  --radius: 6px;
-}
-body.light-sage .card { border-radius: 6px !important; }
-body.light-sage .card-header { border-bottom: 1px solid var(--border) !important; }
-body.light-sage .btn, body.light-sage .btn-ghost { border-radius: 6px; }
 
 /* Slate — donker navy + cyaan (standaard) */
 body.dark,
@@ -232,33 +155,6 @@ body.dark-broadcast {
 body.dark-broadcast .card { border-radius: 2px !important; }
 body.dark-broadcast .card-header { border-left: 3px solid var(--accent) !important; padding-left: 7px !important; }
 body.dark-broadcast select { border-bottom: var(--select-bb) !important; }
-
-/* Void — diep zwart + elektrisch violet */
-body.dark-void {
-  --bg:        #08070f;
-  --surface:   #0d0b1a;
-  --surface2:  #060510;
-  --border:    #1a1530;
-  --text:      #ccc7e0;
-  --muted:     #4c3d78;
-  --accent:    #a78bfa;
-  --green:     #34d399;
-  --yellow:    #fbbf24;
-  --red:       #f87171;
-  --font-body: 'Outfit', system-ui, sans-serif;
-  --font-val:  'JetBrains Mono', monospace;
-  --lbl-font:  'Outfit', sans-serif;
-  --lbl-size:  9px; --lbl-weight: 600;
-  --lbl-transform: uppercase; --lbl-spacing: .5px;
-  --ch-font:   'Outfit', sans-serif;
-  --ch-size:   12px; --ch-weight: 700;
-  --ch-transform: none; --ch-spacing: .1px;
-  --btn-radius: 6px; --meter-h: 8px; --meter-radius: 4px;
-  --micbar-bg: #060510; --micbar-border: #1a1530; --micbar-color: #a78bfa;
-  --select-bb: none; --select-radius: 6px;
-  --stat-bg: #060510; --stat-border: #1a1530;
-  --stat-hl-bg: #2e1065; --stat-hl-border: #6d28d9;
-}
 
 /* ═══════════════════════════════════════════════
    BASE
@@ -402,22 +298,26 @@ body:not(.dark) .badge.err  { background:#fee2e2; color:#991b1b; border-color:#f
 ═══════════════════════════════════════════════ */
 #device-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 160px auto;
-  gap: 8px;
-  padding: 5px 16px;
+  grid-template-columns: 1fr 1fr 1fr 1.4fr;
+  gap: 12px;
+  padding: 8px 16px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   transition: background .25s;
 }
-.device-group { display:flex; flex-direction:column; gap:3px; }
+.device-group { display:flex; flex-direction:column; gap:5px; }
 .device-group label {
-  font-size: var(--lbl-size);
-  color: var(--muted);
+  font-size: 14px;
+  color: var(--text);
   font-family: var(--lbl-font);
-  font-weight: var(--lbl-weight);
+  font-weight: 600;
   text-transform: var(--lbl-transform);
   letter-spacing: var(--lbl-spacing);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
+#device-bar .icon { width:1.15em; height:1.15em; vertical-align:-0.18em; stroke-width:1.8; }
 select {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -465,6 +365,16 @@ select:hover, select:focus { border-color: var(--accent); }
   background: linear-gradient(90deg, var(--green) 0%, var(--green) 65%, var(--yellow) 82%, var(--red) 100%);
   transition: width .04s;
 }
+.mm-peak {
+  position: absolute; top: 0; bottom: 0;
+  left: 0; width: 2px;
+  background: rgba(255,255,255,0.95);
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(255,255,255,0.6);
+  transition: left .05s linear;
+  display: none;
+}
+.mm-peak.active { display: block; }
 #mic-db-label {
   font-size: 11px; color: var(--micbar-color);
   font-family: var(--font-val); font-variant-numeric: tabular-nums;
@@ -513,7 +423,7 @@ main {
 #spectrum-card   { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
 /* Camera: video-wrap heeft aspect-ratio zodat de JS de rij-hoogte kan berekenen */
-#camera-card .card-body { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; padding: 0; }
+#camera-card .card-body { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; padding: 0 0 var(--cam-bottom-pad, 45px); }
 #video-wrap { width: 100%; aspect-ratio: 16/9; flex-shrink: 0; }
 #video-feed { width: 100%; height: 100%; object-fit: cover; display: none; }
 
@@ -548,6 +458,9 @@ main.cam-fullscreen #video-feed {
   height: auto !important;
   object-fit: contain !important;
 }
+/* Zebra-canvas positie wordt elke frame door drawZebraOverlay() gezet
+   via getBoundingClientRect — werkt in zowel normaal als fullscreen mode
+   ongeacht hoe <video> z'n aspect/object-fit interpreteert. */
 /* Camera blijft sticky bij scrollen */
 main.cam-fullscreen > #camera-card {
   grid-column: 1 / span 2 !important;
@@ -685,6 +598,14 @@ body.dark #brightness-fill { border-radius:0; }
 .btn-ghost   { background:var(--surface2); color:var(--text); border-color:var(--border); }
 .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
 .btn:disabled { opacity:.4; cursor:default; filter:none; }
+/* Lucide-stijl line-art iconen — schaalt mee met font-size, kleurt mee met currentColor.
+   Gebruik: <svg class="icon"><use href="#i-NAAM"/></svg>. Default 1em hoog;
+   .icon-lg voor tile-headers, .icon-sm voor inline tekst-mix. */
+.icon { width:1em; height:1em; vertical-align:-0.15em; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.icon-lg { width:1.2em; height:1.2em; vertical-align:-0.22em; stroke-width:1.8; }
+.icon-fill { fill:currentColor; stroke:none; }
+.icon-spin { animation: icon-spin 1s linear infinite; transform-origin:center; }
+@keyframes icon-spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
 
 /* ═══════════════════════════════════════════════
    LEVEL METERS
@@ -770,14 +691,17 @@ footer {
    CAMERA CONTROLS & PTZ
 ═══════════════════════════════════════════════ */
 .ctrl-row {
-  display: flex; align-items: center; gap: 6px; margin: 6px 0;
+  display: flex; align-items: center; gap: 8px; margin: 9px 0;
 }
 .ctrl-lbl {
-  font-size: var(--lbl-size); color: var(--muted);
+  font-size: 12px; color: var(--muted);
   font-family: var(--lbl-font); text-transform: var(--lbl-transform);
   letter-spacing: var(--lbl-spacing);
-  width: 76px; flex-shrink: 0;
+  width: 130px; flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: inline-flex; align-items: center; gap: 7px;
 }
+.ctrl-lbl .icon { width: 1.25em; height: 1.25em; vertical-align: -0.22em; stroke-width: 1.8; }
 .ctrl-val {
   font-size: 10px; color: var(--text);
   font-family: var(--font-val);
@@ -1283,6 +1207,59 @@ body.dark #qt-popup { border-top: 3px solid var(--accent); }
   animation: spin .7s linear infinite;
   display: none;
 }
+#qt-active-meter {
+  display: none;
+  width: min(360px, 80%);
+  height: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+#qt-active-meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--green) 0%, var(--green) 60%, var(--yellow) 80%, var(--red) 100%);
+  transition: width .08s linear;
+}
+#qt-active-prompt {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  width: 100%;
+}
+#qt-active-prompt .qt-prompt-q {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+#qt-active-prompt .qt-prompt-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#qt-active-prompt button {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--ch-font);
+  text-transform: var(--ch-transform);
+  letter-spacing: var(--ch-spacing);
+  border-radius: var(--btn-radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--surface2);
+  color: var(--text);
+  min-width: 100px;
+}
+#qt-active-prompt button.qt-prompt-yes { background: var(--green); color: #fff; border-color: var(--green); }
+#qt-active-prompt button.qt-prompt-no  { background: var(--red);   color: #fff; border-color: var(--red); }
+#qt-active-prompt button:hover { filter: brightness(1.1); }
 #qt-popup-steps {
   padding: 12px 20px;
   display: flex; flex-direction: column; gap: 8px;
@@ -1418,6 +1395,50 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
 </head>
 <body class="dark">
 
+<!-- ═════════════════════════════════════════════════════════════════
+     Lucide-stijl SVG icon sprite (v3.4.8). Eénmalig gedefinieerd; overal
+     gebruikt via <svg class="icon"><use href="#i-NAAM"/></svg> of via de
+     ico() JS-helper. Stroke=currentColor zodat ze meekleuren met text-color.
+     Iconen: camera, mic, volume, monitor, sliders (audio analyse), settings
+     (controls), repeat (loopback), move (PTZ), clipboard (inventaris),
+     globe (VISCA), maximize (fullscreen), x (close), play, square (stop),
+     loader (busy).
+═════════════════════════════════════════════════════════════════ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-square" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1"/></symbol>
+  <symbol id="i-loader" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></symbol>
+  <!-- Camera-control iconen (Lucide-stijl) -->
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 22V2a10 10 0 0 0 0 20Z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.5s5 5.5 5 10a5 5 0 0 1-10 0c0-4.5 5-10 5-10z"/></symbol>
+  <symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></symbol>
+  <symbol id="i-thermometer" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"/></symbol>
+  <symbol id="i-aperture" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M14.31 8 20.05 17.94"/><path d="M9.69 8h11.48"/><path d="M7.38 12 13.12 2.06"/><path d="M9.69 16 3.95 6.06"/><path d="M14.31 16H2.83"/><path d="M16.62 12 10.88 21.94"/></symbol>
+  <symbol id="i-barchart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16V8"/><path d="M11 16v-3"/><path d="M15 16v-7"/><path d="M19 16V5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></symbol>
+  <symbol id="i-flashlight" viewBox="0 0 24 24"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"/><line x1="6" y1="6" x2="18" y2="6"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.7L20 11l-6.1 2.3L12 19l-1.9-5.7L4 11l6.1-2.3z"/><path d="M5 3v4M3 5h4M19 17v4M17 19h4"/></symbol>
+  <symbol id="i-user-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-2a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v2"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></symbol>
+  <symbol id="i-plusminus" viewBox="0 0 24 24"><line x1="6" y1="7" x2="14" y2="7"/><line x1="10" y1="3" x2="10" y2="11"/><line x1="6" y1="17" x2="14" y2="17"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+</svg>
+
 <header>
   <div class="logo">RR</div>
   <h1>Room<span>Ready</span></h1>
@@ -1432,7 +1453,6 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <button class="btn btn-ghost" id="btn-refresh" title="Apparaten herkennen" style="padding:3px 10px;font-size:11px;display:flex;align-items:center;gap:5px;">
     <span style="font-size:14px;">↺</span><span style="font-weight:600;">Herlaad</span>
   </button>
-  <div class="badge" style="background:var(--surface2);color:var(--muted);font-family:var(--font-val);font-size:10px;">v3.4.7</div>
   <div class="spacer"></div>
   <div class="theme-toggle" title="Thema's">
     <!-- Zon = light themes -->
@@ -1458,32 +1478,30 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       <div id="dark-menu" class="theme-menu" role="menu"></div>
     </div>
   </div>
-  <button class="btn-quicktest" id="btn-quicktest" style="margin-left:8px;">▶ RoomTest</button>
-  <button class="btn btn-ghost" id="btn-open-teams" style="margin-left:4px;background:#5558af22;border-color:#5558af66;color:#8890d4;font-size:11px;" title="Open Microsoft Teams">
-    <span style="font-weight:700;">T</span>&nbsp;Teams
-  </button>
-  <button class="btn btn-ghost" id="btn-inventory" style="margin-left:4px;background:#10b98122;border-color:#10b98166;color:#5eead4;font-size:11px;" title="AV inventarisatie — Logitech, USB cams, displays">
-    <span style="font-weight:700;">📋</span>&nbsp;Inventaris
-  </button>
-  <div id="btn-update-drop"
-    title="Sleep hier een update-ZIP naartoe om te installeren"
-    style="margin-left:8px;padding:3px 10px;border:1px dashed var(--muted);border-radius:var(--btn-radius);font-size:10px;color:var(--muted);cursor:default;transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:5px;">
-    <span style="font-size:13px;">⬇</span> update
-  </div>
+  <button class="btn-quicktest" id="btn-quicktest" style="margin-left:8px;"><svg class="icon icon-fill"><use href="#i-play"/></svg> RoomTest</button>
 </header>
 
 <div id="device-bar">
   <div class="device-group">
-    <label>📷 Camera</label>
+    <label><svg class="icon"><use href="#i-camera"/></svg> Camera</label>
     <select id="sel-camera"></select>
   </div>
   <div class="device-group">
-    <label>🎤 Microfoon</label>
+    <label><svg class="icon"><use href="#i-mic"/></svg> Microfoon</label>
     <select id="sel-mic"></select>
   </div>
   <div class="device-group">
-    <label>🔊 Speaker</label>
+    <label><svg class="icon"><use href="#i-volume"/></svg> Speaker</label>
     <select id="sel-speaker"></select>
+  </div>
+  <div class="device-group">
+    <label><svg class="icon"><use href="#i-monitor"/></svg> Extern Scherm</label>
+    <div style="display:flex;gap:4px;align-items:stretch;">
+      <select id="sel-display" style="flex:1;min-width:0;"></select>
+      <button id="btn-display-toggle" class="btn btn-ghost"
+              title="Open / sluit klantscherm op het geselecteerde display"
+              style="font-size:11px;padding:3px 10px;flex-shrink:0;">Open</button>
+    </div>
   </div>
 </div>
 
@@ -1611,18 +1629,24 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
             </label>
           </div>
         </div>
-        <!-- Rechts: Vectorscope -->
+        <!-- Rechts: Waveform (default) of Vectorscope — togglebaar via select -->
         <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px;">
-          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);padding-bottom:3px;text-align:center;flex-shrink:0;">Vectorscope (U/V)</div>
+          <div style="display:flex;justify-content:center;align-items:center;padding-bottom:3px;flex-shrink:0;">
+            <select id="vid-mode" onchange="videoScopeMode=this.value;updateVidScopeControls()"
+                    style="font-size:9px;padding:1px 4px;background:var(--surface2);color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);border:1px solid var(--border);border-radius:3px;cursor:pointer;">
+              <option value="waveform" selected>Waveform (luma)</option>
+              <option value="vectorscope">Vectorscope (U/V)</option>
+            </select>
+          </div>
           <div style="flex:1;min-height:0;position:relative;">
             <canvas id="video-vectorscope" style="position:absolute;inset:0;width:100%;height:100%;display:block;background:var(--bg);border-radius:4px;border:1px solid var(--border);"></canvas>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;padding-top:4px;flex-shrink:0;">
+          <div id="vid-saturatie-row" style="display:none;align-items:center;gap:6px;padding-top:4px;flex-shrink:0;">
             <span style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);white-space:nowrap;">Saturatie</span>
             <div id="sat-bar" style="flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;border:1px solid var(--border);"><div id="sat-fill" style="height:100%;width:0;background:linear-gradient(90deg,#444,#e05,#ea0,#5a5);transition:width .15s;"></div></div>
             <span style="font-size:10px;color:var(--muted);width:26px;text-align:right;font-family:var(--font-val);" id="sat-val">–</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding-top:4px;flex-shrink:0;">
+          <div id="vid-vec-controls" style="display:none;justify-content:space-between;padding-top:4px;flex-shrink:0;">
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:9px;color:var(--muted);">
               <span>Gain:</span>
               <select id="vec-gain" onchange="vecGain=+this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
@@ -1637,6 +1661,24 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
               <input type="checkbox" id="vec-targets" checked onchange="vecTargets=this.checked" style="accent-color:var(--accent);">
             </label>
           </div>
+          <div id="vid-wave-controls" style="display:flex;justify-content:space-between;padding-top:4px;flex-shrink:0;">
+            <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:9px;color:var(--muted);">
+              <span>Stijl:</span>
+              <select id="wave-style" onchange="waveStyle=this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
+                <option value="luma" selected>Luma (Y)</option>
+                <option value="rgb">RGB parade</option>
+              </select>
+            </label>
+            <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:9px;color:var(--muted);">
+              <span>Intensiteit:</span>
+              <select id="wave-intensity" onchange="waveIntensity=+this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+                <option value="4">4×</option>
+              </select>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -1645,17 +1687,20 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <!-- KOL 2 RIJ 1: Camera feed alleen -->
   <div class="card" id="camera-card">
     <div class="card-header">
-      <span>📷 Camera</span>
+      <span><svg class="icon icon-lg"><use href="#i-camera"/></svg> Camera</span>
       <div style="display:flex;gap:6px;align-items:center;">
         <div class="badge" id="cam-badge">Gestopt</div>
-        <button class="btn btn-primary" id="btn-cam-toggle">▶ Camera</button>
-        <button id="btn-cam-preview" title="Klantscherm op extern display" onclick="openExternalPreview()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:15px;padding:0 3px;line-height:1;transition:color .15s;display:flex;align-items:center;">🖥</button>
-        <button id="btn-cam-fullscreen" title="Volledig scherm camera + PTZ (Esc om te sluiten)" onclick="toggleCamFullscreen()">⛶</button>
+        <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);cursor:pointer;user-select:none;" title="Diagonale strepen over zones boven 90% IRE — flag voor overbelichting">
+          <input type="checkbox" id="cb-zebra" onchange="zebraEnabled=this.checked;onZebraToggle()" style="accent-color:var(--accent);"> Zebra
+        </label>
+        <button class="btn btn-primary" id="btn-cam-toggle"><svg class="icon icon-fill"><use href="#i-play"/></svg> Camera</button>
+        <button id="btn-cam-fullscreen" title="Volledig scherm camera + PTZ (Esc om te sluiten)" onclick="toggleCamFullscreen()"><svg class="icon"><use href="#i-maximize"/></svg></button>
       </div>
     </div>
     <div class="card-body">
-      <div id="video-wrap">
+      <div id="video-wrap" style="position:relative;">
         <video id="video-feed" autoplay playsinline muted></video>
+        <canvas id="cam-zebra-overlay" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none;mix-blend-mode:normal;"></canvas>
         <div id="camera-placeholder">
           <div id="cam-spinner"></div>
           <div id="cam-icon" class="big">📷</div>
@@ -1665,32 +1710,39 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
     </div>
   </div>
 
-  <!-- KOL 3 RIJ 1: Mic + spectrum gestapeld in wrapper -->
+  <!-- KOL 3 RIJ 1: Spectrum analyzer (vult de hele rij — was eerder gestapeld
+       met mic-monitor + audio-ctrl, beide weggehaald in v3.4.8 zodat de
+       spectrum/oscilloscoop dezelfde hoogte krijgen als de Video analyse-tile). -->
   <div id="audio-top-col">
-    <div class="card" id="micmon-card">
-      <div class="card-header" style="padding:5px 10px;">
-        <span>🎤 Mic input</span>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <div id="mic-status-dot"></div>
-          <span id="mic-db-label">– dB</span>
-          <span id="mic-peak-label">pk –∞</span>
-        </div>
-      </div>
-      <div style="padding:5px 8px 6px;">
-        <div class="mm-bar" style="width:100%;height:10px;"><div class="mm-fill" id="mm-fill"></div></div>
-      </div>
-    </div>
     <div class="card" id="spectrum-card" style="display:flex;flex-direction:column;flex:1;">
       <div class="card-header" style="padding:3px 8px;flex-shrink:0;">
-        <span style="font-size:11px;">🎚 Audio analyse</span>
+        <span style="font-size:11px;"><svg class="icon"><use href="#i-sliders"/></svg> Audio analyse</span>
         <div class="badge" id="spectrum-badge" style="font-size:9px;">Mic actief</div>
+      </div>
+      <!-- Mic-niveau meter — horizontaal boven osc/spectrum. JS-tick in
+           startLiveMic populeert mm-fill, mic-db-label, mic-peak-label,
+           mic-status-dot via getElementById-guards. -->
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0;">
+        <div id="mic-status-dot"></div>
+        <div class="mm-bar" style="flex:1;height:8px;position:relative;">
+          <div class="mm-fill" id="mm-fill"></div>
+          <div class="mm-peak" id="mm-peak"></div>
+        </div>
+        <span id="mic-db-label" style="font-size:11px;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--text);width:48px;text-align:right;">– dB</span>
+        <span id="mic-peak-label" style="font-size:10px;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--yellow);width:54px;text-align:right;">pk –∞</span>
       </div>
       <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);min-height:0;">
         <!-- Links: Oscilloscoop -->
-        <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;">
-          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);padding:3px 6px 1px;text-align:center;flex-shrink:0;">Oscilloscoop</div>
+        <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px 28px;">
+          <div style="display:flex;justify-content:center;align-items:center;padding:2px 6px 1px;flex-shrink:0;">
+            <select id="osc-mode" onchange="audioOscMode=this.value;updateOscControls()"
+                    style="font-size:9px;padding:1px 4px;background:var(--surface2);color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);border:1px solid var(--border);border-radius:3px;cursor:pointer;">
+              <option value="osc" selected>Oscilloscoop</option>
+              <option value="vector">Vectorscope</option>
+            </select>
+          </div>
           <canvas id="audio-osc" width="260" height="72" style="width:100%;flex:1;display:block;background:var(--bg);min-height:0;"></canvas>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
+          <div id="osc-controls" style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
               <span>Tijd:</span>
               <select id="osc-timebase" onchange="oscTimebase=+this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
@@ -1712,19 +1764,38 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
               </select>
             </label>
           </div>
+          <div id="vector-controls" style="display:none;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
+            <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
+              <span>Gain:</span>
+              <select id="vec-audio-gain" onchange="audioVecGain=+this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+                <option value="4">4×</option>
+                <option value="8">8×</option>
+              </select>
+            </label>
+            <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
+              <span>Persistence:</span>
+              <select id="vec-audio-trail" onchange="audioVecTrail=+this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
+                <option value="0">Geen</option>
+                <option value="0.85" selected>Kort</option>
+                <option value="0.95">Lang</option>
+              </select>
+            </label>
+          </div>
         </div>
         <!-- Rechts: Spectrum analyzer -->
-        <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;">
+        <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px 28px;">
           <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);padding:3px 6px 1px;text-align:center;flex-shrink:0;">Spectrum</div>
           <canvas id="audio-spectrum" width="260" height="72" style="width:100%;flex:1;display:block;background:var(--bg);min-height:0;"></canvas>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
               <span>Range:</span>
               <select id="spec-range" onchange="specRange=this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
-                <option value="full" selected>50–20k</option>
+                <option value="full" selected>20–20k</option>
                 <option value="voice">100–8k</option>
-                <option value="low">50–1k</option>
-                <option value="high">1k–20k</option>
+                <option value="speech">300–3k</option>
               </select>
             </label>
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
@@ -1746,7 +1817,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <div id="ptz-camctrl-col">
     <div class="card" id="ptz-card">
       <div class="card-header">
-        <span>🕹 PTZ</span>
+        <span><svg class="icon icon-lg"><use href="#i-move"/></svg> PTZ</span>
         <div style="display:flex;gap:5px;align-items:center;">
           <div class="badge" id="ptz-badge">Geen camera</div>
           <button class="btn btn-ghost" id="btn-visca-toggle" onclick="toggleViscaPanel()"
@@ -1755,7 +1826,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       </div>
       <!-- VISCA instellingen paneel (verborgen) -->
       <div id="visca-panel" style="display:none;padding:8px;border-bottom:1px solid var(--border);background:var(--surface2);">
-        <div style="font-size:10px;font-weight:600;color:var(--accent);margin-bottom:6px;">🌐 VISCA over IP</div>
+        <div style="font-size:10px;font-weight:600;color:var(--accent);margin-bottom:6px;"><svg class="icon"><use href="#i-globe"/></svg> VISCA over IP</div>
         <div style="display:flex;flex-direction:column;gap:5px;">
           <div style="display:flex;gap:5px;align-items:center;">
             <span style="font-size:10px;color:var(--muted);width:50px;flex-shrink:0;">IP adres</span>
@@ -1800,7 +1871,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
     </div>
     <div class="card" id="camctrl-card">
       <div class="card-header">
-        <span>🎛 Camera controls</span>
+        <span><svg class="icon icon-lg"><use href="#i-settings"/></svg> Camera controls</span>
         <div class="badge" id="camctrl-badge">Geen camera</div>
       </div>
       <div id="camctrl-body" style="padding:8px;">
@@ -1839,15 +1910,42 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
 
   <!-- KOL 3 RIJ 2: Audio tests (Loopback) -->
   <div id="audio-tests-col">
-    <!-- Speaker + Mic test (DEV finetune paneel voor RoomTest stap 3) -->
+    <!-- Audio controls tile — Windows Sound Settings shortcut + per-endpoint
+         volume/mute via Core Audio COM helper + status-row. Geen Windows-mixer
+         master-write (zie spec anti-pattern #2 — pre-compiled COM helper, geen
+         runtime csc). Verhuisd uit audio-top-col zodat de spectrum-card daar
+         de volle hoogte van de Video analyse-tile krijgt. -->
+    <div class="card" id="audio-ctrl-card">
+      <div class="card-header" style="padding:3px 8px;">
+        <span style="font-size:11px;"><svg class="icon"><use href="#i-settings"/></svg> Audio controls</span>
+        <button class="btn btn-ghost" id="btn-audio-open-sound"
+                title="Opent Windows geluidsinstellingen"
+                style="font-size:10px;padding:3px 12px;white-space:nowrap;"><svg class="icon"><use href="#i-volume"/></svg> Sound settings</button>
+      </div>
+      <div style="padding:6px 8px 7px;display:flex;flex-direction:column;gap:6px;">
+        <!-- Windows volume — direct system-level via Core Audio COM helper -->
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform,uppercase);letter-spacing:var(--lbl-spacing,0.5px);">Windows volume</div>
+          <div style="display:flex;align-items:center;gap:6px;" title="System speaker output level (Core Audio)">
+            <input type="range" id="sys-spk-vol" min="0" max="100" value="50" step="1" style="flex:1;min-width:0;">
+            <span id="sys-spk-vol-val" style="font-size:9px;width:38px;text-align:right;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--text);">—</span>
+          </div>
+        </div>
+        <div id="audio-status-row" style="font-size:9px;color:var(--muted);font-family:var(--font-val);font-variant-numeric:tabular-nums;line-height:1.5;border-top:1px solid var(--border);padding-top:5px;">
+          <div>Device: <span id="audio-status-device" style="color:var(--text);">—</span></div>
+          <div>Sample rate: <span id="audio-status-sr" style="color:var(--text);">—</span></div>
+          <div>Status: <span id="audio-status-mute" style="color:var(--text);">—</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Speaker test (signaal afspelen, geen mic-meting) -->
     <div class="card" id="speaker-card">
       <div class="card-header">
-        <span>🔊 Speaker + Mic</span>
-        <button class="btn btn-ghost" id="btn-spk-settings" style="font-size:11px;padding:3px 8px;">⚙ Settings <span style="color:#f59e0b;font-weight:600;">DEV</span></button>
+        <span><svg class="icon icon-lg"><use href="#i-volume"/></svg> Speaker</span>
       </div>
       <div class="card-body" style="display:flex;flex-direction:column;gap:7px;">
         <div style="font-size:11px;color:var(--muted);line-height:1.4;">
-          Signaal via de gekozen speaker, mic detecteert energie. Gebruikt voor RoomTest stap 3.
+          Speel een testsignaal of muziek af op de gekozen speaker. Subjectieve check.
         </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
           <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;color:var(--text);">
@@ -1859,33 +1957,32 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
           <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;color:var(--text);">
             <input type="radio" name="spk-signal" value="speech" style="accent-color:var(--accent);"> Spraak (TTS)
           </label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;color:var(--text);">
+            <input type="radio" name="spk-signal" value="music" style="accent-color:var(--accent);"> Muziek
+          </label>
         </div>
         <div id="spk-speech-info" style="display:none;font-size:10px;color:var(--accent);font-style:italic;padding:4px 7px;background:var(--surface2);border-radius:var(--btn-radius);border-left:2px solid var(--accent);"></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-primary" id="btn-spk-test">▶ Test nu</button>
-          <button class="btn btn-ghost" id="btn-open-sound" title="Opent Windows geluidsinstellingen — handig om mute / volume te checken">🔊 Geluid…</button>
+          <button class="btn btn-primary" id="btn-spk-test"><svg class="icon icon-fill"><use href="#i-play"/></svg> Speel af</button>
+          <button class="btn btn-danger" id="btn-spk-stop" disabled><svg class="icon icon-fill"><use href="#i-square"/></svg> Stop</button>
         </div>
-        <div class="result-box" id="spk-test-result">Nog niet uitgevoerd</div>
+        <div class="result-box" id="spk-test-result">Klaar</div>
 
-        <!-- DEV Settings Panel -->
-        <div id="spk-settings-panel" style="display:none;margin-top:10px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:11px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <div style="font-weight:600;color:var(--accent);">🔧 Speaker Test Settings — DEV MODE</div>
-            <div>
-              <button class="btn btn-ghost" id="btn-spk-settings-reset" style="font-size:10px;padding:2px 8px;">Defaults</button>
-              <button class="btn btn-primary" id="btn-spk-settings-save" style="font-size:10px;padding:2px 8px;">Opslaan</button>
-            </div>
-          </div>
-          <div id="spk-settings-dirty" style="display:none;color:#f59e0b;font-size:10px;margin-bottom:6px;">⚠ Niet-opgeslagen wijzigingen</div>
-          <div id="spk-settings-content"></div>
+        <!-- Output device-info (mirror van het audio-controls status-row,
+             user-verzoek). Updates op selSpeaker-change + bij start van
+             speakerRunTestStandalone (sample rate komt uit de AudioContext). -->
+        <div id="speaker-status-row" style="font-size:9px;color:var(--muted);font-family:var(--font-val);font-variant-numeric:tabular-nums;line-height:1.5;border-top:1px solid var(--border);padding-top:5px;margin-top:2px;">
+          <div>Device: <span id="speaker-status-device" style="color:var(--text);">—</span></div>
+          <div>Sample rate: <span id="speaker-status-sr" style="color:var(--text);">—</span></div>
         </div>
+
       </div>
     </div>
 
     <!-- Loopback -->
     <div class="card" id="loopback-card">
       <div class="card-header">
-        <span>🔁 Loopback</span>
+        <span><svg class="icon icon-lg"><use href="#i-repeat"/></svg> Loopback</span>
         <div class="badge" id="loop-badge">Gestopt</div>
       </div>
       <div class="card-body">
@@ -1900,11 +1997,11 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
           <div class="meter-db" id="loop-meter-out-db">– dB</div>
         </div>
         <div class="loopback-controls">
-          <button class="btn btn-primary" id="btn-loop-start">▶ Start</button>
-          <button class="btn btn-danger"  id="btn-loop-stop" disabled>■ Stop</button>
+          <button class="btn btn-primary" id="btn-loop-start"><svg class="icon icon-fill"><use href="#i-play"/></svg> Start</button>
+          <button class="btn btn-danger"  id="btn-loop-stop" disabled><svg class="icon icon-fill"><use href="#i-square"/></svg> Stop</button>
           <div class="delay-group">
-            Delay: <input type="range" id="delay-slider" min="100" max="1500" value="400" step="50">
-            <strong id="delay-label">400 ms</strong>
+            Delay: <input type="range" id="delay-slider" min="100" max="1500" value="750" step="50">
+            <strong id="delay-label">750 ms</strong>
           </div>
         </div>
         <div class="loopback-status" id="loop-status">
@@ -1914,21 +2011,6 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       </div>
     </div>
 
-    <!-- Latency -->
-    <div class="card" id="suggest-card">
-      <div class="card-header">
-        <span>⏱ Latency</span>
-        <div class="badge" id="meting-badge">Niet gemeten</div>
-      </div>
-      <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-size:11px;color:var(--muted);line-height:1.5;">Speelt een korte wideband ruispuls af en meet wanneer de mic hem oppikt. Werkt niet als mic + speaker dezelfde AEC-speakerphone zijn.</div>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <button class="btn btn-primary" id="btn-lat-start">▶ Meet latency</button>
-          <div id="lat-progress" style="flex:1;height:3px;background:var(--surface2);border-radius:2px;display:none;overflow:hidden;"><div id="lat-prog-fill" style="height:100%;width:0%;background:var(--accent);transition:width .1s linear;"></div></div>
-        </div>
-        <div class="result-box" id="lat-result">Nog niet gemeten</div>
-      </div>
-    </div>
   </div>
 
 </main>
@@ -1937,7 +2019,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
 <div id="qt-overlay">
   <div id="qt-popup">
     <div id="qt-popup-header">
-      <div id="qt-popup-title">▶ Snelle test</div>
+      <div id="qt-popup-title"><svg class="icon icon-fill"><use href="#i-play"/></svg> Snelle test</div>
       <button id="qt-popup-close" onclick="qtCloseOverlay()" title="Sluiten">✕</button>
     </div>
     <div id="qt-active-step">
@@ -1945,6 +2027,10 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       <div id="qt-active-spinner"></div>
       <div id="qt-active-name">Gereed</div>
       <div id="qt-active-status"></div>
+      <div id="qt-active-meter"><div id="qt-active-meter-fill"></div></div>
+      <video id="qt-cam-preview" autoplay playsinline muted
+             style="display:none;width:100%;max-width:480px;aspect-ratio:16/9;object-fit:cover;border-radius:14px;border:1px solid var(--border);background:#000;margin-top:10px;"></video>
+      <div id="qt-active-prompt"></div>
     </div>
     <div id="qt-popup-steps"></div>
     <div id="qt-popup-footer">
@@ -1990,17 +2076,74 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
 // ── Volume ─────────────────────────────────────────────────────
 // Digital in-app volume (nooit Windows master touchen — zie geschiedenis).
 // Alle audio-producerende tests routeren door een GainNode die dit volgt.
-let currentVolume = 1.0  // hardcoded in v3.3.5; slider verwijderd uit header
-try {
-  // Leegveeg oude volume-persistence zodat hij niet meer terugkomt
-  localStorage.removeItem('rr-volume')
-} catch(e) {}
-
+let currentVolume = 1.0
 const activeGainNodes = new Set()
 function registerGainNode(gn) { activeGainNodes.add(gn) }
 function unregisterGainNode(gn) { activeGainNodes.delete(gn) }
 
-// No-ops — volumeslider bestaat niet meer in v3.3.5
+// Audio-controls tile (v3.4.8): user-configurable mic trim + speaker trim +
+// AEC/NS/AGC constraints. Allemaal in-app digitaal — Windows audio service
+// blijft uit handen (zie spec anti-pattern #2).
+let micTrimValue = 1.0          // 0..2 lineair, default 1.0 (unity)
+let liveMicTrimGain = null      // GainNode in live mic chain, gekoppeld via slider
+let micTrimForcedUnity = false  // STAP 2 mic-test forceert 1.0 om scheef-meten te voorkomen
+
+let userAudioConstraints = {
+  echoCancellation: false,
+  noiseSuppression: false,
+  autoGainControl:  false,
+}
+
+try {
+  const sv = localStorage.getItem('rr-volume'); if (sv != null) {
+    const v = parseFloat(sv); if (!isNaN(v) && v >= 0 && v <= 1) currentVolume = v
+  }
+  const sm = localStorage.getItem('rr-mic-trim'); if (sm != null) {
+    const v = parseFloat(sm); if (!isNaN(v) && v >= 0 && v <= 2) micTrimValue = v
+  }
+  const sc = localStorage.getItem('rr-mic-constraints')
+  if (sc) {
+    const o = JSON.parse(sc)
+    if (o && typeof o === 'object') {
+      userAudioConstraints.echoCancellation = !!o.echoCancellation
+      userAudioConstraints.noiseSuppression = !!o.noiseSuppression
+      userAudioConstraints.autoGainControl  = !!o.autoGainControl
+    }
+  }
+} catch(e) {}
+
+// Helper: bouw de getUserMedia audio-constraints met user-overrides voor
+// AEC/NS/AGC. Houdt useExact-gating (anti-pattern #3) bij elkaar zodat we
+// 'm niet in elke call apart hoeven uit te schrijven.
+function getMicConstraints(deviceId) {
+  const useExact = deviceId && deviceId !== 'default' && deviceId !== 'communications'
+  return {
+    deviceId: useExact ? { exact: deviceId } : undefined,
+    echoCancellation: userAudioConstraints.echoCancellation,
+    noiseSuppression: userAudioConstraints.noiseSuppression,
+    autoGainControl:  userAudioConstraints.autoGainControl,
+  }
+}
+
+// Effective mic-trim — STAP 2 forceert unity zodat dBFS-readings eerlijk blijven.
+function applyMicTrim() {
+  if (!liveMicTrimGain) return
+  liveMicTrimGain.gain.value = micTrimForcedUnity ? 1.0 : micTrimValue
+}
+
+// Output trim — itereer over alle live GainNodes en update hun gain.
+// linearRampToValueAtTime-beslissingen die in een test al lopen worden niet
+// teruggedraaid (Web Audio kan dat niet), maar nieuwe nodes pakken meteen
+// de nieuwe currentVolume bij creation.
+function applyOutputTrim(v) {
+  currentVolume = v
+  activeGainNodes.forEach(gn => {
+    try { gn.gain.cancelScheduledValues(gn.context.currentTime) } catch(_){}
+    try { gn.gain.setValueAtTime(v, gn.context.currentTime) } catch(_){}
+  })
+}
+
+// No-ops — slider in header bestaat niet meer in v3.3.5; deze blijven voor compat.
 function onVolumeChange(val) {}
 function initVolumeUI() {}
 
@@ -2008,8 +2151,8 @@ function initVolumeUI() {}
 function showRoomReady() {
   const overlay = document.getElementById('room-ready-overlay')
   overlay.classList.add('show')
-  // Auto-dismiss after 5s
-  setTimeout(dismissRoomReady, 5000)
+  // Auto-dismiss after 2.5s
+  setTimeout(dismissRoomReady, 2500)
 }
 function dismissRoomReady() {
   document.getElementById('room-ready-overlay').classList.remove('show')
@@ -2031,6 +2174,11 @@ let vecTargets  = true
 
 // Smoothed FFT memory
 const _specSmoothed = new Float32Array(512)
+// Peak-hold per spectrum-bar — blijft 1500ms vast op de hoogste recente
+// waarde, daarna langzame decay. _specPeakTimes houdt per-bar timestamp
+// van wanneer de huidige peak gezet is.
+const _specPeaks     = new Float32Array(512)
+const _specPeakTimes = new Float64Array(512)
 
 const specResizeObs = new ResizeObserver(entries => {
   for (const e of entries) {
@@ -2068,10 +2216,9 @@ function drawAudioSpectrum(analyser, contextSampleRate) {
 
   // Range selection
   const ranges = {
-    full:  [50,   20000],
-    voice: [100,   8000],
-    low:   [50,    1000],
-    high:  [1000, 20000]
+    full:   [20,  20000],   // volledig hoorbaar spectrum
+    voice:  [100,  8000],   // spraak + muziek
+    speech: [300,  3000],   // alleen spraak-band (telefonie / vergader)
   }
   const [freqMin, freqMax] = ranges[specRange] || ranges.full
 
@@ -2103,11 +2250,38 @@ function drawAudioSpectrum(analyser, contextSampleRate) {
     const x = Math.round(i * (W / BAR_COUNT))
     specCtx2d.fillStyle = col
     specCtx2d.fillRect(x, H - barH, barW, barH)
+    // Peak-hold per bar: 1500ms vast houden, daarna langzaam decay
+    // (0.0035/frame ≈ 4.5s tot 0 = totaal ~6s zichtbaar).
+    if (val > _specPeaks[i]) {
+      _specPeaks[i] = val
+      _specPeakTimes[i] = performance.now()
+    } else if (performance.now() - _specPeakTimes[i] > 1500) {
+      _specPeaks[i] = Math.max(0, _specPeaks[i] - 0.0035)
+    }
+    if (_specPeaks[i] > val + 0.01) {
+      const peakY = Math.max(0, H - _specPeaks[i] * H - 1)
+      specCtx2d.fillStyle = 'rgba(255,255,255,0.85)'
+      specCtx2d.fillRect(x, peakY, barW, 1)
+    }
   }
 }
 
 // ── Audio oscilloscoop ─────────────────────────────────────────
 let oscCanvas = null, oscCtx2d = null
+// Audio osc-canvas mode + per-mode parameters. Vectorscope hergebruikt
+// 'audio-osc' canvas; alleen draw-functie en controls wisselen.
+let audioOscMode = 'osc'      // 'osc' | 'vector'
+let audioVecGain = 1.0        // schaal voor X/Y-uitslag
+let audioVecTrail = 0.85      // persistence-decay voor de Lissajous-trail
+
+function updateOscControls() {
+  const oc = document.getElementById('osc-controls')
+  const vc = document.getElementById('vector-controls')
+  if (oc) oc.style.display = (audioOscMode === 'vector') ? 'none' : 'flex'
+  if (vc) vc.style.display = (audioOscMode === 'vector') ? 'flex' : 'none'
+  // Bij wissel: canvas leegmaken zodat geen oude beeld blijft hangen
+  if (oscCanvas && oscCtx2d) oscCtx2d.clearRect(0, 0, oscCanvas.width, oscCanvas.height)
+}
 
 function drawAudioOscilloscope(analyser, contextSampleRate) {
   if (!oscCanvas) {
@@ -2163,6 +2337,131 @@ function drawAudioOscilloscope(analyser, contextSampleRate) {
     else oscCtx2d.lineTo(x, y)
   }
   oscCtx2d.stroke()
+}
+
+// ── Audio vectorscope + phase coherence meter ──────────────────
+// Lissajous X-Y plot van L/R kanalen + Pearson-correlatie ('φ') als
+// stereo phase-coherence indicator. Voor mono-mics is L=R → φ=+1 →
+// rechte 45°-diagonaal. Anti-phase → φ=-1 → loodrechte lijn (wijst op
+// 'n omgekeerde kabel of verkeerd gepatchte mic-array).
+function drawAudioVectorscope(anaL, anaR) {
+  if (!oscCanvas) {
+    oscCanvas = document.getElementById('audio-osc')
+    if (!oscCanvas) return
+    oscCtx2d = oscCanvas.getContext('2d')
+  }
+  const W = oscCanvas.width || 260
+  const H = oscCanvas.height || 72
+  // Reserveer onderste 24px voor de phase-coherence-meter (label + bar).
+  // 't plot-gebied is alleen 't bovenste deel.
+  const METER_H = 24
+  const plotH = Math.max(20, H - METER_H)
+
+  // Persistence: in plaats van clearRect, fade vorige frame met semi-
+  // transparante zwart-overlay zodat dots een trail trekken. Alleen 't
+  // plot-gebied — de meter onderin krijgen we elke frame opnieuw.
+  if (audioVecTrail > 0) {
+    oscCtx2d.fillStyle = `rgba(0,0,0,${1 - audioVecTrail})`
+    oscCtx2d.fillRect(0, 0, W, plotH)
+  } else {
+    oscCtx2d.clearRect(0, 0, W, plotH)
+  }
+  oscCtx2d.clearRect(0, plotH, W, METER_H)
+
+  // Achtergrond-grid in plot-gebied: kruis door midden + diagonalen
+  oscCtx2d.strokeStyle = 'rgba(120,120,140,0.15)'
+  oscCtx2d.lineWidth = 1
+  oscCtx2d.beginPath()
+  oscCtx2d.moveTo(W/2, 0); oscCtx2d.lineTo(W/2, plotH)
+  oscCtx2d.moveTo(0, plotH/2); oscCtx2d.lineTo(W, plotH/2)
+  oscCtx2d.stroke()
+  oscCtx2d.strokeStyle = 'rgba(120,120,140,0.08)'
+  oscCtx2d.beginPath()
+  const half = Math.min(W, plotH) / 2
+  oscCtx2d.moveTo(W/2 - half, plotH/2 - half); oscCtx2d.lineTo(W/2 + half, plotH/2 + half)
+  oscCtx2d.moveTo(W/2 - half, plotH/2 + half); oscCtx2d.lineTo(W/2 + half, plotH/2 - half)
+  oscCtx2d.stroke()
+
+  // Sample-cloud + Pearson-correlatie in één pass
+  const N = anaL.fftSize
+  const bufL = new Float32Array(N)
+  const bufR = new Float32Array(N)
+  if (anaL.getFloatTimeDomainData) anaL.getFloatTimeDomainData(bufL)
+  if (anaR.getFloatTimeDomainData) anaR.getFloatTimeDomainData(bufR)
+
+  const cx = W / 2, cy = plotH / 2
+  const scale = Math.min(W, plotH) / 2 * 0.92 * audioVecGain
+
+  let stroke = '#22c55e'
+  try {
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim()
+    if (accent) stroke = accent
+  } catch(e) {}
+  oscCtx2d.fillStyle = stroke
+
+  let sumLR = 0, sumLL = 0, sumRR = 0
+  for (let i = 0; i < N; i++) {
+    const l = bufL[i], r = bufR[i]
+    sumLR += l * r
+    sumLL += l * l
+    sumRR += r * r
+    oscCtx2d.fillRect(cx + l * scale, cy - r * scale, 1.5, 1.5)
+  }
+  const denom = Math.sqrt(sumLL * sumRR)
+  // Bij digitale stilte (denom→0) geen correlatie definieerbaar — toon 0.
+  let phi = denom > 1e-9 ? sumLR / denom : 0
+  if (phi >  1) phi =  1
+  if (phi < -1) phi = -1
+
+  // ── Phase-coherence meter (-1..+1) ──
+  // Layout: label-rij bovenin (links 'Phase', rechts waarde), daaronder
+  // de gekleurde track-balk. Geen overlap tussen tekst en bar.
+  const padX = 6
+  const labelY = plotH + 2     // top van label-rij
+  const labelH = 10
+  const trackY = plotH + labelH + 4
+  const trackH = 7
+  const meterX0 = padX, meterX1 = W - padX
+  const meterCx = (meterX0 + meterX1) / 2
+  const meterW = meterX1 - meterX0
+
+  // Label links + waarde rechts, beide in 1 rij boven de balk
+  oscCtx2d.fillStyle = 'rgba(255,255,255,0.55)'
+  oscCtx2d.font = '9px ui-monospace, "DM Mono", monospace'
+  oscCtx2d.textBaseline = 'top'
+  oscCtx2d.textAlign = 'left'
+  oscCtx2d.fillText('φ phase', meterX0, labelY)
+  oscCtx2d.fillStyle = 'rgba(255,255,255,0.9)'
+  oscCtx2d.textAlign = 'right'
+  oscCtx2d.fillText((phi >= 0 ? '+' : '') + phi.toFixed(2), meterX1, labelY)
+
+  // Track-achtergrond
+  oscCtx2d.fillStyle = 'rgba(120,120,140,0.22)'
+  oscCtx2d.fillRect(meterX0, trackY, meterW, trackH)
+
+  // Center-tick (φ=0)
+  oscCtx2d.strokeStyle = 'rgba(255,255,255,0.35)'
+  oscCtx2d.lineWidth = 1
+  oscCtx2d.beginPath()
+  oscCtx2d.moveTo(meterCx, trackY - 1); oscCtx2d.lineTo(meterCx, trackY + trackH + 1)
+  oscCtx2d.stroke()
+
+  // Kleur: groen bij +1, geel bij 0, rood bij -1
+  let phiColor
+  if (phi >= 0) {
+    const hue = 60 + phi * 70    // 60° geel → 130° groen
+    phiColor = `hsl(${hue}, 80%, 52%)`
+  } else {
+    const hue = 30 + phi * 30    // 30° oranje → 0° rood
+    phiColor = `hsl(${Math.max(0, hue)}, 90%, 52%)`
+  }
+
+  // Vul vanaf center naar huidige waarde
+  const valX = meterCx + phi * (meterW / 2)
+  const fillX = Math.min(meterCx, valX)
+  const fillW = Math.abs(valX - meterCx)
+  oscCtx2d.fillStyle = phiColor
+  oscCtx2d.fillRect(fillX, trackY, fillW, trackH)
 }
 
 // ── Video histogram ────────────────────────────────────────────
@@ -2224,8 +2523,164 @@ function drawVideoHistogram(imageData) {
   })
 }
 
-// ── Video vectorscope ──────────────────────────────────────────
+// ── Zebra overlay (overbelichting-flag op camera-preview) ─────
+let zebraEnabled = false
+let zebraThreshold = 230   // 0..255, ~90% IRE
+let zebraCanvas = null, zebraCtx = null, zebraSrcCanvas = null, zebraSrcCtx = null
+function onZebraToggle() {
+  const c = document.getElementById('cam-zebra-overlay')
+  if (!c) return
+  if (zebraEnabled) {
+    c.style.display = 'block'
+  } else {
+    c.style.display = 'none'
+    try { c.getContext('2d').clearRect(0, 0, c.width, c.height) } catch(_){}
+  }
+}
+// Tekent diagonale strepen over zones boven `zebraThreshold` luma. Loopt mee
+// in de bestaande analyse-loop op 25 Hz, fase animeert zodat strepen wandelen.
+function drawZebraOverlay(video) {
+  if (!zebraCanvas) {
+    zebraCanvas = document.getElementById('cam-zebra-overlay')
+    if (!zebraCanvas) return
+    zebraCtx = zebraCanvas.getContext('2d')
+    zebraSrcCanvas = document.createElement('canvas')
+    zebraSrcCtx = zebraSrcCanvas.getContext('2d')
+  }
+  if (!video || !video.videoWidth) return
+  // Positioneer 't overlay-canvas exact bovenop 't <video>-element — zowel
+  // in normaal als fullscreen mode. <canvas> en <video> handelen aspect/
+  // object-fit anders, dus CSS-only volstaat niet. JS-bounds is foolproof.
+  const vRect = video.getBoundingClientRect()
+  const wrap  = video.parentElement
+  const wRect = wrap.getBoundingClientRect()
+  const css = zebraCanvas.style
+  css.inset = 'auto'
+  css.top    = (vRect.top    - wRect.top)    + 'px'
+  css.left   = (vRect.left   - wRect.left)   + 'px'
+  css.width  = vRect.width  + 'px'
+  css.height = vRect.height + 'px'
+  // Verwerk op 'n vaste lage resolutie voor perf — backing pixels zijn
+  // onafhankelijk van display-grootte, CSS schaalt 't naar de video-rect.
+  const W = 320, H = Math.round(320 * video.videoHeight / video.videoWidth)
+  if (zebraSrcCanvas.width !== W || zebraSrcCanvas.height !== H) {
+    zebraSrcCanvas.width  = W; zebraSrcCanvas.height = H
+    zebraCanvas.width     = W; zebraCanvas.height    = H
+  }
+  zebraSrcCtx.drawImage(video, 0, 0, W, H)
+  const src = zebraSrcCtx.getImageData(0, 0, W, H).data
+  const out = zebraCtx.createImageData(W, H)
+  const od  = out.data
+  // Phase laat strepen wandelen — 'n klassieke broadcast-zebra-look
+  const phase = Math.floor(Date.now() / 60) % 8
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4
+      const luma = 0.2126 * src[i] + 0.7152 * src[i+1] + 0.0722 * src[i+2]
+      if (luma > zebraThreshold && ((x + y + phase) % 8) < 4) {
+        // Geel-zwart wisselend zou klassiek zijn; we gebruiken alleen geel
+        // met semi-transparant zodat 't beeld er niet onder verdwijnt.
+        od[i] = 255; od[i+1] = 224; od[i+2] = 0; od[i+3] = 200
+      }
+    }
+  }
+  zebraCtx.putImageData(out, 0, 0)
+}
+
+// ── Video scope (waveform | vectorscope) ──────────────────────
 let vecCanvas = null, vecCtx2d = null
+// Mode-toggle voor de rechter-pane in 'Video analyse'-tile.
+// Default = waveform (broadcast-grade exposure-check). Vectorscope blijft
+// behikbaar via de dropdown.
+let videoScopeMode = 'waveform'
+let waveStyle      = 'luma'   // 'luma' | 'rgb'
+let waveIntensity  = 1.0      // dot-additieve helderheidsfactor
+function updateVidScopeControls() {
+  const vec = document.getElementById('vid-vec-controls')
+  const wav = document.getElementById('vid-wave-controls')
+  const sat = document.getElementById('vid-saturatie-row')
+  const isVec = videoScopeMode === 'vectorscope'
+  if (vec) vec.style.display = isVec ? 'flex' : 'none'
+  if (wav) wav.style.display = isVec ? 'none' : 'flex'
+  if (sat) sat.style.display = isVec ? 'flex' : 'none'
+}
+
+// Dispatch — vervangt direct-aanroep van drawVectorscope in de analyse-loop.
+function drawVideoScope(imageData) {
+  if (videoScopeMode === 'vectorscope') drawVectorscope(imageData)
+  else                                  drawWaveform(imageData)
+}
+
+// Waveform monitor — Y-as is luma 0..100 IRE, X-as is horizontale beeldpositie.
+// Per X-kolom van de bronafbeelding plotten we de luma-waarden van alle Y-pixels
+// als kleine dots; densiteit toont waar de helderheid in 't beeld zit.
+// RGB-parade-mode plot drie kanalen naast elkaar (R links, G midden, B rechts).
+function drawWaveform(imageData) {
+  if (!vecCanvas) {
+    vecCanvas = document.getElementById('video-vectorscope')
+    if (!vecCanvas) return
+    vecCtx2d = vecCanvas.getContext('2d')
+  }
+  const W = vecCanvas.width || 200
+  const H = vecCanvas.height || 200
+  const sw = imageData.width, sh = imageData.height
+  const d = imageData.data
+
+  // Achtergrond (lichte trail voor smooth-effect)
+  vecCtx2d.fillStyle = 'rgba(0,0,0,0.35)'
+  vecCtx2d.fillRect(0, 0, W, H)
+
+  // IRE-grid: horizontale gridlines op 0/25/50/75/100%
+  vecCtx2d.strokeStyle = 'rgba(120,120,140,0.20)'
+  vecCtx2d.lineWidth = 1
+  vecCtx2d.font = '9px ui-monospace, "DM Mono", monospace'
+  vecCtx2d.fillStyle = 'rgba(180,180,200,0.55)'
+  vecCtx2d.textBaseline = 'middle'
+  for (let i = 0; i <= 4; i++) {
+    const y = (i / 4) * (H - 1)
+    vecCtx2d.beginPath(); vecCtx2d.moveTo(0, y); vecCtx2d.lineTo(W, y); vecCtx2d.stroke()
+    const ire = 100 - i * 25
+    vecCtx2d.fillText(ire, 2, y + (i === 0 ? 6 : i === 4 ? -6 : 0))
+  }
+
+  if (waveStyle === 'rgb') {
+    // RGB Parade: 3 panes naast elkaar
+    const paneW = (W - 4) / 3
+    const baseAlpha = Math.round(80 * waveIntensity)
+    const channels = [
+      { off: 0, color: `rgba(255,80,80,${baseAlpha/255})` },   // R
+      { off: 1, color: `rgba(80,220,80,${baseAlpha/255})` },   // G
+      { off: 2, color: `rgba(80,140,255,${baseAlpha/255})` },  // B
+    ]
+    channels.forEach((ch, idx) => {
+      const px0 = Math.round(idx * (paneW + 2))
+      vecCtx2d.fillStyle = ch.color
+      // Subsample voor perf — elke 2e bron-x, elke 2e bron-y
+      for (let sx = 0; sx < sw; sx += 2) {
+        const cx = Math.round(px0 + (sx / sw) * paneW)
+        for (let sy = 0; sy < sh; sy += 2) {
+          const i = (sy * sw + sx) * 4
+          const v = d[i + ch.off]
+          const cy = Math.round((1 - v / 255) * (H - 1))
+          vecCtx2d.fillRect(cx, cy, 1, 1)
+        }
+      }
+    })
+  } else {
+    // Luma waveform
+    const baseAlpha = Math.round(120 * waveIntensity)
+    vecCtx2d.fillStyle = `rgba(120,220,120,${Math.min(220, baseAlpha) / 255})`
+    for (let sx = 0; sx < sw; sx++) {
+      const cx = Math.round((sx / sw) * (W - 1))
+      for (let sy = 0; sy < sh; sy += 2) {
+        const i = (sy * sw + sx) * 4
+        const luma = 0.2126 * d[i] + 0.7152 * d[i+1] + 0.0722 * d[i+2]
+        const cy = Math.round((1 - luma / 255) * (H - 1))
+        vecCtx2d.fillRect(cx, cy, 1, 1)
+      }
+    }
+  }
+}
 
 function drawVectorscope(imageData) {
   if (!vecCanvas) {
@@ -2318,14 +2773,14 @@ function toggleTheme() {
   const isDark = document.body.classList.toggle('dark')
   if (!isDark) {
     document.body.classList.remove('dark-slate','dark-broadcast','dark-void')
-    let v = localStorage.getItem('avt-light-variant') || 'air'
-    // Migreer oude themanamen naar nieuwe
-    if (v === 'paper') v = 'linen'
-    if (v === 'warm')  v = 'linen'
+    let v = localStorage.getItem('avt-light-variant') || 'nordic'
+    // Migreer oude themanamen naar nieuwe (air/sage/linen/studio/paper/warm → nordic)
+    if (!['nordic','broadcast'].includes(v)) v = 'nordic'
     applyLightVariant(v)
   } else {
     document.body.classList.remove('light-air','light-broadcast','light-sage','light-linen','light-studio','light-nordic','light-paper','light-warm')
-    const v = localStorage.getItem('avt-dark-variant') || 'slate'
+    let v = localStorage.getItem('avt-dark-variant') || 'slate'
+    if (v === 'void') v = 'slate'  // void verwijderd in v3.4.8
     applyDarkVariant(v)
   }
   try { localStorage.setItem('avt-theme', isDark ? 'dark' : 'light') } catch(e) {}
@@ -2338,8 +2793,13 @@ function setLightVariant(v) {
 }
 
 function applyLightVariant(v) {
-  document.body.classList.remove('light-air','light-broadcast','light-sage','light-linen','light-studio','light-nordic','light-paper','light-warm')
-  if (v !== 'air') document.body.classList.add('light-' + v)
+  // Remove ook oude (verwijderde) themes voor compat met opgeslagen prefs
+  document.body.classList.remove('light-air','light-broadcast','light-nordic','light-sage','light-linen','light-studio','light-paper','light-warm')
+  // Saved-pref kan nog 'air'/'sage'/'linen'/'studio' zijn → fall back naar nordic (default)
+  const valid = ['nordic','broadcast']
+  const safe  = valid.includes(v) ? v : 'nordic'
+  if (safe !== 'nordic') document.body.classList.add('light-' + safe)
+  // (nordic is default — selector pakt 'm zonder class)
   const track = document.querySelector('.tgl-track')
   if (track) { track.style.background = ''; track.style.borderColor = '' }
 }
@@ -2351,34 +2811,31 @@ function setDarkVariant(v) {
 
 function applyDarkVariant(v) {
   document.body.classList.remove('dark-slate','dark-broadcast','dark-void')
-  document.body.classList.add('dark-' + v)
+  const valid = ['slate','broadcast']
+  const safe  = valid.includes(v) ? v : 'slate'
+  document.body.classList.add('dark-' + safe)
   const track = document.querySelector('.tgl-track')
   if (track) {
-    const colors = { slate: '#22d3ee', broadcast: '#e87320', void: '#a78bfa' }
-    track.style.background  = colors[v] || ''
-    track.style.borderColor = colors[v] || ''
+    const colors = { slate: '#22d3ee', broadcast: '#e87320' }
+    track.style.background  = colors[safe] || ''
+    track.style.borderColor = colors[safe] || ''
   }
 }
 
 // ── Theme menus (sun/moon icon dropdowns) ──────────────────────
 const LIGHT_THEMES = [
-  { id: 'air',       name: 'Air' },
-  { id: 'linen',     name: 'Linen' },
-  { id: 'studio',    name: 'Studio' },
-  { id: 'sage',      name: 'Sage' },
   { id: 'nordic',    name: 'Nordic' },
   { id: 'broadcast', name: 'Broadcast' },
 ]
 const DARK_THEMES = [
   { id: 'slate',     name: 'Slate' },
   { id: 'broadcast', name: 'Broadcast' },
-  { id: 'void',      name: 'Void' },
 ]
 
 function renderThemeMenus() {
   const lightMenu = document.getElementById('light-menu')
   const darkMenu  = document.getElementById('dark-menu')
-  const curLight  = localStorage.getItem('avt-light-variant') || 'air'
+  const curLight  = localStorage.getItem('avt-light-variant') || 'nordic'
   const curDark   = localStorage.getItem('avt-dark-variant')  || 'slate'
   if (lightMenu) {
     lightMenu.innerHTML = LIGHT_THEMES.map(t =>
@@ -2432,7 +2889,7 @@ function toggleCamFullscreen() {
   const isFs = main.classList.toggle('cam-fullscreen')
   // Zorg dat cam-expanded uit staat in fullscreen
   if (isFs) main.classList.remove('cam-expanded')
-  btn.textContent = isFs ? '✕' : '⛶'
+  btn.innerHTML = ico(isFs ? 'x' : 'maximize')
   btn.title = isFs ? 'Fullscreen sluiten (Esc)' : 'Volledig scherm camera + PTZ'
 }
 
@@ -2449,51 +2906,192 @@ previewBC.onmessage = e => {
   }
 }
 
-function setPreviewState(state) {
+function _previewSend(payload) {
+  // Twee kanalen voor maximale betrouwbaarheid: BroadcastChannel (snel,
+  // werkt meestal) en IPC via main (gegarandeerd door dezelfde process-tree).
+  try { previewBC.postMessage(payload) } catch(_){}
+  try { window.rrBridge?.previewBroadcast?.(payload) } catch(_){}
+}
+function setPreviewState(state, extra) {
   currentPreviewState = state
-  previewBC.postMessage({ state })
+  _previewSend(Object.assign({ state }, extra || {}))
+}
+// Tijdens RoomTest: stuur stap-info naar 't klantscherm zodat de bezoeker
+// ziet wat er getest wordt (Camera / Microfoon / Geluid).
+function setPreviewStep(stepName, stepSub) {
+  _previewSend({ state: 'testing', stepName, stepSub })
+}
+// Camera-frame snapshot voor 't klantscherm. Pakt 't huidige beeld uit
+// <video id="video-feed">, schaalt naar 'n preview-formaat, encodeert
+// als JPEG dataURL. Returnt null als de video nog niet klaar is.
+function captureCameraFrame(targetW) {
+  const v = document.getElementById('video-feed')
+  if (!v || !v.videoWidth || !v.videoHeight) return null
+  const w = targetW || 360
+  const h = Math.round(w * v.videoHeight / v.videoWidth)
+  const c = document.createElement('canvas')
+  c.width = w; c.height = h
+  try {
+    c.getContext('2d').drawImage(v, 0, 0, w, h)
+    return c.toDataURL('image/jpeg', 0.6)
+  } catch (e) { return null }
+}
+// Loop die 'durationMs' lang frames stuurt naar de preview (4 fps).
+// Block dus de RoomTest pauzeert hier — gewenst gedrag voor de Camera-stap
+// zodat de operator het beeld op 't klantscherm ziet.
+async function sendCameraPreviewFor(durationMs) {
+  const t0 = Date.now()
+  const interval = 250  // 4 fps
+  while (Date.now() - t0 < durationMs) {
+    const frame = captureCameraFrame(360)
+    if (frame) _previewSend({ state: 'testing', cameraFrame: frame })
+    await sleep(interval)
+  }
+  // Wis 't beeld zodra Camera-stap klaar is
+  _previewSend({ state: 'testing', cameraFrame: '' })
+}
+
+// Chromium blokt prompt() in renderers — eigen modal voor display-keuze.
+// Extern Scherm — dropdown in device-bar (sel-display) selecteert het display,
+// btn-display-toggle opent/sluit. Vervangt de oude camera-tile knop +
+// modal-dialog flow.
+function _setDisplayBtnState(active) {
+  const btn = document.getElementById('btn-display-toggle')
+  if (!btn) return
+  btn.textContent = active ? 'Sluit' : 'Open'
+  btn.classList.toggle('btn-primary', active)
+  btn.classList.toggle('btn-ghost', !active)
+}
+
+async function populateDisplays() {
+  if (!window.rrBridge?.listDisplays) return
+  const sel = document.getElementById('sel-display')
+  if (!sel) return
+  try {
+    const displays = await window.rrBridge.listDisplays()
+    const others = displays.filter(d => !d.isPrimary)
+    const prev = sel.value
+    sel.innerHTML = ''
+    // NB: select NIET disablen ook als er geen 2e scherm is — anders vuurt
+    // 't focus-event nooit meer bij een klik en kan de operator de lijst
+    // niet handmatig vernieuwen. Toggle-knop wel disablen want zonder
+    // scherm is er niets om te openen.
+    sel.disabled = false
+    const btn = document.getElementById('btn-display-toggle')
+    if (others.length === 0) {
+      const opt = document.createElement('option')
+      opt.value = ''
+      opt.text  = '(geen tweede scherm — sluit aan en wacht)'
+      sel.appendChild(opt)
+      if (btn && !externalPreviewActive) btn.disabled = true
+      return
+    }
+    if (btn) btn.disabled = false
+    others.forEach(d => {
+      const opt = document.createElement('option')
+      opt.value = String(d.id)
+      const dim = d.size ? ` — ${d.size.width}×${d.size.height}` : ''
+      opt.text  = (d.label || ('Scherm ' + d.id)) + dim
+      sel.appendChild(opt)
+    })
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev
+  } catch (e) {
+    console.warn('[Display] populate fail:', e?.message || e)
+  }
 }
 
 async function openExternalPreview() {
-  const btn = document.getElementById('btn-cam-preview')
   if (!window.rrBridge?.listDisplays) { alert('Extern scherm niet beschikbaar'); return }
-
-  if (externalPreviewActive) {
-    await window.rrBridge.closePreview()
-    externalPreviewActive = false
-    btn.style.color = 'var(--muted)'
-    btn.title = 'Klantscherm op extern display'
-    return
-  }
-
-  const displays = await window.rrBridge.listDisplays()
-  const others = displays.filter(d => !d.isPrimary)
-
-  if (others.length === 0) {
-    alert('Geen tweede scherm gevonden.\n\nSluit eerst een extern scherm aan en probeer opnieuw.')
-    return
-  }
-
-  let targetId = others[0].id
-  if (others.length > 1) {
-    const choices = others.map((d,i) => `${i+1}. ${d.label} (${d.size.width}×${d.size.height})`).join('\n')
-    const answer = prompt('Kies extern scherm:\n\n' + choices, '1')
-    const idx = parseInt(answer) - 1
-    if (isNaN(idx) || idx < 0 || idx >= others.length) return
-    targetId = others[idx].id
-  }
-
-  const result = await window.rrBridge.openPreview({ displayId: targetId })
-  if (result?.ok) {
-    externalPreviewActive = true
-    btn.style.color = 'var(--accent)'
-    btn.title = 'Klantscherm actief — klik om te sluiten'
-    // Wacht kort en stuur huidige state
-    setTimeout(() => setPreviewState(currentPreviewState), 500)
-  } else {
-    alert('Kon klantscherm niet openen')
+  const sel = document.getElementById('sel-display')
+  try {
+    if (externalPreviewActive) {
+      await window.rrBridge.closePreview()
+      externalPreviewActive = false
+      _setDisplayBtnState(false)
+      return
+    }
+    const idStr = sel?.value
+    if (!idStr) {
+      alert('Geen tweede scherm beschikbaar.\n\nSluit een extern scherm aan en kies het in de dropdown.')
+      return
+    }
+    const result = await window.rrBridge.openPreview({ displayId: parseInt(idStr, 10) })
+    if (result?.ok) {
+      externalPreviewActive = true
+      _setDisplayBtnState(true)
+      setTimeout(() => setPreviewState(currentPreviewState), 500)
+    } else {
+      alert('Kon klantscherm niet openen' + (result?.error ? ': ' + result.error : ''))
+    }
+  } catch (e) {
+    console.warn('[Preview] openExternalPreview error:', e?.message || e)
+    alert('Klantscherm-fout: ' + (e?.message || e))
   }
 }
+
+// Wire-up
+;(function initDisplayDropdown() {
+  const btn = document.getElementById('btn-display-toggle')
+  const sel = document.getElementById('sel-display')
+  if (btn) btn.addEventListener('click', openExternalPreview)
+  if (sel) {
+    // Refresh op focus zodat een net-aangesloten monitor zichtbaar wordt
+    // zonder de app te herstarten.
+    sel.addEventListener('focus', populateDisplays)
+    sel.addEventListener('mousedown', populateDisplays)  // klik vóór focus, dekt edge-case
+    // Bij selectie-wissel — als preview al open staat — direct verhuizen
+    // naar 't nieuwe scherm. Anders moest de operator Sluit + Open klikken.
+    sel.addEventListener('change', async () => {
+      if (!externalPreviewActive) return
+      const newId = sel.value
+      if (!newId) return
+      try { await window.rrBridge.closePreview() } catch(_){}
+      externalPreviewActive = false
+      _setDisplayBtnState(false)
+      // Korte pauze zodat 't oude window dicht is voordat 't nieuwe opent
+      setTimeout(async () => {
+        try {
+          const r = await window.rrBridge.openPreview({ displayId: parseInt(newId, 10) })
+          if (r?.ok) {
+            externalPreviewActive = true
+            _setDisplayBtnState(true)
+            setTimeout(() => setPreviewState(currentPreviewState), 500)
+          }
+        } catch (e) { console.warn('[Display] verplaatsen faalde:', e?.message || e) }
+      }, 150)
+    })
+  }
+  // Auto-refresh + auto-open bij OS-niveau display-changes. Als er een
+  // 2e scherm aangesloten wordt en er nog geen preview open staat, openen
+  // we 'm meteen. Voorkomt 'plug in monitor → moet handmatig op Open klikken'.
+  async function _onDisplayChanged() {
+    await populateDisplays()
+    if (externalPreviewActive) return
+    const _sel = document.getElementById('sel-display')
+    if (_sel?.value) {
+      try {
+        const r = await window.rrBridge.openPreview({ displayId: parseInt(_sel.value, 10) })
+        if (r?.ok) {
+          externalPreviewActive = true
+          _setDisplayBtnState(true)
+          setTimeout(() => setPreviewState(currentPreviewState), 500)
+        }
+      } catch (e) { console.warn('[Display] auto-open faalde:', e?.message || e) }
+    }
+  }
+  // onDisplayChanged retourneert 'n unsubscribe-callback. Bewaren zodat we
+  // 'm bij window-unload netjes loskoppelen — voorkomt event-listener-leak
+  // bij langlopende sessies of kiosk-mode reloads.
+  let _unsubDisplay = null
+  if (window.rrBridge?.onDisplayChanged) {
+    _unsubDisplay = window.rrBridge.onDisplayChanged(_onDisplayChanged)
+  }
+  window.addEventListener('beforeunload', () => {
+    if (_unsubDisplay) try { _unsubDisplay() } catch(_){}
+  })
+  populateDisplays()
+  setTimeout(populateDisplays, 1500)
+})()
 
 // Esc sluit fullscreen
 document.addEventListener('keydown', e => {
@@ -2542,7 +3140,7 @@ try {
     applyDarkVariant(v)
   } else {
     document.body.classList.remove('dark')
-    const v = localStorage.getItem('avt-light-variant') || 'air'
+    const v = localStorage.getItem('avt-light-variant') || 'nordic'
     applyLightVariant(v)
   }
   updateToggleLabel(isDark)
@@ -2552,9 +3150,15 @@ try {
 let camStream = null
 let loopStream = null, loopAudioCtx = null, loopAnimId = null
 let liveMicCtx = null, liveMicStream = null, liveMicAnimId = null
+let liveMicAnaL = null, liveMicAnaR = null  // ChannelSplitter analysers voor vectorscope
 let sharedMicAnalyser = null
 let loopVolGain = null
 let micPeakVal = 0, micPeakTimer = null
+// Visueel peak-hold: blijft 1.5s vast staan na 'n nieuwe peak, daarna
+// langzame decay. micPeakHoldTime markeert wanneer de huidige peak gezet
+// is — pas na 1500ms hold start de decay.
+let micPeakHold = 0
+let micPeakHoldTime = 0
 
 const selCamera  = document.getElementById('sel-camera')
 const selMic     = document.getElementById('sel-mic')
@@ -2834,20 +3438,6 @@ async function populateDevices(deviceList) {
 
   const prevCam = selCamera.value, prevMic = selMic.value, prevSpk = selSpeaker.value
 
-  // Diagnostische log — toon alle gevonden cameras met score
-  console.log('[DEV] Cameras gevonden:', cameras.length)
-  cameras.forEach(c => {
-    console.log(`  [${scoreCamera(c.label)}pt] "${c.label || '(geen label)'}" id=${c.deviceId.slice(0,12)}…`)
-  })
-  console.log('[DEV] Microfoons gevonden:', mics.length)
-  mics.forEach(m => {
-    console.log(`  [${scoreMic(m.label)}pt] "${m.label || '(geen label)'}" id=${m.deviceId.slice(0,12)}…`)
-  })
-  console.log('[DEV] Speakers gevonden:', speakers.length)
-  speakers.forEach(sp => {
-    console.log(`  [${scoreSpeaker(sp.label)}pt] "${sp.label || '(geen label)'}" id=${sp.deviceId.slice(0,12)}…`)
-  })
-
   fillSelect(selCamera,  cameras,  scoreCamera,  prevCam)
   fillSelect(selMic,     mics,     scoreMic,     prevMic)
   fillSelect(selSpeaker, speakers, scoreSpeaker, prevSpk)
@@ -2934,7 +3524,7 @@ function fillSelect(sel, devices, scoreFn, prevValue) {
 }
 
 // ── Live mic monitor ───────────────────────────────────────────
-// Wanneer een test (measureLatency, etc.) de live monitor tijdelijk stopt,
+// Wanneer een test (RoomTest STAP 3 loopback, etc.) de live monitor tijdelijk stopt,
 // vuurt de track-stop het 'ended' event op de oude track. De handler hieronder
 // schedule't dan na 800ms automatisch een herstart — wat tijdens een lopende
 // test contention oplevert (twee mic-consumers). De test kan deze flag op
@@ -2947,15 +3537,11 @@ async function startLiveMic() {
   const dot = document.getElementById('mic-status-dot')
   if (dot) dot.className = ''
   try {
-    // "default" en "communications" zijn virtuele Chromium device-IDs, geen echte device IDs
-    // Die mogen NIET als { exact: ... } constraint — daar crasht de audio pipeline op
+    // useExact-gating zit in getMicConstraints (anti-pattern #3); AEC/NS/AGC
+    // komen uit user-state (Audio controls tile).
     const micId = selMic.value
-    const useExact = micId && micId !== 'default' && micId !== 'communications'
     liveMicStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        deviceId: useExact ? { exact: micId } : undefined,
-        echoCancellation: false, noiseSuppression: false, autoGainControl: false
-      }
+      audio: getMicConstraints(micId)
     })
     liveMicCtx = new AudioContext()
     if (liveMicCtx.state === 'suspended') await liveMicCtx.resume()
@@ -2963,13 +3549,47 @@ async function startLiveMic() {
     if (srFoot) srFoot.textContent = 'Sample rate: ' + liveMicCtx.sampleRate + ' Hz'
 
     const src = liveMicCtx.createMediaStreamSource(liveMicStream)
+    // Trim-GainNode tussen source en analyser zodat de operator m.b.v. de
+    // mic-gain slider zachte mics leesbaar kan maken op de spectrum/osc
+    // (en op de level-meter). STAP 2 dwingt 'm tijdelijk op 1.0.
+    liveMicTrimGain = liveMicCtx.createGain()
+    applyMicTrim()
     const ana = liveMicCtx.createAnalyser()
     ana.fftSize = 2048; ana.smoothingTimeConstant = 0.5
-    src.connect(ana)
+    src.connect(liveMicTrimGain)
+    liveMicTrimGain.connect(ana)
     sharedMicAnalyser = ana
+    // Stereo splitter voor de vectorscope: source heeft mogelijk 1 of 2
+    // kanalen. createChannelSplitter(2) maakt 2 outputs. Voor mono-bronnen
+    // krijgen beide outputs dezelfde data → vectorscope toont 'n diagonaal.
+    try {
+      const splitter = liveMicCtx.createChannelSplitter(2)
+      liveMicTrimGain.connect(splitter)
+      liveMicAnaL = liveMicCtx.createAnalyser()
+      liveMicAnaR = liveMicCtx.createAnalyser()
+      liveMicAnaL.fftSize = 1024; liveMicAnaL.smoothingTimeConstant = 0
+      liveMicAnaR.fftSize = 1024; liveMicAnaR.smoothingTimeConstant = 0
+      splitter.connect(liveMicAnaL, 0)
+      splitter.connect(liveMicAnaR, 1)
+    } catch(e) {
+      // Splitter-support is universeel; als 't toch faalt, vectorscope-
+      // mode rendert niets en oscilloscope blijft werken.
+      console.warn('[MIC] vectorscope-splitter init faalde:', e.message)
+      liveMicAnaL = liveMicAnaR = null
+    }
     const buf = new Uint8Array(ana.fftSize)
     if (dot) dot.className = 'active'
-    console.log('[MIC] live monitor actief —', liveMicStream.getTracks()[0]?.label, '@', liveMicCtx.sampleRate, 'Hz')
+    const _track = liveMicStream.getTracks()[0]
+    console.log('[MIC] live monitor actief —', _track?.label, '@', liveMicCtx.sampleRate, 'Hz')
+    setAudioStatus({
+      device: _track?.label || '—',
+      sampleRate: liveMicCtx.sampleRate,
+      mute: _track?.muted ? 'Muted (browser)' : 'Active',
+    })
+    if (_track) {
+      _track.addEventListener('mute',   () => setAudioStatusField('mute', 'Muted (browser)'))
+      _track.addEventListener('unmute', () => setAudioStatusField('mute', 'Active'))
+    }
 
     function tick() {
       if (!liveMicStream) return
@@ -2980,6 +3600,7 @@ async function startLiveMic() {
       const dbLbl = document.getElementById('mic-db-label')
       if (fill) fill.style.width = Math.min(100, v * 400) + '%'
       if (dbLbl) dbLbl.textContent = db !== null ? db + ' dB' : '–∞ dB'
+      // Peak-label (sticky 2s, snap-back gedrag)
       if (v > micPeakVal) {
         micPeakVal = v; clearTimeout(micPeakTimer)
         micPeakTimer = setTimeout(() => { micPeakVal = 0 }, 2000)
@@ -2987,8 +3608,32 @@ async function startLiveMic() {
       const pkdb = micPeakVal > 0.001 ? Math.round(20 * Math.log10(micPeakVal)) : null
       const pkLbl = document.getElementById('mic-peak-label')
       if (pkLbl) pkLbl.textContent = pkdb !== null ? 'pk ' + pkdb : 'pk –∞'
+      // Visueel peak-hold marker: hold 1.5s op nieuwe peak, dan langzame
+      // decay (0.005/frame ≈ 3.5s tot 0 = totaal ~5s zichtbaar).
+      if (v > micPeakHold) {
+        micPeakHold = v
+        micPeakHoldTime = performance.now()
+      } else if (performance.now() - micPeakHoldTime > 1500) {
+        micPeakHold = Math.max(0, micPeakHold - 0.005)
+      }
+      const peakEl = document.getElementById('mm-peak')
+      if (peakEl) {
+        const peakPct = Math.min(100, micPeakHold * 400)
+        if (micPeakHold > 0.005) {
+          peakEl.classList.add('active')
+          peakEl.style.left = `calc(${peakPct}% - 1px)`
+        } else {
+          peakEl.classList.remove('active')
+        }
+      }
       try { drawAudioSpectrum(ana, liveMicCtx.sampleRate) } catch(e) {}
-      try { drawAudioOscilloscope(ana, liveMicCtx.sampleRate) } catch(e) {}
+      try {
+        if (audioOscMode === 'vector' && liveMicAnaL && liveMicAnaR) {
+          drawAudioVectorscope(liveMicAnaL, liveMicAnaR)
+        } else {
+          drawAudioOscilloscope(ana, liveMicCtx.sampleRate)
+        }
+      } catch(e) {}
       liveMicAnimId = requestAnimationFrame(tick)
     }
     tick()
@@ -3010,7 +3655,10 @@ function stopLiveMic() {
   if (liveMicAnimId) { cancelAnimationFrame(liveMicAnimId); liveMicAnimId = null }
   if (liveMicCtx)   { try { liveMicCtx.close() } catch(e) {} ; liveMicCtx = null }
   if (liveMicStream){ liveMicStream.getTracks().forEach(t => t.stop()); liveMicStream = null }
+  liveMicTrimGain = null  // GainNode is dood met liveMicCtx — losse ref weg
+  liveMicAnaL = liveMicAnaR = null
   micPeakVal = 0
+  micPeakHold = 0
   const c = document.getElementById('audio-spectrum')
   if (c) { try { c.getContext('2d').clearRect(0, 0, c.width, c.height) } catch(e) {} }
   const dbLbl = document.getElementById('mic-db-label')
@@ -3019,6 +3667,12 @@ function stopLiveMic() {
   if (pkLbl) pkLbl.textContent = 'pk –∞'
   const dot = document.getElementById('mic-status-dot')
   if (dot) dot.className = ''
+  const peakEl = document.getElementById('mm-peak')
+  if (peakEl) peakEl.classList.remove('active')
+  setAudioStatusField('mute', 'Gestopt')
+  // Reset spectrum peak-hold buffer
+  for (let i = 0; i < _specPeaks.length; i++) { _specPeaks[i] = 0; _specPeakTimes[i] = 0 }
+  micPeakHoldTime = 0
 }
 
 // ── Camera ─────────────────────────────────────────────────────
@@ -3091,7 +3745,7 @@ async function startCamera() {
     document.getElementById('cam-badge').textContent = 'Live ●'
     document.getElementById('cam-badge').className = 'badge ok'
     const btn = document.getElementById('btn-cam-toggle')
-    btn.textContent = '■ Stop'
+    btn.innerHTML = ico('square') + ' Stop'
     btn.className = 'btn btn-danger'
     btn.disabled = false
 
@@ -3101,6 +3755,12 @@ async function startCamera() {
     const w = video.videoWidth, h = video.videoHeight
     if (w && h) {
       camAspect = w / h
+      // Video-wrap heeft default aspect-ratio:16/9 in CSS. Als de camera
+      // 'n andere ratio rapporteert (4:3, 16:10, etc.) moet 't wrap mee-
+      // schalen — anders zit de video bovenin een te-hoge wrap met een
+      // gat eronder, en lijnen de bottoms niet meer met osc/spec/histogram.
+      const vw = document.getElementById('video-wrap')
+      if (vw) vw.style.aspectRatio = w + ' / ' + h
       document.getElementById('camera-card').style.aspectRatio = ''
       updateRow1Height()
     }
@@ -3134,6 +3794,8 @@ async function startCamera() {
 function stopCamera() {
   stopCameraStream()
   camAspect = 16/9
+  const vw = document.getElementById('video-wrap')
+  if (vw) vw.style.aspectRatio = ''  // CSS-default (16/9) weer actief
   updateRow1Height()
   setCamState('idle')
 }
@@ -3165,7 +3827,7 @@ function setCamState(state, msg) {
   // Als placeholder is overschreven (door error-scherm) → enkel badge/btn updaten
   if (!ph || !spin || !icon || !txt) {
     if (badge) { badge.textContent='Geen camera'; badge.className='badge warn' }
-    if (btn)   { btn.textContent='▶ Camera'; btn.className='btn btn-primary'; btn.disabled=false }
+    if (btn)   { btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=false }
     return
   }
   ph.style.display = 'flex'
@@ -3173,12 +3835,12 @@ function setCamState(state, msg) {
     spin.style.display='block'; icon.style.display='none'
     txt.textContent='Camera starten…'
     badge.textContent='Verbinden…'; badge.className='badge warn'
-    btn.textContent='▶ Camera'; btn.className='btn btn-primary'; btn.disabled=true
+    btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=true
   } else if (state === 'idle') {
     spin.style.display='none'; icon.style.display='block'
     icon.textContent='📷'; txt.textContent='Camera gestopt'
     badge.textContent='Gestopt'; badge.className='badge'
-    btn.textContent='▶ Camera'; btn.className='btn btn-primary'; btn.disabled=false
+    btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=false
   } else if (state === 'error') {
     spin.style.display='none'; icon.style.display='block'
     icon.textContent='⚠️'; txt.textContent='Fout: ' + (msg||'onbekend')
@@ -3219,46 +3881,59 @@ function startBrightnessMeter(video) {
   }
   const ctx = brightnessCanvas.getContext('2d')
   const sctx = sharpCanvas.getContext('2d')
+  // Tikker draait op 25 fps (40ms). Elke tick: capture frame, scope, zebra,
+  // histogram (allemaal cheap op 160×90). Slow-pad (sharpness, WB-readouts,
+  // exposure-indicator, PTZ-readout) elke 12 ticks ≈ 480ms — readouts hoeven
+  // niet 25 keer/sec te flikkeren en zo blijft CPU-load laag.
+  let _slowCounter = 0
   function measure() {
     if (!camStream) return
     ctx.drawImage(video, 0, 0, 160, 90)
-    const d = ctx.getImageData(0,0,160,90).data
-    let lum=0, rSum=0, gSum=0, bSum=0
-    const px = d.length/4
-    for (let i=0; i<d.length; i+=4) {
-      lum += 0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]
-      rSum+=d[i]; gSum+=d[i+1]; bSum+=d[i+2]
-    }
-    const avgLum = Math.round(lum/px)
-    document.getElementById('brightness-fill').style.width = (avgLum/255*100)+'%'
-    document.getElementById('brightness-val').textContent = avgLum
-    document.getElementById('sv-wb').textContent =
-      Math.round(rSum/px)+':'+Math.round(gSum/px)+':'+Math.round(bSum/px)
+    const histImg = ctx.getImageData(0, 0, 160, 90)
 
-    // Kleurtemperatuur schatting op basis van R:B verhouding
-    const rAvg = rSum/px, bAvg = bSum/px
-    let ct = '–'
-    if (bAvg > 0) {
-      const rb = rAvg / bAvg
-      if      (rb > 2.0)  ct = 'Warm 🟡'
-      else if (rb > 1.5)  ct = 'Neutraal'
-      else if (rb > 1.1)  ct = 'Koel 🔵'
-      else                ct = 'Zeer koel 🔵'
-    }
-    document.getElementById('sv-ct').textContent = ct
+    // Fast-pad — elke tick (25 Hz)
+    drawVideoHistogram(histImg)
+    drawVideoScope(histImg)
+    if (zebraEnabled) drawZebraOverlay(video)
 
-    // Belichtingsindicator
-    let expInd = '–'
-    if      (avgLum > 230) expInd = 'Overbelicht ⚠'
-    else if (avgLum > 190) expInd = 'Licht hoog'
-    else if (avgLum > 80)  expInd = 'Goed ✓'
-    else if (avgLum > 40)  expInd = 'Licht laag'
-    else                   expInd = 'Onderbelicht ⚠'
-    document.getElementById('sv-expind').textContent = expInd
-    document.getElementById('sv-lum').textContent = avgLum + ' / 255'
+    // Slow-pad — elke 12e tick (~2 Hz) voor readouts + sharpness
+    if ((_slowCounter++ % 12) === 0) {
+      const d = histImg.data
+      let lum = 0, rSum = 0, gSum = 0, bSum = 0
+      const px = d.length / 4
+      for (let i = 0; i < d.length; i += 4) {
+        lum += 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2]
+        rSum += d[i]; gSum += d[i+1]; bSum += d[i+2]
+      }
+      const avgLum = Math.round(lum/px)
+      document.getElementById('brightness-fill').style.width = (avgLum/255*100)+'%'
+      document.getElementById('brightness-val').textContent = avgLum
+      document.getElementById('sv-wb').textContent =
+        Math.round(rSum/px)+':'+Math.round(gSum/px)+':'+Math.round(bSum/px)
 
-    // PTZ positie (uit camera track settings)
-    if (camStream) {
+      // Kleurtemperatuur schatting op basis van R:B verhouding
+      const rAvg = rSum/px, bAvg = bSum/px
+      let ct = '–'
+      if (bAvg > 0) {
+        const rb = rAvg / bAvg
+        if      (rb > 2.0)  ct = 'Warm 🟡'
+        else if (rb > 1.5)  ct = 'Neutraal'
+        else if (rb > 1.1)  ct = 'Koel 🔵'
+        else                ct = 'Zeer koel 🔵'
+      }
+      document.getElementById('sv-ct').textContent = ct
+
+      // Belichtingsindicator
+      let expInd = '–'
+      if      (avgLum > 230) expInd = 'Overbelicht ⚠'
+      else if (avgLum > 190) expInd = 'Licht hoog'
+      else if (avgLum > 80)  expInd = 'Goed ✓'
+      else if (avgLum > 40)  expInd = 'Licht laag'
+      else                   expInd = 'Onderbelicht ⚠'
+      document.getElementById('sv-expind').textContent = expInd
+      document.getElementById('sv-lum').textContent = avgLum + ' / 255'
+
+      // PTZ positie (uit camera track settings)
       const t = camStream.getVideoTracks()[0]
       const ts = t?.getSettings() || {}
       const parts = []
@@ -3266,30 +3941,27 @@ function startBrightnessMeter(video) {
       if (ts.tilt !== undefined) parts.push('T:' + Math.round(ts.tilt))
       if (ts.zoom !== undefined) parts.push('Z:' + Math.round(ts.zoom))
       document.getElementById('sv-ptz').textContent = parts.length ? parts.join(' ') : '–'
+
+      // Sharpness (Laplacian variance op 80×45)
+      sctx.drawImage(video, 0, 0, 80, 45)
+      const sd = sctx.getImageData(0,0,80,45).data
+      const W=80, H=45
+      const gray = new Float32Array(W*H)
+      for (let i=0; i<W*H; i++) gray[i] = 0.299*sd[i*4] + 0.587*sd[i*4+1] + 0.114*sd[i*4+2]
+      let lapSum=0, lapSumSq=0, n=0
+      for (let y=1; y<H-1; y++) for (let x=1; x<W-1; x++) {
+        const lap = gray[(y-1)*W+x]+gray[(y+1)*W+x]+gray[y*W+x-1]+gray[y*W+x+1]-4*gray[y*W+x]
+        lapSum+=lap; lapSumSq+=lap*lap; n++
+      }
+      const mean = lapSum/n, variance = lapSumSq/n - mean*mean
+      const score = Math.round(variance)
+      const el = document.getElementById('sv-sharp')
+      if (score>400)       { el.textContent=score+' — Scherp ✓'; el.style.color='var(--green)' }
+      else if (score>100)  { el.textContent=score+' — Matig';    el.style.color='var(--yellow)' }
+      else                 { el.textContent=score+' — Wazig ⚠'; el.style.color='var(--red)' }
     }
 
-    // Pass full-res imageData to histogram (use the 160×90 canvas)
-    const histImg = ctx.getImageData(0, 0, 160, 90)
-    drawVideoHistogram(histImg)
-    drawVectorscope(histImg)
-    // histogram is always visible in the meta row — no separate show needed
-    sctx.drawImage(video, 0, 0, 80, 45)
-    const sd = sctx.getImageData(0,0,80,45).data
-    const W=80, H=45
-    const gray = new Float32Array(W*H)
-    for (let i=0; i<W*H; i++) gray[i]=0.299*sd[i*4]+0.587*sd[i*4+1]+0.114*sd[i*4+2]
-    let lapSum=0, lapSumSq=0, n=0
-    for (let y=1; y<H-1; y++) for (let x=1; x<W-1; x++) {
-      const lap = gray[(y-1)*W+x]+gray[(y+1)*W+x]+gray[y*W+x-1]+gray[y*W+x+1]-4*gray[y*W+x]
-      lapSum+=lap; lapSumSq+=lap*lap; n++
-    }
-    const mean = lapSum/n, variance = lapSumSq/n - mean*mean
-    const score = Math.round(variance)
-    const el = document.getElementById('sv-sharp')
-    if (score>400)       { el.textContent=score+' — Scherp ✓'; el.style.color='var(--green)' }
-    else if (score>100)  { el.textContent=score+' — Matig';    el.style.color='var(--yellow)' }
-    else                 { el.textContent=score+' — Wazig ⚠'; el.style.color='var(--red)' }
-    brightnessTick = setTimeout(measure, 500)
+    brightnessTick = setTimeout(measure, 40)  // 25 fps
   }
   measure()
 }
@@ -3408,17 +4080,29 @@ function makeChord(ctx, outGain) {
       env.gain.linearRampToValueAtTime(1, t + fade)
     },
     scheduleFadeOut: (durationMs) => {
+      // Tik-fix: gebruik cancelAndHoldAtTime ipv .value-read. Anders leest
+      // .value de momentane ramp-positie i.p.v. wat 't op stopT-fade ZAL zijn,
+      // wat 'n discontinuïteit (= klik) introduceert bij de fade-out.
       const t = ctx.currentTime
       const stopT = t + (durationMs / 1000)
-      env.gain.setValueAtTime(env.gain.value, stopT - fade)
+      try { env.gain.cancelAndHoldAtTime(stopT - fade) }
+      catch(e) { env.gain.setValueAtTime(1, stopT - fade) }
       env.gain.linearRampToValueAtTime(0, stopT)
     },
     stop: () => {
       if (stopped) return
       stopped = true
-      try { env.gain.cancelScheduledValues(ctx.currentTime) } catch(e){}
-      try { env.gain.setTargetAtTime(0, ctx.currentTime, 0.03) } catch(e){}
-      setTimeout(() => { oscs.forEach(o => { try { o.stop() } catch(e){} }) }, 100)
+      // Lineaire ramp naar exact 0, dan oscs.stop() ná de ramp — voorkomt
+      // de tik die de oude setTargetAtTime(τ=0.03)+timeout(100ms) gaf
+      // (setTargetAtTime is exponentieel, na 100ms nog ~4% over).
+      const t = ctx.currentTime
+      const fadeOutMs = 50
+      try { env.gain.cancelScheduledValues(t) } catch(e){}
+      try {
+        env.gain.setValueAtTime(env.gain.value, t)
+        env.gain.linearRampToValueAtTime(0, t + fadeOutMs / 1000)
+      } catch(e){}
+      setTimeout(() => { oscs.forEach(o => { try { o.stop() } catch(e){} }) }, fadeOutMs + 30)
     }
   }
 }
@@ -3464,15 +4148,21 @@ function makePinkNoise(ctx, outGain) {
     scheduleFadeOut: (durationMs) => {
       const t = ctx.currentTime
       const stopT = t + (durationMs / 1000)
-      env.gain.setValueAtTime(env.gain.value, stopT - fade)
+      try { env.gain.cancelAndHoldAtTime(stopT - fade) }
+      catch(e) { env.gain.setValueAtTime(1, stopT - fade) }
       env.gain.linearRampToValueAtTime(0, stopT)
     },
     stop: () => {
       if (stopped) return
       stopped = true
-      try { env.gain.cancelScheduledValues(ctx.currentTime) } catch(e){}
-      try { env.gain.setTargetAtTime(0, ctx.currentTime, 0.03) } catch(e){}
-      setTimeout(() => { try { src.stop() } catch(e){} }, 100)
+      const t = ctx.currentTime
+      const fadeOutMs = 50
+      try { env.gain.cancelScheduledValues(t) } catch(e){}
+      try {
+        env.gain.setValueAtTime(env.gain.value, t)
+        env.gain.linearRampToValueAtTime(0, t + fadeOutMs / 1000)
+      } catch(e){}
+      setTimeout(() => { try { src.stop() } catch(e){} }, fadeOutMs + 30)
     }
   }
 }
@@ -3485,23 +4175,31 @@ const speakerSampleBufCache = new Map() // decode cache per sampleCtx
 
 async function speakerLoadSampleList() {
   if (speakerSampleList) return speakerSampleList
-  try {
-    const list = await window.rrBridge.listSamples()
-    // Filter quotes.json eruit — dat is geen audio
-    speakerSampleList = Array.isArray(list)
-      ? list.filter(f => f.toLowerCase().endsWith('.wav'))
-      : []
-  } catch(e) {
-    console.warn('[Speaker] listSamples faalde:', e)
-    speakerSampleList = []
-  }
-  // Laad ook de quote-mapping
+  // Eerst de quote-mapping laden — die bepaalt welke samples actief zijn
   try {
     const raw = await window.rrBridge.readQuotesJson()
     speakerQuotes = raw ? JSON.parse(raw) : {}
   } catch(e) {
     console.warn('[Speaker] readQuotesJson faalde:', e)
     speakerQuotes = {}
+  }
+  // Vervolgens de file-list filteren op .wav files DIE in quotes.json staan.
+  // Zo kunnen niet-test quotes weggehaald worden door simpel quotes.json te
+  // editen, zonder de .wav files daadwerkelijk te verwijderen.
+  try {
+    const list = await window.rrBridge.listSamples()
+    if (Array.isArray(list)) {
+      const wavFiles = list.filter(f => f.toLowerCase().endsWith('.wav'))
+      const allowed = Object.keys(speakerQuotes || {})
+      speakerSampleList = allowed.length
+        ? wavFiles.filter(f => allowed.includes(f))
+        : wavFiles
+    } else {
+      speakerSampleList = []
+    }
+  } catch(e) {
+    console.warn('[Speaker] listSamples faalde:', e)
+    speakerSampleList = []
   }
   return speakerSampleList
 }
@@ -3881,55 +4579,460 @@ function speakerRenderSettingsPanel() {
   Object.keys(SPEAKER_RANGES).forEach(k => speakerUpdateFieldWarning(k))
 }
 
-function speakerToggleSettingsPanel() {
-  const panel = document.getElementById('spk-settings-panel')
-  if (!panel) return
-  const show = panel.style.display === 'none'
-  panel.style.display = show ? 'block' : 'none'
-  if (show) {
-    speakerPending = Object.assign({}, speakerSettings)
-    speakerRenderSettingsPanel()
-    speakerMarkClean()
+
+// ── Procedurele kantoor-muziek ──────────────────────────────────
+// Vijf rustige akkoord-progressies, gegenereerd via Web Audio. Royalty-free
+// per definitie (algoritmisch). Soft sine-pads + lichte detuning + slow
+// envelope per akkoord = ambient achtergrondsfeer voor speaker-check.
+const MUSIC_TRACKS = [
+  { name: 'Ochtend',  bpm: 60, chords: [
+      { root: 261.63, type: 'maj7' },  // Cmaj7
+      { root: 174.61, type: 'maj7' },  // Fmaj7
+      { root: 220.00, type: 'min7' },  // Am7
+      { root: 196.00, type: 'maj' },   // G
+    ] },
+  { name: 'Reverie',  bpm: 56, chords: [
+      { root: 261.63, type: 'sus2' },  // Csus2
+      { root: 174.61, type: 'sus2' },  // Fsus2
+      { root: 196.00, type: 'sus4' },  // Gsus4
+      { root: 261.63, type: 'maj' },   // C
+    ] },
+  { name: 'Cafe',     bpm: 64, chords: [
+      { root: 220.00, type: 'min7' },  // Am7
+      { root: 293.66, type: 'min7' },  // Dm7
+      { root: 196.00, type: 'maj7' },  // Gmaj7
+      { root: 261.63, type: 'maj7' },  // Cmaj7
+    ] },
+  { name: 'Studio',   bpm: 58, chords: [
+      { root: 261.63, type: 'lyd' },   // C lydian
+      { root: 293.66, type: 'maj' },   // D
+      { root: 220.00, type: 'min7' },  // Am7
+      { root: 174.61, type: 'maj7' },  // Fmaj7
+    ] },
+  { name: 'Vrijdag',  bpm: 62, chords: [
+      { root: 174.61, type: 'maj7' },  // Fmaj7
+      { root: 261.63, type: 'maj' },   // C
+      { root: 196.00, type: 'maj' },   // G
+      { root: 220.00, type: 'min7' },  // Am7
+    ] },
+]
+
+function buildChordFreqs(root, type) {
+  // Just-intonation-ish ratios — klinkt 'warm' op sines
+  switch (type) {
+    case 'maj':   return [root, root * 1.25, root * 1.5]                 // 1, M3, P5
+    case 'maj7':  return [root, root * 1.25, root * 1.5, root * 1.875]   // + M7
+    case 'min':   return [root, root * 1.2,  root * 1.5]                 // 1, m3, P5
+    case 'min7':  return [root, root * 1.2,  root * 1.5, root * 1.78]    // + m7
+    case 'sus2':  return [root, root * 1.125, root * 1.5]                // 1, M2, P5
+    case 'sus4':  return [root, root * 1.333, root * 1.5]                // 1, P4, P5
+    case 'lyd':   return [root, root * 1.25, root * 1.41, root * 1.5]    // 1, M3, +4, P5
+    default:      return [root]
   }
 }
-function speakerCommitSettings() {
-  speakerSettings = Object.assign({}, speakerPending)
-  speakerSaveSettings()
-  speakerMarkClean()
-  console.log('[Speaker] Settings opgeslagen:', speakerSettings)
+
+let musicLastTrackIdx = -1
+function musicPickTrack() {
+  if (MUSIC_TRACKS.length === 1) return MUSIC_TRACKS[0]
+  let i
+  do { i = Math.floor(Math.random() * MUSIC_TRACKS.length) } while (i === musicLastTrackIdx)
+  musicLastTrackIdx = i
+  return MUSIC_TRACKS[i]
 }
-function speakerResetDefaults() {
-  speakerSettings = Object.assign({}, SPEAKER_DEFAULTS)
-  speakerPending = Object.assign({}, speakerSettings)
-  speakerSaveSettings()
-  speakerRenderSettingsPanel()
-  speakerMarkClean()
+
+// ── Drum/melodie-helpers (one-shots scheduled tegen ctx.currentTime) ──
+function _scheduleKick(ctx, dest, t, vol) {
+  const o = ctx.createOscillator(); o.type = 'sine'
+  o.frequency.setValueAtTime(120, t)
+  o.frequency.exponentialRampToValueAtTime(38, t + 0.16)
+  const g = ctx.createGain()
+  g.gain.setValueAtTime(0, t)
+  g.gain.linearRampToValueAtTime(vol, t + 0.005)
+  g.gain.exponentialRampToValueAtTime(0.0008, t + 0.32)
+  o.connect(g); g.connect(dest); o.start(t); o.stop(t + 0.35)
+}
+function _scheduleHat(ctx, dest, t, vol) {
+  const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.05), ctx.sampleRate)
+  const d = buf.getChannelData(0)
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1
+  const src = ctx.createBufferSource(); src.buffer = buf
+  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 7500
+  const g = ctx.createGain()
+  g.gain.setValueAtTime(0, t)
+  g.gain.linearRampToValueAtTime(vol, t + 0.002)
+  g.gain.exponentialRampToValueAtTime(0.0008, t + 0.06)
+  src.connect(hp); hp.connect(g); g.connect(dest); src.start(t)
+}
+function _scheduleShaker(ctx, dest, t, vol) {
+  const len = Math.floor(ctx.sampleRate * 0.18)
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate)
+  const d = buf.getChannelData(0)
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len)
+  const src = ctx.createBufferSource(); src.buffer = buf
+  const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 5500; bp.Q.value = 1.5
+  const g = ctx.createGain()
+  g.gain.setValueAtTime(0, t)
+  g.gain.linearRampToValueAtTime(vol, t + 0.01)
+  g.gain.linearRampToValueAtTime(0, t + 0.18)
+  src.connect(bp); bp.connect(g); g.connect(dest); src.start(t)
+}
+// Pluck-achtige melodie-noot — triangle door lowpass, exp. decay
+function _scheduleMelodyNote(ctx, dest, t, freq, durSec, vol) {
+  const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = freq
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2800; lp.Q.value = 0.4
+  const g = ctx.createGain()
+  g.gain.setValueAtTime(0, t)
+  g.gain.linearRampToValueAtTime(vol, t + 0.012)
+  g.gain.exponentialRampToValueAtTime(0.0008, t + Math.max(0.15, durSec))
+  o.connect(lp); lp.connect(g); g.connect(dest)
+  o.start(t); o.stop(t + Math.max(0.2, durSec) + 0.1)
+}
+
+// Maakt een muziek-signaal: pad-akkoorden + drum-groove + melodische topstem.
+function makeMusic(ctx, outGain) {
+  const track = musicPickTrack()
+  const beatSec = 60 / track.bpm
+  const chordSec = beatSec * 4   // 4 beats per akkoord
+  const loops = 2
+  const fadeIn = 0.8
+  const fadeOut = 1.5
+  const totalSec = chordSec * track.chords.length * loops + fadeOut
+
+  // Master env (fade-in/out voor de hele mix)
+  const master = ctx.createGain()
+  master.gain.value = 0
+  master.connect(outGain)
+
+  // Pad-bus: alleen de pad-stemmen door lowpass voor warme klank.
+  // Drums + melodie omzeilen de lowpass zodat ze helder blijven.
+  const padLP = ctx.createBiquadFilter()
+  padLP.type = 'lowpass'; padLP.frequency.value = 1800; padLP.Q.value = 0.5
+  const padBus = ctx.createGain(); padBus.gain.value = 0.55
+  padLP.connect(padBus); padBus.connect(master)
+
+  const drumBus = ctx.createGain(); drumBus.gain.value = 0.6
+  drumBus.connect(master)
+
+  const melodyBus = ctx.createGain(); melodyBus.gain.value = 0.7
+  melodyBus.connect(master)
+
+  const oscs = []
+  const t0 = ctx.currentTime + 0.05
+
+  // Vier melodie-patronen — index in chord-tones array (4 = +9 / kleurnoot)
+  const MEL_PATTERNS = [
+    [ {t:0,    f:2, d:1.4}, {t:1.5,  f:0, d:0.8}, {t:2.5,  f:3, d:1.2}, {t:3.5, f:1, d:0.6} ],
+    [ {t:0.5,  f:1, d:0.8}, {t:1.25, f:3, d:0.7}, {t:2,    f:0, d:1.5}, {t:3.5, f:2, d:0.5} ],
+    [ {t:0,    f:0, d:1.0}, {t:1,    f:2, d:1.0}, {t:2.5,  f:4, d:1.0}, {t:3.5, f:1, d:0.5} ],
+    [ {t:0.25, f:3, d:0.8}, {t:1,    f:1, d:0.8}, {t:2.25, f:2, d:1.2}, {t:3,   f:0, d:1.0} ],
+  ]
+
+  for (let l = 0; l < loops; l++) {
+    track.chords.forEach((chord, ci) => {
+      const tStart = t0 + (l * track.chords.length + ci) * chordSec
+      const tEnd   = tStart + chordSec
+      const freqs  = buildChordFreqs(chord.root, chord.type)
+
+      // ── PAD: per akkoord een gate-gain die het soft in/uit fade't
+      const gate = ctx.createGain()
+      gate.gain.setValueAtTime(0, tStart)
+      gate.gain.linearRampToValueAtTime(1, tStart + 0.5)
+      gate.gain.setValueAtTime(1, tEnd - 0.5)
+      gate.gain.linearRampToValueAtTime(0, tEnd)
+      gate.connect(padLP)
+
+      freqs.forEach((f, fi) => {
+        for (const detune of [-3, +3]) {
+          const o = ctx.createOscillator()
+          o.type = 'sine'; o.frequency.value = f; o.detune.value = detune
+          const partialGain = ctx.createGain()
+          const w = (fi === 0) ? 0.55 : (fi === 1 ? 0.35 : (fi === 2 ? 0.30 : 0.22))
+          partialGain.gain.value = w / freqs.length
+          o.connect(partialGain); partialGain.connect(gate)
+          o.start(tStart - 0.01); o.stop(tEnd + 0.05)
+          oscs.push(o)
+        }
+      })
+
+      // ── DRUMS: simpele lounge-groove
+      // Beats 1 en 3: kick. Beats 2.5 en 4.5: shaker. 8th-note hi-hats subtiel.
+      _scheduleKick(ctx, drumBus, tStart + 0 * beatSec, 0.45)
+      _scheduleKick(ctx, drumBus, tStart + 2 * beatSec, 0.40)
+      _scheduleShaker(ctx, drumBus, tStart + 1.5 * beatSec, 0.18)
+      _scheduleShaker(ctx, drumBus, tStart + 3.5 * beatSec, 0.18)
+      // Hi-hats op elke halve tel, accenten op 2 en 4
+      for (let h = 0; h < 8; h++) {
+        const hatT = tStart + h * 0.5 * beatSec
+        const isAccent = (h === 2 || h === 6) // beats 2 en 4
+        _scheduleHat(ctx, drumBus, hatT, isAccent ? 0.10 : 0.045)
+      }
+
+      // ── MELODIE: kies een patroon, gebruik chord-tones + 9 als noot-pool
+      // Octaaf hoger zodat de melodie boven de pads uitkomt.
+      const ninth = chord.root * 1.125
+      const melPool = [...freqs.map(f => f * 2), ninth * 2]
+      const pat = MEL_PATTERNS[Math.floor(Math.random() * MEL_PATTERNS.length)]
+      pat.forEach(n => {
+        const noteT = tStart + n.t * beatSec
+        const freq  = melPool[n.f % melPool.length]
+        _scheduleMelodyNote(ctx, melodyBus, noteT, freq, n.d * beatSec, 0.18)
+      })
+    })
+  }
+
+  // Master fade-in / fade-out
+  master.gain.setValueAtTime(0, t0)
+  master.gain.linearRampToValueAtTime(1.0, t0 + fadeIn)
+  master.gain.setValueAtTime(1.0, t0 + totalSec - fadeOut)
+  master.gain.linearRampToValueAtTime(0, t0 + totalSec)
+
+  let stopped = false
+  return {
+    type: 'music',
+    name: track.name,
+    durationMs: Math.round(totalSec * 1000),
+    play: () => { /* gepland tegen t0 */ },
+    scheduleFadeOut: () => { /* al gepland */ },
+    stop: () => {
+      if (stopped) return
+      stopped = true
+      try { master.gain.cancelScheduledValues(ctx.currentTime) } catch(e){}
+      try { master.gain.setTargetAtTime(0, ctx.currentTime, 0.15) } catch(e){}
+      setTimeout(() => { oscs.forEach(o => { try { o.stop() } catch(e){} }) }, 400)
+    }
+  }
+}
+
+// ── Speaker test (afspelen, geen mic-meting) ────────────────────
+let speakerActiveCtx = null
+let speakerActiveSig = null
+let speakerActiveTimeout = null
+
+async function speakerStopPlayback() {
+  if (speakerActiveTimeout) { clearTimeout(speakerActiveTimeout); speakerActiveTimeout = null }
+  if (speakerActiveSig) { try { speakerActiveSig.stop() } catch(e){} ; speakerActiveSig = null }
+  if (speakerActiveCtx) {
+    const ctx = speakerActiveCtx
+    speakerActiveCtx = null
+    // Korte wacht zodat fade-out kan afronden
+    setTimeout(() => { try { ctx.close() } catch(e){} }, 500)
+  }
+  const btn  = document.getElementById('btn-spk-test')
+  const stop = document.getElementById('btn-spk-stop')
+  const out  = document.getElementById('spk-test-result')
+  if (btn)  { btn.disabled = false; btn.innerHTML = ico('play') + ' Speel af' }
+  if (stop) { stop.disabled = true }
+  if (out && !out.textContent.includes('mislukt')) {
+    out.textContent = 'Klaar'
+    out.className = 'result-box'
+  }
 }
 
 async function speakerRunTestStandalone() {
-  // Standalone trigger vanuit het DEV paneel voor tweaking zonder RoomTest overlay
-  const btn = document.getElementById('btn-spk-test')
-  const out = document.getElementById('spk-test-result')
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Test loopt…' }
-  if (out) { out.textContent = 'Test loopt…'; out.className = 'result-box' }
-  const res = await qtTestSpeaker()
-  if (out) {
-    out.textContent = res.text
-    out.className = 'result-box ' + (res.state === 'pass' ? 'ok' : res.state === 'warn' ? 'warn' : 'err')
+  // Speaker-only: speelt het gekozen signaal af door de geselecteerde speaker.
+  // Geen mic-meting, geen Δ-readout. Operator hoort het, klaar.
+  if (speakerActiveCtx) {
+    await speakerStopPlayback()
+    return
   }
-  if (btn) { btn.disabled = false; btn.textContent = '▶ Test nu' }
+
+  const btn  = document.getElementById('btn-spk-test')
+  const stop = document.getElementById('btn-spk-stop')
+  const out  = document.getElementById('spk-test-result')
+  const sigType = speakerGetSignalType()
+
+  if (btn) { btn.disabled = true; btn.innerHTML = ico('loader') + ' Speelt af…' }
+  if (stop) { stop.disabled = false }
+  if (out) { out.textContent = 'Speelt af…'; out.className = 'result-box' }
+
+  try {
+    const ctx = new AudioContext()
+    speakerActiveCtx = ctx
+    if (ctx.state === 'suspended') { try { await ctx.resume() } catch(e){} }
+    if (selSpeaker.value && ctx.setSinkId) {
+      try { await ctx.setSinkId(selSpeaker.value) } catch(e){}
+    }
+    setSpeakerStatusField('sampleRate', ctx.sampleRate)
+    const volGain = ctx.createGain()
+    volGain.gain.value = currentVolume
+    registerGainNode(volGain)
+    volGain.connect(ctx.destination)
+
+    let sig
+    let durMs = speakerSettings.chordMs
+    if (sigType === 'chord')      { sig = makeChord(ctx, volGain) }
+    else if (sigType === 'pink')  { sig = makePinkNoise(ctx, volGain) }
+    else if (sigType === 'speech'){
+      sig = await makeSpeech(ctx, volGain)
+      if (!sig) { sig = makeChord(ctx, volGain) } else { durMs = sig.durationMs }
+    }
+    else if (sigType === 'music') {
+      sig = makeMusic(ctx, volGain)
+      durMs = sig.durationMs
+      if (out) out.textContent = '🎵 ' + sig.name + ' (' + Math.round(durMs/1000) + 's)'
+    }
+
+    speakerActiveSig = sig
+    if (sig.play) sig.play()
+    if (sig.scheduleFadeOut && sigType !== 'speech' && sigType !== 'music') sig.scheduleFadeOut(durMs)
+
+    speakerActiveTimeout = setTimeout(() => {
+      unregisterGainNode(volGain)
+      speakerStopPlayback()
+    }, durMs + 200)
+  } catch(e) {
+    console.warn('[Speaker] test mislukt:', e.message)
+    if (out) { out.textContent = 'Test mislukt: ' + e.message; out.className = 'result-box err' }
+    speakerStopPlayback()
+  }
 }
 
 
+// ── Audio controls tile (v3.4.8) ───────────────────────────────
+function setAudioStatusField(field, value) {
+  const map = { device: 'audio-status-device', sampleRate: 'audio-status-sr', mute: 'audio-status-mute' }
+  const id = map[field]; if (!id) return
+  const el = document.getElementById(id); if (!el) return
+  el.textContent = field === 'sampleRate' ? value + ' Hz' : String(value)
+}
+function setAudioStatus(s) {
+  if (s.device     != null) setAudioStatusField('device',     s.device)
+  if (s.sampleRate != null) setAudioStatusField('sampleRate', s.sampleRate)
+  if (s.mute       != null) setAudioStatusField('mute',       s.mute)
+}
+// Speaker-status row in de speaker-test tile — mirror van bovenstaand voor
+// de output kant. Device komt uit selSpeaker (label van geselecteerde optie),
+// sample rate wordt geüpdatet bij speakerRunTestStandalone-start.
+function setSpeakerStatusField(field, value) {
+  const map = { device: 'speaker-status-device', sampleRate: 'speaker-status-sr' }
+  const id = map[field]; if (!id) return
+  const el = document.getElementById(id); if (!el) return
+  el.textContent = field === 'sampleRate' ? value + ' Hz' : String(value)
+}
+function refreshSpeakerStatusDevice() {
+  const sel = document.getElementById('sel-speaker')
+  if (!sel) return
+  const opt = sel.options[sel.selectedIndex]
+  setSpeakerStatusField('device', opt ? opt.text : '—')
+}
+// Sample rate ophalen zonder een test te starten — korte AudioContext
+// maken, lezen, sluiten. setSinkId is nodig zodat we de rate van het
+// daadwerkelijk gekozen device terugkrijgen ipv de default. Stille close
+// als dat ergens faalt; we vallen dan terug op de bestaande waarde.
+let _spkSrFetchPending = false
+async function refreshSpeakerStatusSampleRate() {
+  if (_spkSrFetchPending) return
+  _spkSrFetchPending = true
+  try {
+    const sel = document.getElementById('sel-speaker')
+    const ctx = new AudioContext()
+    if (sel?.value && ctx.setSinkId) {
+      try { await ctx.setSinkId(sel.value) } catch(_){}
+    }
+    setSpeakerStatusField('sampleRate', ctx.sampleRate)
+    try { await ctx.close() } catch(_){}
+  } catch(_){} finally { _spkSrFetchPending = false }
+}
+
+;(function initAudioControls() {
+  // Mic-trim / speaker-trim / AEC-NS-AGC checkboxes zijn uit de UI gehaald
+  // (gebruiker-verzoek). De onderliggende state-variabelen staan op default
+  // (micTrimValue=1.0, userAudioConstraints={false,false,false}, currentVolume=1.0)
+  // wat 1:1 het pre-v3.4.8 gedrag oplevert. Helper-functies (getMicConstraints,
+  // applyMicTrim, applyOutputTrim) blijven bestaan zodat startLiveMic en de
+  // overige getUserMedia-aanroepers ze kunnen blijven gebruiken zonder refactor.
+  const btnSnd    = document.getElementById('btn-audio-open-sound')
+
+  // Snelkoppeling naar Windows geluidsinstellingen — geen programmatic write.
+  if (btnSnd) {
+    btnSnd.addEventListener('click', () => {
+      try { window.rrBridge.openExternal('ms-settings:sound') } catch(_){}
+    })
+  }
+
+  // Speaker status-row: device-label volgt selSpeaker. populateDevices
+  // vult 'm programmatisch (geen native 'change'-event), dus we kunnen
+  // niet alleen op 'change' rekenen. Belt-and-suspenders:
+  //   - 'change' + 'input' op selSpeaker — dekt user-clicks
+  //   - inside refreshSysAudio polling — dekt programmatic populates
+  //   - één-shot na DOMContentLoaded — initial paint
+  const _selSpk = document.getElementById('sel-speaker')
+  function _spkRefresh() { refreshSpeakerStatusDevice(); refreshSpeakerStatusSampleRate() }
+  if (_selSpk) {
+    _selSpk.addEventListener('change', _spkRefresh)
+    _selSpk.addEventListener('input',  _spkRefresh)
+  }
+  refreshSpeakerStatusDevice()
+  // Sample rate één keer ophalen na korte delay — populateDevices kan op
+  // dat moment nog selSpeaker.value=… aan 't doen zijn, en setSinkId wil
+  // een geldige device-id.
+  setTimeout(refreshSpeakerStatusSampleRate, 800)
+
+  // ── Windows volume sync (Core Audio COM via main-process helper) ──
+  // Alleen de default render endpoint (speaker). Mic-input slider is in
+  // v3.4.8 op user-verzoek weggehaald — Windows handelt de mic-gain prima
+  // af en het IPC-handlers-pad blijft bestaan voor eventueel later gebruik.
+  // Polling 2s zodat externe wijzigingen (volume-toetsen, andere apps) ook
+  // zichtbaar worden. Dragging onderdrukt incoming polls om jitter te
+  // voorkomen — anders schiet de slider terug terwijl de gebruiker 'm
+  // nog vasthoudt.
+  const sysSpkSlider = document.getElementById('sys-spk-vol')
+  const sysSpkVal    = document.getElementById('sys-spk-vol-val')
+
+  let sysSpkId = null
+  let sysSpkDragging = false
+  let sysAudioAvailable = false
+
+  async function refreshSysAudio() {
+    // Speaker-device-label sync — los van de COM-helper, doet 't zelfs als
+    // de helper-exe ontbreekt. Goedkoop (alleen DOM-lookup), dus elke tick.
+    refreshSpeakerStatusDevice()
+    if (!window.rrBridge?.audioGetDefaults) return
+    try {
+      const defs = await window.rrBridge.audioGetDefaults()
+      if (!defs?.ok) {
+        if (sysAudioAvailable) {
+          console.warn('[SysAudio]', defs?.error || 'helper unavailable')
+          sysAudioAvailable = false
+          if (sysSpkSlider) sysSpkSlider.disabled = true
+        }
+        return
+      }
+      sysAudioAvailable = true
+      if (sysSpkSlider) sysSpkSlider.disabled = false
+      sysSpkId = defs.render
+
+      if (sysSpkId && !sysSpkDragging) {
+        const r = await window.rrBridge.audioGet(sysSpkId)
+        if (r?.ok && r.device) {
+          const pct = r.device.volume | 0
+          if (sysSpkSlider && !sysSpkSlider.matches(':active')) sysSpkSlider.value = pct
+          if (sysSpkVal) sysSpkVal.textContent = pct + '%'
+        }
+      }
+    } catch (e) {
+      console.warn('[SysAudio] sync error:', e?.message || e)
+    }
+  }
+
+  if (sysSpkSlider) {
+    sysSpkSlider.addEventListener('pointerdown', () => { sysSpkDragging = true })
+    sysSpkSlider.addEventListener('pointerup',   () => { sysSpkDragging = false })
+    sysSpkSlider.addEventListener('input', () => {
+      const pct = parseInt(sysSpkSlider.value, 10)
+      sysSpkVal.textContent = pct + '%'
+      if (sysSpkId) window.rrBridge.audioSetVolume(sysSpkId, pct)
+    })
+  }
+
+  refreshSysAudio()
+  setInterval(refreshSysAudio, 2000)
+})()
+
 // ── Loopback ───────────────────────────────────────────────────
-// ── Speaker + Mic test (v3.3.5) ──
+// ── Speaker test ──
 document.getElementById('btn-spk-test').addEventListener('click', speakerRunTestStandalone)
-document.getElementById('btn-open-sound').addEventListener('click', () => {
-  // ms-settings:sound opent direct het Geluid-paneel waar mute/volume te
-  // controleren is. Geen programmatic write naar Windows audio service —
-  // user doet zelf de mute-toggle (zie spec anti-pattern #2).
-  window.rrBridge.openExternal('ms-settings:sound')
-})
+document.getElementById('btn-spk-stop').addEventListener('click', speakerStopPlayback)
 
 // Same-groupId detectie: mic en speaker op dezelfde audio-chip betekent
 // hardware-AEC die ons testsignaal cancelt (Realtek-on-Realtek scenario).
@@ -3944,11 +5047,6 @@ async function isSameAudioGroup() {
     return !!(m && s && m.groupId && m.groupId === s.groupId)
   } catch(_) { return false }
 }
-document.getElementById('btn-spk-settings').addEventListener('click', speakerToggleSettingsPanel)
-document.getElementById('btn-spk-settings-save').addEventListener('click', speakerCommitSettings)
-document.getElementById('btn-spk-settings-reset').addEventListener('click', () => {
-  if (confirm('Alle speaker-test instellingen terug naar defaults?')) speakerResetDefaults()
-})
 // Radio's voor signaaltype — verberg speech-info tenzij 'speech' actief
 document.querySelectorAll('input[name="spk-signal"]').forEach(r => {
   r.addEventListener('change', () => {
@@ -4231,11 +5329,10 @@ async function kioskStartMicMeter(deviceId) {
   kioskStopMicMeter()
   if (!deviceId) return
   try {
+    // Was vóór v3.4.8: { deviceId: { exact: deviceId } } zonder useExact-gating —
+    // dat schendt anti-pattern #3 als deviceId 'default'/'communications' is.
     kiosk.micStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        deviceId: { exact: deviceId },
-        echoCancellation: false, noiseSuppression: false, autoGainControl: false
-      }
+      audio: getMicConstraints(deviceId)
     })
     kiosk.micCtx = new AudioContext()
     const src = kiosk.micCtx.createMediaStreamSource(kiosk.micStream)
@@ -4317,7 +5414,10 @@ async function kioskStartQuickTest() {
   try {
     const displays = await window.rrBridge.listDisplays()
     if (displays && displays.length > 1) {
+      // Niet awaiten zodat kiosk-flow niet blokkeert, maar wel een .catch
+      // — anders bubbelt een failure naar een unhandled rejection.
       window.rrBridge.openPreview({ displayId: displays[1].id })
+        .catch(e => console.warn('[KIOSK] openPreview fail:', e?.message || e))
       setTimeout(() => setPreviewState('testing'), 200)
     }
   } catch(e) { console.warn('[KIOSK] preview open fail:', e) }
@@ -4445,8 +5545,7 @@ async function startLoopback() {
   try {
     const lpUseExact = selMic.value && selMic.value !== 'default' && selMic.value !== 'communications'
     loopStream = await navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: lpUseExact ? { exact: selMic.value } : undefined,
-               echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+      audio: getMicConstraints(selMic.value)
     })
     loopAudioCtx = new AudioContext()
     if (selSpeaker.value && loopAudioCtx.setSinkId) try { await loopAudioCtx.setSinkId(selSpeaker.value) } catch(e){}
@@ -4490,171 +5589,17 @@ function stopLoopback() {
   setMeter('loop-meter-out-fill','loop-meter-out-db',0)
 }
 
-// ── Latency ────────────────────────────────────────────────────
-document.getElementById('btn-lat-start').addEventListener('click', measureLatency)
-async function measureLatency() {
-  const btn=document.getElementById('btn-lat-start'), res=document.getElementById('lat-result')
-  const prog=document.getElementById('lat-progress'), fill=document.getElementById('lat-prog-fill')
-  btn.disabled=true; prog.style.display='block'; fill.style.width='0%'
-
-  // Detecteer of mic en speaker dezelfde AEC-speakerphone zijn — twee paden:
-  // 1) label-match voor bekende conference-bars (Rally, MeetUp, etc.)
-  // 2) groupId-match: mic en speaker op dezelfde audio-chip (Realtek-on-
-  //    Realtek, Conexant, etc.) hebben hardware-AEC die ons signaal cancelt
-  const micLbl = (selMic.options[selMic.selectedIndex]?.textContent || '').toLowerCase()
-  const spkLbl = (selSpeaker.options[selSpeaker.selectedIndex]?.textContent || '').toLowerCase()
-  const labelMatch = (micLbl.includes('echo cancel') || micLbl.includes('speakerphone') ||
-                      micLbl.includes('rally audio') || micLbl.includes('meetup')) &&
-                     (spkLbl.includes('echo cancel') || spkLbl.includes('speakerphone') ||
-                      spkLbl.includes('rally audio') || spkLbl.includes('meetup'))
-  const sameGroup = await isSameAudioGroup()
-  const aecDevice = labelMatch || sameGroup
-
-  if (aecDevice) {
-    const reason = sameGroup && !labelMatch
-      ? 'Mic en speaker zitten op dezelfde audio-chip — hardware AEC cancelt het testsignaal.'
-      : 'Mic en speaker zijn dezelfde AEC-speakerphone.'
-    res.innerHTML = '⚠️ <b>' + reason + '</b><br>' +
-      '<span style="font-size:10px;">Voor een nuttige meting: kies een andere mic of speaker (bijv. laptop-speaker + Rally-mic).</span>'
-    res.className = 'result-box warn'
-    btn.disabled = false; prog.style.display = 'none'
-    return
-  }
-
-  res.textContent = 'Ruispuls afspelen, FFT luistert…'; res.className='result-box'
-
-  // Aanpak: korte wideband ruispuls (30ms). AEC kan breedband niet perfect cancelen
-  // en de korte duur geeft AEC onvoldoende tijd om zich volledig aan te passen.
-  const BURST_MS  = 30
-  const MAX_WAIT  = 1500
-
-  // Stop de live-mic monitor tijdens de meting. Op Windows kan een tweede
-  // consumer op dezelfde USB-mic (Logitech/Jabra exclusive mode) stale/silent
-  // buffers krijgen tot de eerste consumer echt los is.
-  // BELANGRIJK: zet eerst liveMicInhibit, ANDERS triggert stopLiveMic() het
-  // 'ended' event op de oude track, waarna een setTimeout 800ms later auto-
-  // herstart en je weer twee consumers hebt midden in de meting.
-  let liveMicWasActive = !!liveMicStream
-  if (liveMicWasActive) { liveMicInhibit = true; stopLiveMic() }
-
-  try {
-    const sigUseExact = selMic.value && selMic.value !== 'default' && selMic.value !== 'communications'
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: sigUseExact ? { exact: selMic.value } : undefined,
-               echoCancellation:false, noiseSuppression:false, autoGainControl:false }
-    })
-    const ctx = new AudioContext()
-    const src = ctx.createMediaStreamSource(stream)
-    const ana = ctx.createAnalyser()
-    ana.fftSize = 1024
-    ana.smoothingTimeConstant = 0.0
-    src.connect(ana)
-
-    await new Promise(r=>setTimeout(r, 300)) // mic settle
-
-    // Baseline: gemiddelde RMS van de mic-ingang (20 frames)
-    const timeBuf = new Uint8Array(ana.fftSize)
-    const baseReadings = []
-    await new Promise(resolve => {
-      let n = 0
-      function snap() {
-        ana.getByteTimeDomainData(timeBuf)
-        baseReadings.push(rms(timeBuf))
-        if (++n < 20) requestAnimationFrame(snap); else resolve()
-      }
-      snap()
-    })
-    const baseLine = baseReadings.reduce((a,b)=>a+b,0) / baseReadings.length
-    // Trigger is soepeler dan voorheen (was *5, +0.02): op laptops met zwakke
-    // speaker→mic koppeling (Realtek) blijft de burst-RMS ~0.01-0.04 boven
-    // ~0.005 baseline, dus *3 + 0.005 raakt al binnen 1-2 attempts.
-    const triggerLevel = Math.max(baseLine * 3, baseLine + 0.005)
-
-    // Maak wideband ruispuls buffer
-    const spkCtx = new AudioContext()
-    if (selSpeaker.value && spkCtx.setSinkId) {
-      try { await spkCtx.setSinkId(selSpeaker.value) } catch(e){}
-    }
-
-    const burstLen = Math.round(spkCtx.sampleRate * BURST_MS / 1000)
-    const noiseBuf = spkCtx.createBuffer(1, burstLen, spkCtx.sampleRate)
-    const nd = noiseBuf.getChannelData(0)
-    for (let i = 0; i < burstLen; i++) {
-      // Ramp envelope om clicks te voorkomen
-      const env = i < 50 ? i/50 : (i > burstLen-50 ? (burstLen-i)/50 : 1)
-      nd[i] = (Math.random()*2-1) * env
-    }
-
-    // Meerdere pogingen — neem eerste gelukte
-    let latMs = null
-    for (let attempt=0; attempt<5 && latMs===null; attempt++) {
-      if (attempt > 0) {
-        res.textContent = 'Poging '+(attempt+1)+'/5 — ruispuls afspelen…'
-        await new Promise(r=>setTimeout(r, 800))  // lange pauze zodat AEC weer "vergeet"
-      }
-
-      const srcNode = spkCtx.createBufferSource()
-      srcNode.buffer = noiseBuf
-      const gn = spkCtx.createGain()
-      gn.gain.value = Math.min(1, currentVolume * 1.5)  // extra volume voor detectie
-      srcNode.connect(gn); gn.connect(spkCtx.destination)
-
-      const playTime = performance.now()
-      srcNode.start()
-
-      // Luister op RMS-drempel overschrijding
-      let detected = null
-      await new Promise(resolve => {
-        const deadline = performance.now() + MAX_WAIT
-        function listen() {
-          ana.getByteTimeDomainData(timeBuf)
-          const level = rms(timeBuf)
-          if (level >= triggerLevel && !detected) {
-            detected = performance.now()
-            resolve()
-          } else if (performance.now() > deadline) {
-            resolve()
-          } else {
-            requestAnimationFrame(listen)
-          }
-        }
-        requestAnimationFrame(listen)
-      })
-
-      if (detected) latMs = Math.round(detected - playTime)
-      fill.style.width = ((attempt+1)/5*90)+'%'
-    }
-
-    fill.style.width = '100%'
-    // Await close zodat het speaker-device echt vrijkomt voordat een eventuele
-    // volgende klik een nieuwe spkCtx probeert te claimen.
-    stream.getTracks().forEach(t=>t.stop()); ctx.close(); await spkCtx.close()
-
-    if (latMs !== null) {
-      const qual = latMs<100?'✅ Uitstekend':latMs<250?'✅ Goed':latMs<450?'✅ Acceptabel':'❌ Hoog'
-      res.textContent = 'Round-trip latency: '+latMs+' ms — '+qual
-      res.className = latMs<450?'result-box ok':'result-box err'
-      document.getElementById('meting-badge').textContent = latMs+' ms latency'
-      document.getElementById('meting-badge').className = latMs<450?'badge ok':'badge err'
-    } else {
-      res.innerHTML = '⚠️ Ruispuls niet gedetecteerd.<br>' +
-        '<span style="font-size:10px;">Baseline RMS: '+baseLine.toFixed(4)+', trigger: '+triggerLevel.toFixed(4)+
-        '. Mogelijke oorzaken: speaker te zacht, AEC cancelt de puls, of mic/speaker mismatch.</span>'
-      res.className = 'result-box warn'
-    }
-  } catch(e) {
-    res.textContent='⚠️ Fout: '+e.message; res.className='result-box'
-  } finally {
-    prog.style.display='none'
-    // Herstart live-mic vóór we de knop weer enablen, zodat een snelle
-    // tweede klik niet midden in een halve restart valt.
-    if (liveMicWasActive) { try { await startLiveMic() } catch(_) {} }
-    liveMicInhibit = false
-    btn.disabled=false
-  }
+// ── Helpers ────────────────────────────────────────────────────
+// Lucide-icon helper voor JS-aangedreven button-labels (textContent → innerHTML).
+// Gebruik: btn.innerHTML = ico('play') + ' Camera'. Auto-styling: play/square
+// krijgen icon-fill (gevuld), loader krijgt icon-spin (rondraaiend).
+function ico(name, cls) {
+  let auto = ''
+  if (name === 'play' || name === 'square') auto = 'icon-fill'
+  else if (name === 'loader') auto = 'icon-spin'
+  return `<svg class="icon ${cls || auto}"><use href="#i-${name}"/></svg>`
 }
 
-// ── Helpers ────────────────────────────────────────────────────
 function rms(buf) {
   let s=0; for (let i=0;i<buf.length;i++) { const v=(buf[i]-128)/128; s+=v*v }
   return Math.sqrt(s/buf.length)
@@ -4681,28 +5626,28 @@ function buildCameraControls() {
 
   const controls = [
     // Beeldkwaliteit
-    { key:'brightness',        label:'Helderheid',    icon:'☀' },
-    { key:'contrast',          label:'Contrast',      icon:'◑' },
-    { key:'saturation',        label:'Verzadiging',   icon:'🎨' },
-    { key:'sharpness',         label:'Scherpte',      icon:'🔍' },
+    { key:'brightness',        label:'Helderheid',    icon: ico('sun') },
+    { key:'contrast',          label:'Contrast',      icon: ico('contrast') },
+    { key:'saturation',        label:'Verzadiging',   icon: ico('droplet') },
+    { key:'sharpness',         label:'Scherpte',      icon: ico('focus') },
     // Witbalans
-    { key:'whiteBalanceMode',  label:'Witbalans',     icon:'⬜', isEnum:true, vals:['none','manual','single-shot','continuous'] },
-    { key:'colorTemperature',  label:'Kleurtemp (K)', icon:'🌡', autoManualFor:'whiteBalanceMode' },
+    { key:'whiteBalanceMode',  label:'Witbalans',     icon: ico('sun'), isEnum:true, vals:['none','manual','single-shot','continuous'] },
+    { key:'colorTemperature',  label:'Kleurtemp (K)', icon: ico('thermometer'), autoManualFor:'whiteBalanceMode', clampMin: 2800, clampMax: 6500 },
     // Belichting
-    { key:'exposureMode',      label:'Belichting',    icon:'📸', isEnum:true, vals:['none','manual','single-shot','continuous'] },
-    { key:'exposureCompensation', label:'Bel. compensatie', icon:'±' },
-    { key:'exposureTime',      label:'Sluitertijd',   icon:'⏱', requiresManual:'exposureMode' },
-    { key:'iso',               label:'ISO (gain)',    icon:'📊', requiresManual:'exposureMode' },
+    { key:'exposureMode',      label:'Belichting',    icon: ico('aperture'), isEnum:true, vals:['none','manual','single-shot','continuous'] },
+    { key:'exposureCompensation', label:'Bel. compensatie', icon: ico('plusminus') },
+    { key:'exposureTime',      label:'Sluitertijd',   icon: ico('clock'), requiresManual:'exposureMode' },
+    { key:'iso',               label:'ISO (gain)',    icon: ico('barchart'), requiresManual:'exposureMode' },
     // Focus
-    { key:'focusMode',         label:'Focus modus',   icon:'👁', isEnum:true, vals:['none','manual','single-shot','continuous'] },
-    { key:'focusDistance',     label:'Focus afstand', icon:'📏', requiresManual:'focusMode' },
+    { key:'focusMode',         label:'Focus modus',   icon: ico('eye'), isEnum:true, vals:['none','manual','single-shot','continuous'] },
+    { key:'focusDistance',     label:'Focus afstand', icon: ico('ruler'), requiresManual:'focusMode' },
     // Camera extra's
-    { key:'torch',             label:'Licht (torch)', icon:'🔦', isBool:true },
-    { key:'backgroundBlur',    label:'Achtergrond blur', icon:'🫧', isBool:true },
-    { key:'faceFraming',       label:'Face framing',  icon:'🧑', isBool:true },
-    { key:'eyeGazeCorrection', label:'Oog-correctie', icon:'👀', isBool:true },
+    { key:'torch',             label:'Licht (torch)', icon: ico('flashlight'), isBool:true },
+    { key:'backgroundBlur',    label:'Achtergrond blur', icon: ico('sparkles'), isBool:true },
+    { key:'faceFraming',       label:'Face framing',  icon: ico('user-square'), isBool:true },
+    { key:'eyeGazeCorrection', label:'Oog-correctie', icon: ico('eye-off'), isBool:true },
     // Format
-    { key:'frameRate',         label:'Framerate',     icon:'🎞' },
+    { key:'frameRate',         label:'Framerate',     icon: ico('film') },
   ]
 
   let html = ''
@@ -4712,22 +5657,26 @@ function buildCameraControls() {
     const cap = caps[c.key]
     // Skip controls die alleen relevant zijn bij manual mode
     if (c.requiresManual) {
-      // Prioriteit: userModeChoices (wat user koos) > settings (wat camera rapporteert)
       const effective = userModeChoices[c.requiresManual] || settings[c.requiresManual]
       if (effective !== 'manual') return
     }
     // Chromium reports some capabilities as sequence<boolean> [true,false], others as boolean cap object, etc.
-    const supported = cap !== undefined && cap !== null && !(Array.isArray(cap) && cap.length === 0)
-    if (supported) supportCount++
+    // Voor numeric: cap moet {min,max} hebben — anders weet de slider geen range.
+    let supported = cap !== undefined && cap !== null && !(Array.isArray(cap) && cap.length === 0)
+    if (supported && !c.isBool && !c.isEnum) {
+      const hasRange = cap && typeof cap === 'object' && 'min' in cap && 'max' in cap
+      if (!hasRange) supported = false
+    }
+    // Niet-ondersteunde controls helemaal niet renderen — vermijdt greyed-out clutter.
+    if (!supported) return
+    supportCount++
 
     if (c.isBool) {
-      // backgroundBlur/torch/faceFraming: capability is usually [true,false] or [true]
-      // settings value is boolean. Render als toggle.
       const current = !!settings[c.key]
-      html += `<div class="ctrl-row${supported ? '' : ' unsupported'}" style="align-items:center;">
+      html += `<div class="ctrl-row" style="align-items:center;">
         <div class="ctrl-lbl">${c.icon} ${c.label}</div>
-        <label style="flex:1;display:flex;align-items:center;gap:6px;cursor:${supported?'pointer':'default'};">
-          <input type="checkbox" ${current?'checked':''} ${supported?'':'disabled'}
+        <label style="flex:1;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" ${current?'checked':''}
             onchange="applyCamConstraint('${c.key}', this.checked)"
             data-cap="${c.key}" data-bool="1"
             style="accent-color:var(--accent);transform:scale(1.2);">
@@ -4735,34 +5684,34 @@ function buildCameraControls() {
         </label>
       </div>`
     } else if (c.isEnum) {
-      // Prioriteit: gebruikerskeuze > settings (bij mode-controls)
       const isModeCtrl = c.key === 'whiteBalanceMode' || c.key === 'exposureMode' || c.key === 'focusMode'
       const current = (isModeCtrl && userModeChoices[c.key]) || settings[c.key] || ''
       const availableVals = Array.isArray(cap) ? cap : (c.vals || [])
       const options = availableVals.map(v =>
         `<option value="${v}"${v===current?' selected':''}>${v}</option>`
       ).join('')
-      html += `<div class="ctrl-row${supported ? '' : ' unsupported'}">
+      html += `<div class="ctrl-row">
         <div class="ctrl-lbl">${c.icon} ${c.label}</div>
         <select class="ctrl-slider" style="flex:1;height:24px;padding:0 4px;font-size:11px;border-radius:var(--btn-radius);"
-          ${supported ? `onchange="applyCamConstraint('${c.key}',this.value)"` : 'disabled'}
+          onchange="applyCamConstraint('${c.key}',this.value)"
           data-cap="${c.key}">${options}</select>
       </div>`
     } else {
-      // Numeric slider
-      const hasRange = cap && typeof cap === 'object' && 'min' in cap && 'max' in cap
-      const min = hasRange ? cap.min : 0
-      const max = hasRange ? cap.max : 100
-      const step = hasRange ? (cap.step || 1) : 1
-      const val = settings[c.key] !== undefined ? settings[c.key] : (hasRange ? Math.round((min+max)/2) : 0)
+      // Optionele clamp via clampMin/clampMax — voor controls waar de hardware-range
+      // ruimer is dan praktisch nuttig (bv. kleurtemp: 2800-6500 K dekt indoor lighting).
+      const min = c.clampMin !== undefined ? Math.max(cap.min, c.clampMin) : cap.min
+      const max = c.clampMax !== undefined ? Math.min(cap.max, c.clampMax) : cap.max
+      const step = cap.step || 1
+      const rawVal = settings[c.key] !== undefined ? settings[c.key] : Math.round((min+max)/2)
+      const val = Math.max(min, Math.min(max, rawVal))
       const applyCall = c.autoManualFor
         ? `applyWithAutoManual('${c.key}','${c.autoManualFor}',+this.value)`
         : `applyCamConstraint('${c.key}',+this.value)`
-      html += `<div class="ctrl-row${supported ? '' : ' unsupported'}">
+      html += `<div class="ctrl-row">
         <div class="ctrl-lbl">${c.icon} ${c.label}</div>
         <input type="range" class="ctrl-slider"
           min="${min}" max="${max}" step="${step}" value="${val}"
-          ${supported ? `oninput="this.nextElementSibling.textContent=(+this.value).toFixed(${step<1?2:0});${applyCall}"` : 'disabled'}
+          oninput="this.nextElementSibling.textContent=(+this.value).toFixed(${step<1?2:0});${applyCall}"
           data-cap="${c.key}">
         <div class="ctrl-val">${typeof val === 'number' ? val.toFixed(step<1?2:0) : val}</div>
       </div>`
@@ -4795,18 +5744,20 @@ async function applyWithAutoManual(key, modeKey, value) {
   if (!track) return
   const settings = track.getSettings()
 
-  // Als mode nog niet op manual staat, eerst schakelen
+  // Als mode nog niet op manual staat, eerst schakelen — maar GEEN rebuild
+  // triggeren. Een rebuild tijdens een drag vervangt het slider-element en
+  // breekt de drag-interactie. De dropdown-update via data-cap zorgt al voor
+  // sync zonder volle rebuild.
   const currentMode = userModeChoices[modeKey] || settings[modeKey]
   if (currentMode !== 'manual') {
-    await applyCamConstraint(modeKey, 'manual')
-    // Korte wacht zodat camera de mode-switch heeft verwerkt
+    await applyCamConstraint(modeKey, 'manual', { skipRebuild: true })
     await new Promise(r => setTimeout(r, 100))
   }
   // Dan de waarde zetten
   await applyCamConstraint(key, value)
 }
 
-async function applyCamConstraint(key, value) {
+async function applyCamConstraint(key, value, opts) {
   if (!camStream) return
   const track = camStream.getVideoTracks()[0]
   if (!track) return
@@ -4859,8 +5810,12 @@ async function applyCamConstraint(key, value) {
   const actual = track.getSettings()[key]
   const displayVal = isMode ? value : (actual !== undefined ? actual : value)
 
-  // Update alle UI-elementen voor deze key
+  // Update alle UI-elementen voor deze key. BELANGRIJK: skip de update als de
+  // gebruiker juist met dit element bezig is (slider-drag) — anders zet de
+  // achterlopende camera-readback de slider terug naar zijn vorige waarde
+  // midden in de drag, en blijft 'ie haperend hangen.
   document.querySelectorAll(`[data-cap="${key}"]`).forEach(el => {
+    if (document.activeElement === el) return
     if (el.type === 'checkbox') {
       el.checked = !!displayVal
       const lbl = el.parentElement?.querySelector('.ctrl-val')
@@ -4878,8 +5833,10 @@ async function applyCamConstraint(key, value) {
     }
   })
 
-  // Rebuild controls als modus veranderd is (toont/verbergt manual-only sliders)
-  if (isMode) {
+  // Rebuild controls als modus veranderd is (toont/verbergt manual-only sliders).
+  // skipRebuild = true bij auto-manual-switch vanuit een slider — anders breekt
+  // de slider-drag mid-interactie omdat de DOM-elementen worden vervangen.
+  if (isMode && !(opts && opts.skipRebuild)) {
     setTimeout(() => buildCameraControls(), 250)
   }
 }
@@ -4981,10 +5938,10 @@ function buildPTZ(track, caps, settings) {
   const tiltRange = hasTilt ? caps.tilt.max - caps.tilt.min : 0
   const zoomRange = hasZoom ? caps.zoom.max - caps.zoom.min : 0
 
-  const pFine = hasPan  ? Math.max(1, Math.round(panRange  * 0.02)) : 0
-  const pFast = hasPan  ? Math.max(4, Math.round(panRange  * 0.08)) : 0
-  const tFine = hasTilt ? Math.max(1, Math.round(tiltRange * 0.02)) : 0
-  const tFast = hasTilt ? Math.max(4, Math.round(tiltRange * 0.08)) : 0
+  const pFine = hasPan  ? Math.max(2, Math.round(panRange  * 0.03)) : 0
+  const pFast = hasPan  ? Math.max(6, Math.round(panRange  * 0.12)) : 0
+  const tFine = hasTilt ? Math.max(2, Math.round(tiltRange * 0.03)) : 0
+  const tFast = hasTilt ? Math.max(6, Math.round(tiltRange * 0.12)) : 0
   const zStep = hasZoom ? Math.max(1, Math.round(zoomRange * 0.03)) : 1
 
   const zoomMin = hasZoom ? caps.zoom.min : 100
@@ -5089,15 +6046,52 @@ function buildPTZ(track, caps, settings) {
 // ── Hold-to-repeat helpers ─────────────────────────────────────
 let ptzHoldTimer = null, ptzHoldInterval = null
 
+// PTZ-coalescing: USB-camera-drivers (Logitech Rally/MeetUp/BRIO) verwerken
+// applyConstraints serieel — als we requests sneller spammen dan de camera
+// kan, stapelen ze op en blijft de camera nog bewegen ná release. Oplossing:
+// één in-flight tegelijk + accumulator voor wat er ondertussen binnenkomt.
+let _ptzInFlight = false
+let _ptzQueued = null      // { dPan, dTilt }
+let _zoomInFlight = false
+let _zoomQueued = 0
+async function _flushPtz() {
+  if (_ptzInFlight || !_ptzQueued) return
+  const { dPan, dTilt } = _ptzQueued
+  _ptzQueued = null
+  _ptzInFlight = true
+  try { await movePTZ(dPan, dTilt) }
+  finally { _ptzInFlight = false; if (_ptzQueued) _flushPtz() }
+}
+function requestMovePTZ(dPan, dTilt) {
+  if (_ptzQueued) { _ptzQueued.dPan += dPan; _ptzQueued.dTilt += dTilt }
+  else            { _ptzQueued = { dPan, dTilt } }
+  _flushPtz()
+}
+async function _flushZoom() {
+  if (_zoomInFlight || _zoomQueued === 0) return
+  const d = _zoomQueued
+  _zoomQueued = 0
+  _zoomInFlight = true
+  try { await stepZoom(d) }
+  finally { _zoomInFlight = false; if (_zoomQueued !== 0) _flushZoom() }
+}
+function requestStepZoom(delta) {
+  _zoomQueued += delta
+  _flushZoom()
+}
+
 function bindPTZHold(id, dPan, dTilt) {
   const el = document.getElementById(id)
   if (!el) return
   const start = () => {
     el.classList.add('held')
-    movePTZ(dPan, dTilt) // eerste stap direct
+    requestMovePTZ(dPan, dTilt)  // eerste stap direct
+    // Initial-delay verlaagd 350→180ms zodat een ingehouden klik sneller
+    // herhaalt. Interval 80→50ms (20 Hz) — coalescing zorgt dat de camera
+    // niet ovespoeld wordt.
     ptzHoldTimer = setTimeout(() => {
-      ptzHoldInterval = setInterval(() => movePTZ(dPan, dTilt), 80)
-    }, 350) // na 350ms begint herhalen
+      ptzHoldInterval = setInterval(() => requestMovePTZ(dPan, dTilt), 50)
+    }, 180)
   }
   const stop = () => {
     el.classList.remove('held')
@@ -5115,10 +6109,10 @@ function bindZoomHold(id, delta) {
   if (!el) return
   const start = () => {
     el.classList.add('held')
-    stepZoom(delta)
+    requestStepZoom(delta)
     ptzHoldTimer = setTimeout(() => {
-      ptzHoldInterval = setInterval(() => stepZoom(delta), 80)
-    }, 350)
+      ptzHoldInterval = setInterval(() => requestStepZoom(delta), 50)
+    }, 180)
   }
   const stop = () => {
     el.classList.remove('held')
@@ -5418,12 +6412,20 @@ async function centerCamera() {
 
 // ── Quick Test Sequence ────────────────────────────────────────
 const QT_STEPS = [
-  { id: 'qt-camera',  name: 'Camera',         icon: '📷' },
-  { id: 'qt-mic',     name: 'Mic niveau',     icon: '🎤' },
-  { id: 'qt-speaker', name: 'Speaker + mic',  icon: '🔊' },
+  { id: 'qt-camera',   name: 'Camera',     icon: '📷' },
+  { id: 'qt-mic',      name: 'Mic',        icon: '🎤' },
+  { id: 'qt-loopback', name: 'Eigen stem', icon: '🔊' },
 ]
 
 let qtRunning = false
+// AbortController voor lopende runQuickTest. Niet-null tijdens een test;
+// qtCloseOverlay() abort 'm zodat audio/prompts/mic-loops netjes stoppen
+// i.p.v. door te draaien terwijl de modal al weg is.
+let qtAbortController = null
+
+function qtCheckAbort(signal) {
+  if (signal && signal.aborted) throw new DOMException('canceled', 'AbortError')
+}
 
 // ── Popup helpers ──────────────────────────────────────────────
 function qtOpenOverlay() {
@@ -5434,13 +6436,36 @@ function qtOpenOverlay() {
   document.getElementById('qt-active-step').style.opacity  = '1'
   qtRenderPopupSteps()
   qtSetActive('', '', '', false)
+  qtSetCameraPreview(false)
+}
+
+// Toon/verberg de live camera-feed in de qt-popup. Hergebruikt camStream
+// via srcObject — geen extra getUserMedia, geen extra device-contention.
+function qtSetCameraPreview(show) {
+  const v = document.getElementById('qt-cam-preview')
+  if (!v) return
+  if (show && camStream) {
+    if (v.srcObject !== camStream) v.srcObject = camStream
+    v.style.display = 'block'
+    v.play().catch(() => {})
+  } else {
+    v.style.display = 'none'
+    try { v.pause() } catch(_){}
+    v.srcObject = null
+  }
 }
 
 function qtCloseOverlay() {
   document.getElementById('qt-overlay').classList.remove('open')
+  // Test loopt nog → annuleer 'm. De runQuickTest-finally reset de knop,
+  // qtRunning, preview-state en herstart de live mic.
+  if (qtRunning && qtAbortController) {
+    qtAbortController.abort()
+    return
+  }
   if (!qtRunning) {
     document.getElementById('btn-quicktest').disabled    = false
-    document.getElementById('btn-quicktest').textContent = '▶ Snelle test'
+    document.getElementById('btn-quicktest').innerHTML = ico('play') + ' Snelle test'
   }
 }
 
@@ -5510,15 +6535,10 @@ function qtRenderSteps(activeIdx = -1) {
   const container = document.getElementById('qt-steps')
   if (!container) return
   container.innerHTML = QT_STEPS.map((s) => {
-    const extra = s.id === 'qt-speaker' ? `
-      <div id="qt-speaker-detail" style="display:none;grid-column:1/-1;margin-top:4px;padding:6px 8px 4px;background:#0a0d12;border:1px solid var(--border);border-radius:var(--btn-radius);">
-        <div id="qt-speaker-info" style="font-size:10px;color:var(--muted);font-family:var(--font-val);text-align:center;">–</div>
-      </div>` : ''
     return `<div class="qt-step idle" id="${s.id}" style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;">
       <div class="qt-icon" id="${s.id}-icon">${s.icon}</div>
       <div class="qt-name">${s.name}</div>
       <div class="qt-result" id="${s.id}-result">—</div>
-      ${extra}
     </div>`
   }).join('')
 }
@@ -5546,12 +6566,66 @@ function qtSetSummary(state, icon, label) {
   if (l) l.innerHTML = label
 }
 
+// ── Popup interactive helpers (meter + prompt) ─────────────────
+function qtMeterShow() {
+  document.getElementById('qt-active-meter').style.display = 'block'
+  document.getElementById('qt-active-meter-fill').style.width = '0%'
+}
+function qtMeterHide() {
+  document.getElementById('qt-active-meter').style.display = 'none'
+}
+function qtMeterSet(rmsVal) {
+  // rmsVal in [0..1] domain (typical speech ~0.05–0.30, very loud ~0.5+)
+  const fill = Math.min(100, Math.max(0, Math.round(rmsVal * 220)))
+  const el = document.getElementById('qt-active-meter-fill')
+  if (el) el.style.width = fill + '%'
+}
+
+// Resolves with the chosen value when the operator clicks a button.
+function qtPrompt(question, options, signal) {
+  return new Promise((resolve, reject) => {
+    const wrap = document.getElementById('qt-active-prompt')
+    wrap.innerHTML =
+      `<div class="qt-prompt-q">${question}</div>` +
+      `<div class="qt-prompt-buttons">` +
+        options.map(o => `<button class="${o.cls||''}" data-val="${o.val}">${o.label}</button>`).join('') +
+      `</div>`
+    wrap.style.display = 'flex'
+    const cleanup = () => { wrap.style.display = 'none'; wrap.innerHTML = '' }
+    wrap.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        cleanup()
+        resolve(b.dataset.val)
+      })
+    })
+    // Abort: testvenster gesloten terwijl we op antwoord wachtten →
+    // reject zodat de await in runQuickTest exception't en het hele
+    // pad netjes naar de outer finally bubbelt.
+    if (signal) {
+      if (signal.aborted) { cleanup(); reject(new DOMException('canceled', 'AbortError')); return }
+      signal.addEventListener('abort', () => {
+        cleanup()
+        reject(new DOMException('canceled', 'AbortError'))
+      }, { once: true })
+    }
+  })
+}
+function qtPromptHide() {
+  const wrap = document.getElementById('qt-active-prompt')
+  wrap.style.display = 'none'
+  wrap.innerHTML = ''
+}
+
 async function runQuickTest() {
   if (qtRunning) return
   qtRunning = true
+  qtAbortController = new AbortController()
+  const signal = qtAbortController.signal
   const btn = document.getElementById('btn-quicktest')
   btn.disabled = true
-  btn.textContent = '⏳ Bezig…'
+  btn.innerHTML = ico('loader') + ' Bezig…'
+
+  try {
 
   setPreviewState('testing')
 
@@ -5567,6 +6641,7 @@ async function runQuickTest() {
 
   // ── STAP 1: Camera ──────────────────────────────────────────
   qtSetActive('📷', 'Camera', 'Verbinding controleren…', true)
+  setPreviewStep('Camera wordt getest', 'Beeldverbinding controleren')
   qtSetStep('qt-camera', 'running')
   if (!camStream) {
     startCamera()
@@ -5594,73 +6669,232 @@ async function runQuickTest() {
     qtSetActive('❌', 'Camera', 'Niet bereikbaar', false)
     failed++
   }
-  await sleep(600)
-
-  // ── STAP 2: Mic ───────────────────────────────────────────
-  qtSetActive('🎤', 'Mic niveau', 'Signaalniveau meten…', true)
-  qtSetStep('qt-mic', 'running')
-  const micReadings = []
-  // Harde deadline: meting mag niet langer dan 1500ms duren, anders gaan we door
-  const micDeadline = Date.now() + 1500
-  if (sharedMicAnalyser && liveMicStream) {
-    const buf = new Uint8Array(sharedMicAnalyser.fftSize)
-    // Gebruik setInterval i.p.v. rAF voor betrouwbaarheid (rAF kan pauzeren)
-    await new Promise(resolve => {
-      let n = 0
-      const iv = setInterval(() => {
-        try { sharedMicAnalyser.getByteTimeDomainData(buf); micReadings.push(rms(buf)) } catch(e) {}
-        if (++n >= 40 || Date.now() > micDeadline) { clearInterval(iv); resolve() }
-      }, 16)
-    })
+  // Camera-stap minimaal 2s in beeld + live preview op klantscherm én
+  // in de operator-popup (qt-active-step). Als de camera werkt sturen
+  // we frames naar de preview en tonen we 't beeld bij de operator,
+  // anders wachten we gewoon 2s zodat de tekst leesbaar blijft.
+  if (camStream) {
+    qtSetCameraPreview(true)
+    await sendCameraPreviewFor(2000)
+    qtSetCameraPreview(false)
   } else {
-    try {
-      const tmpStream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
-      })
-      const tmpCtx = new AudioContext(); await tmpCtx.resume()
-      const tmpSrc = tmpCtx.createMediaStreamSource(tmpStream)
-      const tmpAna = tmpCtx.createAnalyser(); tmpAna.fftSize = 1024
-      tmpSrc.connect(tmpAna)
-      await sleep(150)
-      const buf = new Uint8Array(tmpAna.fftSize)
-      await new Promise(resolve => {
-        let n = 0
-        const iv = setInterval(() => {
-          try { tmpAna.getByteTimeDomainData(buf); micReadings.push(rms(buf)) } catch(e) {}
-          if (++n >= 30 || Date.now() > micDeadline) { clearInterval(iv); resolve() }
-        }, 16)
-      })
-      tmpStream.getTracks().forEach(t => t.stop()); tmpCtx.close()
-    } catch(e) {}
+    await sleep(2000)
+  }
+  qtCheckAbort(signal)
+
+  // ── STAP 2: Mic — operator spreekt in de mic, live meter + opname ─────
+  qtSetCameraPreview(false)  // safety net: zorg dat 't video-element weg is
+  qtSetActive('🎤', 'Spreek in de microfoon', 'Zeg een paar woorden…', false)
+  setPreviewStep('Microfoon wordt getest', 'Spreek even in de microfoon')
+  qtSetStep('qt-mic', 'running')
+  qtMeterShow()
+
+  // Zorg dat sharedMicAnalyser draait. Als hij er niet is, start liveMic en wacht kort.
+  if (!sharedMicAnalyser || !liveMicStream) {
+    try { await startLiveMic() } catch(e) {}
+    const deadline = Date.now() + 1500
+    while ((!sharedMicAnalyser || !liveMicStream) && Date.now() < deadline) await sleep(100)
   }
 
-  // ── Mic resultaat direct renderen (vóór AEC start, anders blijft 'running' staan) ──
-  const micAvg  = micReadings.length ? micReadings.reduce((a,b)=>a+b,0)/micReadings.length : 0
-  const micPeak = micReadings.length ? Math.max(...micReadings) : 0
+  const micReadings = []
+  let recordedBlob = null  // wordt gebruikt in stap 3 voor playback
+
+  if (sharedMicAnalyser && liveMicStream) {
+    // Forceer mic-trim op 1.0 tijdens de meting zodat de operator de mic-test
+    // niet kan fake-passen door de slider hoog te zetten. Restore in finally.
+    micTrimForcedUnity = true
+    applyMicTrim()
+    // Start MediaRecorder op dezelfde stream — operator hoort in stap 3 zichzelf terug
+    let recorder = null
+    const recordedChunks = []
+    try {
+      recorder = new MediaRecorder(liveMicStream)
+      recorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data) }
+      recorder.start()
+    } catch(e) {
+      console.warn('[RoomTest] MediaRecorder niet beschikbaar:', e.message)
+      recorder = null
+    }
+
+    const buf = new Uint8Array(sharedMicAnalyser.fftSize)
+    const measureMs = 3500
+    const start = Date.now()
+    await new Promise(resolve => {
+      const iv = setInterval(() => {
+        try {
+          sharedMicAnalyser.getByteTimeDomainData(buf)
+          const r = rms(buf)
+          micReadings.push(r)
+          qtMeterSet(r)
+        } catch(e) {}
+        if (Date.now() - start >= measureMs) { clearInterval(iv); resolve() }
+      }, 50)
+      // Abort: stop de meting meteen i.p.v. nog seconden door te draaien
+      // terwijl de modal al weg is. Eventueel-incomplete micReadings
+      // worden door de outer abort-handler weggegooid.
+      if (signal.aborted) { clearInterval(iv); resolve(); return }
+      signal.addEventListener('abort', () => { clearInterval(iv); resolve() }, { once: true })
+    })
+    qtCheckAbort(signal)
+
+    if (recorder && recorder.state !== 'inactive') {
+      await new Promise(resolve => {
+        recorder.onstop = () => resolve()
+        try { recorder.stop() } catch(e) { resolve() }
+      })
+      if (recordedChunks.length) {
+        recordedBlob = new Blob(recordedChunks, { type: recorder.mimeType || 'audio/webm' })
+      }
+    }
+    // Meting klaar — herstel mic-trim. Outer finally doet 't ook nog als
+    // safety-net (abort-paden komen daar terecht).
+    micTrimForcedUnity = false
+    applyMicTrim()
+  }
+  qtMeterHide()
+
   if (!micReadings.length) {
-    qtSetStep('qt-mic', 'fail', 'Mic niet bereikbaar'); failed++
+    qtSetStep('qt-mic', 'fail', 'Mic niet bereikbaar')
+    qtSetActive('❌', 'Mic', 'Niet bereikbaar', false)
+    failed++
   } else {
-    const db   = micAvg  > 0.001 ? Math.round(20 * Math.log10(micAvg))  : -90
+    const micAvg  = micReadings.reduce((a,b)=>a+b,0) / micReadings.length
+    const micPeak = Math.max(...micReadings)
     const pkDb = micPeak > 0.001 ? Math.round(20 * Math.log10(micPeak)) : -90
-    if (micAvg > 0.003) {
-      qtSetStep('qt-mic', 'pass', 'Gem. ' + db + ' dBFS · piek ' + pkDb); passed++
-    } else if (micAvg > 0.001) {
-      qtSetStep('qt-mic', 'warn', 'Zwak: ' + db + ' dBFS'); warned++
+    // Speech = pieken duidelijk boven achtergrond. Drempels zijn op piek, niet op gemiddelde.
+    if (micPeak >= 0.05) {
+      qtSetStep('qt-mic', 'pass', 'Piek ' + pkDb + ' dBFS')
+      qtSetActive('✅', 'Mic', 'Piek ' + pkDb + ' dBFS', false)
+      passed++
+    } else if (micPeak >= 0.015) {
+      qtSetStep('qt-mic', 'warn', 'Zwak — piek ' + pkDb + ' dBFS')
+      qtSetActive('⚠️', 'Mic', 'Zwak — piek ' + pkDb + ' dBFS', false)
+      warned++
+    } else if (micAvg > 0) {
+      qtSetStep('qt-mic', 'fail', 'Geen spraak gedetecteerd')
+      qtSetActive('❌', 'Mic', 'Geen spraak gedetecteerd', false)
+      failed++
     } else {
-      qtSetStep('qt-mic', 'fail', 'Geen signaal'); failed++
+      qtSetStep('qt-mic', 'fail', 'Geen signaal')
+      qtSetActive('❌', 'Mic', 'Geen signaal', false)
+      failed++
     }
   }
-  await sleep(300)
-
-  // ── STAP 3: Speaker + mic test (A-akkoord via speaker, meet in mic) ──
-  stopLiveMic()
-  qtSetActive('🔊', 'Speaker + Mic', 'Speaker en mic testen met akkoord…', true)
-  qtSetStep('qt-speaker', 'running')
-  const spkResult = await qtTestSpeaker()
-  if      (spkResult.state === 'pass') { qtSetStep('qt-speaker', 'pass', spkResult.text); qtSetActive('✅', 'Speaker + Mic', spkResult.text, false); passed++ }
-  else if (spkResult.state === 'warn') { qtSetStep('qt-speaker', 'warn', spkResult.text); qtSetActive('⚠️', 'Speaker + Mic', spkResult.text, false); warned++ }
-  else                                 { qtSetStep('qt-speaker', 'fail', spkResult.text); qtSetActive('❌', 'Speaker + Mic', spkResult.text, false); failed++ }
   await sleep(500)
+  qtCheckAbort(signal)
+
+  // ── STAP 3: Eigen stem — playback van de mic-opname ────────────
+  // De mic-opname uit stap 2 wordt door de speaker afgespeeld zodat de operator
+  // zichzelf terughoort. Voorkomt hardware-AEC issues (MeetUp/Rally cancelen
+  // mic→speaker loopback weg). TTS-quote als fallback wanneer opname leeg/faalt.
+  qtSetStep('qt-loopback', 'running')
+  qtPromptHide()
+  qtMeterHide()
+
+  const wasLiveMic = !!liveMicStream
+  liveMicInhibit = true
+  if (wasLiveMic) stopLiveMic()
+
+  let lbCtx = null, lbGain = null, sampleSrc = null
+  let usedFallback = false
+  try {
+    lbCtx = new AudioContext()
+    if (lbCtx.state === 'suspended') {
+      try { await lbCtx.resume() } catch(e){}
+    }
+    if (selSpeaker.value && lbCtx.setSinkId) {
+      try { await lbCtx.setSinkId(selSpeaker.value) } catch(e){}
+    }
+
+    let audioBuf = null
+    if (recordedBlob && recordedBlob.size > 0) {
+      try {
+        const arrayBuf = await recordedBlob.arrayBuffer()
+        audioBuf = await lbCtx.decodeAudioData(arrayBuf)
+      } catch(e) {
+        console.warn('[RoomTest] decode mic-opname faalde:', e.message)
+      }
+    }
+    if (!audioBuf) {
+      // Fallback: TTS-quote uit samples/
+      qtSetActive('🔊', 'Speaker-test', 'Geen mic-opname — teststem speelt…', false)
+      setPreviewStep('Geluid wordt getest', 'Een teststem speelt op de speaker')
+      const filename = await speakerPickSample()
+      if (!filename) throw new Error('Geen mic-opname én geen audio-samples')
+      audioBuf = await speakerLoadSampleBuffer(lbCtx, filename)
+      usedFallback = true
+    } else {
+      qtSetActive('🔊', 'Eigen stem', 'Luister naar je eigen stem…', false)
+      setPreviewStep('Geluid wordt getest', 'Microfoon-opname speelt af op de speaker')
+    }
+
+    lbGain = lbCtx.createGain()
+    lbGain.gain.value = Math.max(0.5, currentVolume)
+    registerGainNode(lbGain)
+    lbGain.connect(lbCtx.destination)
+
+    sampleSrc = lbCtx.createBufferSource()
+    sampleSrc.buffer = audioBuf
+    sampleSrc.connect(lbGain)
+    sampleSrc.start()
+    console.log('[RoomTest-Playback]',
+      'fallback:', usedFallback,
+      '· spkSink:', selSpeaker.value || '(default)',
+      '· state:', lbCtx.state,
+      '· dur:', audioBuf.duration.toFixed(2) + 's',
+      '· gain:', lbGain.gain.value)
+
+    const promptText = usedFallback
+      ? 'Hoorde je de teststem luid en duidelijk?'
+      : 'Hoorde je jezelf luid en duidelijk?'
+    const answer = await qtPrompt(promptText, [
+      { val: 'yes', label: '✅ Ja',  cls: 'qt-prompt-yes' },
+      { val: 'no',  label: '❌ Nee', cls: 'qt-prompt-no'  },
+    ], signal)
+
+    // Stilzetten en disconnect vóór close
+    try { lbGain.gain.cancelScheduledValues(lbCtx.currentTime) } catch(e){}
+    try { lbGain.gain.setValueAtTime(0, lbCtx.currentTime) } catch(e){}
+    try { sampleSrc.stop() } catch(e){}
+    try { sampleSrc.disconnect() } catch(e){}
+    try { lbGain.disconnect() } catch(e){}
+    unregisterGainNode(lbGain)
+
+    const stepLabel = usedFallback ? 'Speaker' : 'Eigen stem'
+    if (answer === 'yes') {
+      qtSetStep('qt-loopback', 'pass', usedFallback ? 'Operator bevestigd (teststem)' : 'Operator bevestigd')
+      qtSetActive('✅', stepLabel, 'Luid en duidelijk', false)
+      passed++
+    } else {
+      qtSetStep('qt-loopback', 'fail', usedFallback ? 'Speaker niet hoorbaar' : 'Eigen stem niet hoorbaar')
+      qtSetActive('❌', stepLabel, 'Niet luid en duidelijk', false)
+      failed++
+    }
+  } catch(e) {
+    // Abort = operator sluit modal. Audio + UI cleanen, NIET als 'fail'
+    // markeren, en opnieuw throwen zodat outer try/catch 't afhandelt.
+    if (sampleSrc) { try { sampleSrc.stop() } catch(_){} ; try { sampleSrc.disconnect() } catch(_){} }
+    if (lbGain) {
+      try { lbGain.gain.setValueAtTime(0, lbCtx ? lbCtx.currentTime : 0) } catch(_){}
+      try { lbGain.disconnect() } catch(_){}
+      unregisterGainNode(lbGain)
+    }
+    qtPromptHide()
+    if (e.name === 'AbortError') throw e
+    qtSetStep('qt-loopback', 'fail', 'Speaker-test mislukt: ' + e.message)
+    qtSetActive('❌', 'Speaker', 'Mislukt', false)
+    failed++
+  } finally {
+    if (lbCtx) { try { await lbCtx.close() } catch(e){} }
+    // Restart de live monitor vóór we de inhibit-vlag clearen — zelfde
+    // patroon als de latency-test finally. Zonder dit blijft de mm-fill
+    // meter dood tot het einde van runQuickTest (regel 6260), of forever
+    // als de test halverwege afbreekt / de modal vroeg sluit.
+    if (wasLiveMic) { try { await startLiveMic() } catch(_) {} }
+    liveMicInhibit = false
+  }
+  await sleep(300)
+  qtCheckAbort(signal)
 
   // ── Samenvatting ─────────────────────────────────────────────
   if (failed === 0 && warned === 0) {
@@ -5671,6 +6905,8 @@ async function runQuickTest() {
       if (!qtRunning) qtCloseOverlay()
       showRoomReady()
     }, 500)
+    // Bij geslaagde test: resultaatbalk in de hoofd-UI auto-dismissen na 6s.
+    setTimeout(() => qtPanelDismiss(), 6000)
     // Klantscherm: ga na 5s terug naar colorbars/idle
     setTimeout(() => {
       if (currentPreviewState === 'ready') setPreviewState('idle')
@@ -5691,10 +6927,28 @@ async function runQuickTest() {
   }
   qtShowVerdict(failed, warned)
 
-  btn.disabled = false
-  btn.textContent = '▶ Snelle test'
-  qtRunning = false
-  startLiveMic()
+  } catch(e) {
+    // Operator heeft de testmodal vroeg gesloten — netjes wegruimen.
+    // Andere onverwachte errors gewoon doorgooien naar de console.
+    if (e.name !== 'AbortError') { console.error('[RoomTest] onverwachte fout:', e); }
+    else { console.log('[RoomTest] geannuleerd door operator') }
+    setPreviewState('idle')
+    qtPromptHide()
+    qtMeterHide()
+    qtSetCameraPreview(false)
+    qtPanelDismiss()
+  } finally {
+    // Garantee: knop terug naar idle, qtRunning false, abort-controller
+    // los, live mic weer aan, mic-trim hersteld. Komt zowel via happy-path
+    // (try valt door) als abort/exception langs.
+    btn.disabled = false
+    btn.innerHTML = ico('play') + ' Snelle test'
+    qtRunning = false
+    qtAbortController = null
+    micTrimForcedUnity = false
+    applyMicTrim()
+    if (!liveMicStream) { try { await startLiveMic() } catch(_) {} }
+  }
 }
 
 async function qtCheckMicLevel() {
@@ -5703,8 +6957,7 @@ async function qtCheckMicLevel() {
   try {
     const mlUseExact = selMic.value && selMic.value !== 'default' && selMic.value !== 'communications'
     const micStream = await navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: mlUseExact ? { exact: selMic.value } : undefined,
-               echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+      audio: getMicConstraints(selMic.value)
     })
     const micCtx = new AudioContext()
     const src = micCtx.createMediaStreamSource(micStream)
@@ -5749,175 +7002,17 @@ async function qtCheckMicLevel() {
 // qtTestSpeaker wordt hieronder later ingevoegd
 
 
-async function qtTestLatency() {
-  const DETECT_HZ = 880, TONE_MS = 200, MAX_WAIT = 1500
-  try {
-    const ltUseExact = selMic.value && selMic.value !== 'default' && selMic.value !== 'communications'
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { deviceId: ltUseExact ? { exact: selMic.value } : undefined,
-               echoCancellation: false, noiseSuppression: false, autoGainControl: false }
-    })
-    const ctx = new AudioContext()
-    const src = ctx.createMediaStreamSource(stream)
-    const ana = ctx.createAnalyser(); ana.fftSize = 4096; ana.smoothingTimeConstant = 0
-    src.connect(ana)
-    await sleep(300)
-    const fftBuf = new Uint8Array(ana.frequencyBinCount)
-    const binFreq = ctx.sampleRate / ana.fftSize
-    const targetBin = Math.round(DETECT_HZ / binFreq)
-    const baseReadings = []
-    await new Promise(resolve => {
-      let n = 0
-      function snap() { ana.getByteFrequencyData(fftBuf); baseReadings.push(fftBuf[targetBin]); if (++n < 20) requestAnimationFrame(snap); else resolve() }
-      snap()
-    })
-    const baseLine = baseReadings.reduce((a,b) => a+b, 0) / baseReadings.length
-    const triggerLevel = baseLine + 30
-
-    const spkCtx = new AudioContext()
-    if (selSpeaker.value && spkCtx.setSinkId) try { await spkCtx.setSinkId(selSpeaker.value) } catch(e) {}
-
-    let latMs = null
-    for (let attempt = 0; attempt < 3 && latMs === null; attempt++) {
-      if (attempt > 0) await sleep(500)
-      const osc = spkCtx.createOscillator(), gn = spkCtx.createGain()
-      osc.frequency.value = DETECT_HZ; osc.type = 'sine'
-      gn.gain.setValueAtTime(0, spkCtx.currentTime)
-      gn.gain.linearRampToValueAtTime(currentVolume, spkCtx.currentTime + 0.005)
-      gn.gain.setValueAtTime(currentVolume, spkCtx.currentTime + TONE_MS/1000 - 0.01)
-      gn.gain.linearRampToValueAtTime(0, spkCtx.currentTime + TONE_MS/1000)
-      osc.connect(gn); gn.connect(spkCtx.destination)
-      const playTime = performance.now()
-      osc.start(); osc.stop(spkCtx.currentTime + TONE_MS/1000 + 0.05)
-      let detected = null
-      await new Promise(resolve => {
-        const deadline = performance.now() + MAX_WAIT
-        let skip = true; setTimeout(() => { skip = false }, 10)
-        function listen() {
-          if (skip) { requestAnimationFrame(listen); return }
-          ana.getByteFrequencyData(fftBuf)
-          if (fftBuf[targetBin] >= triggerLevel && !detected) { detected = performance.now(); resolve() }
-          else if (performance.now() > deadline) resolve()
-          else requestAnimationFrame(listen)
-        }
-        requestAnimationFrame(listen)
-      })
-      if (detected) latMs = Math.round(detected - playTime)
-    }
-    stream.getTracks().forEach(t => t.stop()); ctx.close(); spkCtx.close()
-    if (latMs !== null) {
-      const qual = latMs < 100 ? 'Uitstekend' : latMs < 250 ? 'Goed' : latMs < 450 ? 'Acceptabel' : 'Hoog'
-      const state = latMs < 450 ? 'pass' : 'fail'
-      return { state, text: latMs + ' ms round-trip · ' + qual }
-    }
-    return { state: 'warn', text: '880 Hz niet gedetecteerd' }
-  } catch(e) { return { state: 'fail', text: 'Test mislukt: ' + e.message } }
-}
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 
 // ── Camera controls collapse ───────────────────────────────────
-// ── Teams knop ────────────────────────────────────────────────
-document.getElementById('btn-open-teams').addEventListener('click', () => {
-  const uris = [
-    'msteams://l/call/0/0?users=echo@microsoft.com&withvideo=false',
-    'https://teams.microsoft.com/l/call/0/0?users=echo@microsoft.com',
-  ]
-  const uri = uris[0]
-  if (window.rrBridge) {
-    window.rrBridge.openExternal(uri)
-  } else {
-    window.open(uri, '_blank')
-  }
-})
-
-// ── Inventaris knop ─────────────────────────────────────────────
-document.getElementById('btn-inventory').addEventListener('click', () => {
-  if (window.rrBridge && window.rrBridge.invOpen) {
-    window.rrBridge.invOpen()
-  }
-})
+// (Teams + Inventaris knoppen verwijderd in v3.4.8 — Inventaris is nu
+// te bereiken via 't Tools-menu, Teams was niet meer nodig.)
 
 // ── AEC testsignaal generator ──────────────────────────────────
 // Genereert het geselecteerde signaal in de AudioContext van de AEC-test
 // Geeft terug { node, stop } waarbij stop() het signaal afsluit
 
-
-// ── Update drag-and-drop ──────────────────────────────────────
-;(function() {
-  const zone = document.getElementById('btn-update-drop')
-  if (!zone) return
-
-  zone.addEventListener('dragover', e => {
-    e.preventDefault()
-    e.stopPropagation()
-    const hasZip = [...(e.dataTransfer.items||[])].some(i => i.type === 'application/zip' || i.type === 'application/x-zip-compressed')
-    if (hasZip || e.dataTransfer.items?.length > 0) {
-      zone.style.borderColor = 'var(--accent)'
-      zone.style.color       = 'var(--accent)'
-      zone.style.background  = 'var(--surface2)'
-    }
-  })
-
-  zone.addEventListener('dragleave', () => {
-    zone.style.borderColor = ''
-    zone.style.color       = ''
-    zone.style.background  = ''
-  })
-
-  zone.addEventListener('drop', async e => {
-    e.preventDefault(); e.stopPropagation()
-    zone.style.borderColor = ''
-    zone.style.color       = ''
-    zone.style.background  = ''
-
-    const file = e.dataTransfer.files[0]
-    if (!file) return
-    if (!file.name.toLowerCase().endsWith('.zip')) {
-      zone.textContent = '⚠ Geen zip'
-      setTimeout(() => { zone.innerHTML = '<span style="font-size:13px;">⬇</span> update' }, 2500)
-      return
-    }
-
-    // Haal bestandspad op — probeer bridge, dan file.path als fallback
-    let filePath = null
-    try {
-      if (window.rrBridge?.getFilePath) filePath = window.rrBridge.getFilePath(file)
-    } catch(e) {}
-    if (!filePath) {
-      try { filePath = file.path } catch(e) {}
-    }
-    if (!filePath) {
-      zone.innerHTML = '⚠ Pad niet beschikbaar — herstart app en probeer opnieuw'
-      setTimeout(() => { zone.innerHTML = '<span style="font-size:13px;">⬇</span> update' }, 4000)
-      return
-    }
-
-    zone.innerHTML = '⏳ Installeren…'
-    zone.style.color = 'var(--yellow)'
-
-    if (!window.rrBridge?.applyUpdate) {
-      zone.innerHTML = '⚠ Bridge niet beschikbaar'
-      return
-    }
-
-    try {
-      const result = await window.rrBridge.applyUpdate(filePath)
-      if (result?.ok) {
-        zone.innerHTML = '✅ Klaar — herstart…'
-        zone.style.color = 'var(--green)'
-      } else {
-        zone.innerHTML = '⚠ ' + (result?.error || 'Mislukt')
-        zone.style.color = 'var(--red)'
-        setTimeout(() => { zone.innerHTML = '<span style="font-size:13px;">⬇</span> update'; zone.style.color = '' }, 4000)
-      }
-    } catch(err) {
-      zone.innerHTML = '⚠ ' + err.message
-      zone.style.color = 'var(--red)'
-      setTimeout(() => { zone.innerHTML = '<span style="font-size:13px;">⬇</span> update'; zone.style.color = '' }, 4000)
-    }
-  })
-})()
 
 // ── Camera expand mode ────────────────────────────────────────
 // ── Init ───────────────────────────────────────────────────────
@@ -5927,25 +7022,72 @@ document.getElementById('btn-refresh').addEventListener('click', async () => {
   if (!camStream) startCamera()
   startLiveMic()
 })
+// Auto-pro-switch state: Set met deviceId's die we al gezien hebben.
+// Bij elke devicechange detecteren we nieuw-aangesloten apparaten en
+// switchen automatisch naar pro-apparatuur (Logitech Rally/MeetUp, Echo
+// Cancel-bars, etc.) als die binnen onze score-drempel komen.
+let _knownDeviceIds = new Set()
+const PRO_AUTOSWITCH_THRESHOLD = 50  // score-grens voor 'professioneel genoeg'
+
+function _autoPickPro(devices, scoreFn, selEl, arrivedIds, label) {
+  const arrived = devices.filter(d => arrivedIds.has(d.deviceId))
+  if (!arrived.length) return false
+  const bestNew = arrived.slice().sort((a, b) => scoreFn(b.label) - scoreFn(a.label))[0]
+  const bestNewScore = scoreFn(bestNew.label)
+  if (bestNewScore < PRO_AUTOSWITCH_THRESHOLD) return false
+  const currentOpt = selEl.options[selEl.selectedIndex]
+  const currentLabel = currentOpt?.textContent || ''
+  const currentScore = scoreFn(currentLabel)
+  if (bestNewScore <= currentScore) return false  // current is even goed of beter
+  selEl.value = bestNew.deviceId
+  selEl.dispatchEvent(new Event('change'))
+  return true
+}
+
 navigator.mediaDevices.addEventListener('devicechange', async () => {
-  console.log('[DEV] devicechange event')
   const prevCamId = selCamera.value
   const prevMicId = selMic.value
-  await populateDevices()
 
-  // Als de huidige camera weg is → start nieuwe (eerst-beste) camera
+  // Snapshot vorige IDs vóór populate, daarna bepalen welke nieuw zijn.
+  const prevSeen = _knownDeviceIds
+  const allDevices = await navigator.mediaDevices.enumerateDevices()
+  const newSeen = new Set(allDevices.map(d => d.deviceId))
+  const arrivedIds = new Set([...newSeen].filter(id => !prevSeen.has(id)))
+  _knownDeviceIds = newSeen
+
+  await populateDevices(allDevices)
+
+  // Auto-pro-switch op nieuw-aangesloten devices (alleen als 't beter scoort
+  // dan de huidige selectie — user-keuze blijft anders behouden).
+  let camChanged = false, micChanged = false
+  if (arrivedIds.size) {
+    const cams = allDevices.filter(d => d.kind === 'videoinput')
+    const mics = allDevices.filter(d => d.kind === 'audioinput')
+    const spks = allDevices.filter(d => d.kind === 'audiooutput')
+    camChanged = _autoPickPro(cams, scoreCamera, selCamera, arrivedIds, 'camera')
+    micChanged = _autoPickPro(mics, scoreMic, selMic, arrivedIds, 'mic')
+    _autoPickPro(spks, scoreSpeaker, selSpeaker, arrivedIds, 'speaker')
+  }
+
+  // Reageer op apparaat-wisselingen
   const cams = [...selCamera.options].map(o => o.value).filter(Boolean)
-  if (camStream && prevCamId && !cams.includes(prevCamId)) {
-    console.log('[DEV] Actieve camera ontkoppeld — herstarten met nieuwe')
+  if (camChanged || (camStream && prevCamId && !cams.includes(prevCamId))) {
     await startCamera()
   }
-  // Als de huidige mic weg is → herstart live mic
   const mics = [...selMic.options].map(o => o.value).filter(Boolean)
-  if (liveMicStream && prevMicId && !mics.includes(prevMicId)) {
-    console.log('[DEV] Actieve mic ontkoppeld — herstarten')
+  if (micChanged || (liveMicStream && prevMicId && !mics.includes(prevMicId))) {
     startLiveMic()
   }
 })
+
+// Initial seed van _knownDeviceIds bij eerste enumerate, zodat we niet
+// alle apparaten als "net aangesloten" beschouwen bij app-start.
+;(async () => {
+  try {
+    const ds = await navigator.mediaDevices.enumerateDevices()
+    _knownDeviceIds = new Set(ds.map(d => d.deviceId))
+  } catch(_){}
+})()
 selMic.addEventListener('change', () => { startLiveMic() })
 
 // ── Camera rij-hoogte — volgt kolombreedtes en camera-verhouding ──
@@ -5959,7 +7101,14 @@ function updateRow1Height() {
     rowRaf = null
     const w    = camCard.offsetWidth
     const hdrH = camCard.querySelector('.card-header')?.offsetHeight || 34
-    mainGrid.style.gridTemplateRows = (Math.round(w / camAspect) + hdrH) + 'px auto'
+    // Bottom-padding op camera-card body zodat de video-onderkant gelijk
+    // ligt met de osc/spec/histogram/vectorscope canvas-bottoms (die hebben
+    // ~45px aan controls onder het canvas — Helderheid/Saturatie + selects).
+    const camBotPad = parseInt(
+      getComputedStyle(document.documentElement).getPropertyValue('--cam-bottom-pad') || '45',
+      10
+    ) || 45
+    mainGrid.style.gridTemplateRows = (Math.round(w / camAspect) + hdrH + camBotPad) + 'px auto'
   })
 }
 new ResizeObserver(updateRow1Height).observe(camCard)
@@ -5970,6 +7119,7 @@ loadViscaSettings()
 
 initSpecCanvas()
 initVolumeUI()
+updateVidScopeControls()  // toon waveform-controls, verberg vectorscope-controls
 
 // Sequenced startup: eerst camera's/audio, dan pas extern klantscherm
 // Voorkomt race conditions tussen hoofdvenster en preview venster voor media-toegang
@@ -5986,14 +7136,15 @@ initVolumeUI()
     const displays = await window.rrBridge.listDisplays()
     const others = displays.filter(d => !d.isPrimary)
     if (others.length === 0) return
+    // Selecteer 't auto-gekozen display ook in de dropdown zodat de UI
+    // matched wat er daadwerkelijk open staat.
+    await populateDisplays()
+    const sel = document.getElementById('sel-display')
+    if (sel) sel.value = String(others[0].id)
     const result = await window.rrBridge.openPreview({ displayId: others[0].id })
     if (result?.ok) {
       externalPreviewActive = true
-      const btn = document.getElementById('btn-cam-preview')
-      if (btn) {
-        btn.style.color = 'var(--accent)'
-        btn.title = 'Klantscherm actief — klik om te sluiten'
-      }
+      _setDisplayBtnState(true)
       setTimeout(() => setPreviewState('idle'), 800)
     }
   } catch(e) { console.warn('Auto-open klantscherm mislukt:', e.message) }

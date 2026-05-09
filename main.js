@@ -5,6 +5,13 @@ const http  = require('http')
 const https = require('https')
 
 const path = require('path')
+
+// Windows AppUserModelID — bepaalt hoe de Shell pinned shortcuts identificeert
+// en groepeert. Zonder dit toont Windows soms 'Electron' als titel/icoon op
+// de pinned-taskbar entry. Moet vóór elke window-creatie worden gezet.
+if (process.platform === 'win32') {
+  app.setAppUserModelId('com.bommelcode.roomready')
+}
 const { execFile, exec } = require('child_process')
 const os   = require('os')
 const fs   = require('fs')
@@ -62,16 +69,81 @@ function buildMenu(mainWin) {
         }
       ]
     },
+    {
+      label: 'Tools',
+      submenu: [
+        { label: 'AV Inventaris…', accelerator: 'CmdOrCtrl+I', click: () => openInventoryWindow() }
+      ]
+    },
     { role: 'windowMenu' },
     {
       role: 'help',
       submenu: [
-        { label: 'RoomReady', click: () => shell.openExternal('https://github.com/') }
+        { label: 'Over RoomReady…', click: () => showAboutDialog(mainWin) },
+        { type: 'separator' },
+        { label: 'RoomReady op GitHub', click: () => shell.openExternal('https://github.com/') }
       ]
     }
   ]
   return Menu.buildFromTemplate(template)
 }
+
+// About-dialog met versie-info, productnaam en credits.
+function showAboutDialog(parentWin) {
+  const pkg = require('./package.json')
+  const electronVer = process.versions.electron || '?'
+  const chromeVer   = process.versions.chrome   || '?'
+  const nodeVer     = process.versions.node     || '?'
+  dialog.showMessageBox(parentWin || undefined, {
+    type: 'info',
+    title: 'Over RoomReady',
+    message: 'RoomReady',
+    detail: [
+      'Versie ' + (pkg.version || '?'),
+      pkg.description || '',
+      '',
+      'Electron ' + electronVer,
+      'Chromium '  + chromeVer,
+      'Node '      + nodeVer,
+    ].filter(Boolean).join('\n'),
+    buttons: ['Sluiten'],
+    defaultId: 0,
+    icon: path.join(__dirname, 'icon.ico'),
+    noLink: true,
+  }).catch(() => {})
+}
+
+// Inventaris-venster openen (gedeeld door menu Tools en IPC inv-open).
+// Hergebruikt 'n bestaande window door focus i.p.v. een nieuwe te spawnen.
+function openInventoryWindow() {
+  if (inventoryWin && !inventoryWin.isDestroyed()) {
+    inventoryWin.focus()
+    return { ok: true, reused: true }
+  }
+  inventoryWin = new BrowserWindow({
+    width: 1200, height: 780,
+    minWidth: 900, minHeight: 600,
+    title: 'RoomReady — AV Inventaris',
+    backgroundColor: '#0e1219',
+    icon: path.join(__dirname, 'icon.ico'),
+    autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  })
+  inventoryWin.setMenuBarVisibility(false)
+  inventoryWin.loadFile('inventory.html')
+  if (process.env.RR_INV_DEVTOOLS) {
+    inventoryWin.webContents.once('did-finish-load', () => {
+      inventoryWin.webContents.openDevTools({ mode: 'right' })
+    })
+  }
+  inventoryWin.on('closed', () => { inventoryWin = null })
+  return { ok: true, reused: false }
+}
+let inventoryWin = null  // module-level zodat menu en IPC dezelfde ref delen
 
 // ── Window ────────────────────────────────────────────────────
 function createWindow() {
@@ -92,11 +164,72 @@ function createWindow() {
   ipcMain.handle('open-external',       (_, url) => shell.openExternal(url))
   ipcMain.handle('open-camera-settings',()        => shell.openExternal('ms-settings:privacy-webcam'))
 
+  // ── Windows audio (Core Audio COM via vooraf-gecompileerde helper) ──
+  // Helper-exe wordt synchroon gespawned per actie en exit'et binnen ms.
+  // Geen runtime csc/Add-Type, geen AudioServiceOutOfProcess, geen blijvende
+  // COM-handles. Zie CLAUDE.md voor de regels rond Windows audio control.
+  function audioHelperPath() {
+    // Dev tree: app/helpers/audio-control.exe.
+    // Packaged: helpers/ staat naast resources/ (sibling van app.asar). De
+    // pack.js / electron-builder zet 'm daar buiten de asar omdat .exe's
+    // niet vanuit een asar gespawnd kunnen worden.
+    if (app.isPackaged) {
+      return path.join(process.resourcesPath, '..', 'helpers', 'audio-control.exe')
+    }
+    return path.join(__dirname, 'helpers', 'audio-control.exe')
+  }
+  function audioHelperRun(args) {
+    return new Promise(resolve => {
+      const exe = audioHelperPath()
+      if (!fs.existsSync(exe)) {
+        resolve({ ok: false, error: 'audio-control.exe niet gevonden op ' + exe })
+        return
+      }
+      execFile(exe, args, { windowsHide: true, timeout: 5000 }, (err, stdout, stderr) => {
+        if (err) {
+          const msg = (stderr || '').trim() || err.message
+          resolve({ ok: false, error: msg, code: err.code })
+        } else {
+          resolve({ ok: true, stdout: (stdout || '').trim() })
+        }
+      })
+    })
+  }
+  ipcMain.handle('audio-list', async () => {
+    const r = await audioHelperRun(['list'])
+    if (!r.ok) return { ok: false, error: r.error }
+    try { return { ok: true, devices: JSON.parse(r.stdout) } }
+    catch (e) { return { ok: false, error: 'parse error: ' + e.message } }
+  })
+  ipcMain.handle('audio-get-defaults', async () => {
+    const r = await audioHelperRun(['get-defaults'])
+    if (!r.ok) return { ok: false, error: r.error }
+    try { return Object.assign({ ok: true }, JSON.parse(r.stdout)) }
+    catch (e) { return { ok: false, error: 'parse error: ' + e.message } }
+  })
+  ipcMain.handle('audio-get', async (_, id) => {
+    const r = await audioHelperRun(['get', String(id)])
+    if (!r.ok) return { ok: false, error: r.error }
+    try { return { ok: true, device: JSON.parse(r.stdout) } }
+    catch (e) { return { ok: false, error: 'parse error: ' + e.message } }
+  })
+  ipcMain.handle('audio-set-volume', async (_, id, pct) => {
+    const r = await audioHelperRun(['set-volume', String(id), String(pct)])
+    return { ok: r.ok, error: r.ok ? null : r.error }
+  })
+  ipcMain.handle('audio-set-mute', async (_, id, muted) => {
+    const r = await audioHelperRun(['set-mute', String(id), muted ? 'true' : 'false'])
+    return { ok: r.ok, error: r.ok ? null : r.error }
+  })
+
   // ── Samples (TTS audio voor Speaker+Mic test) ──────────────
   function samplesDir() {
-    return app.isPackaged
-      ? path.join(process.resourcesPath, 'samples')
-      : path.join(__dirname, 'samples')
+    if (app.isPackaged) return path.join(process.resourcesPath, 'samples')
+    // Dev tree (npm run start): probeer eerst app/samples, anders ../resources/samples
+    // (de prod-locatie naast de geïnstalleerde RoomReady.exe).
+    const local = path.join(__dirname, 'samples')
+    if (fs.existsSync(local)) return local
+    return path.join(__dirname, '..', 'resources', 'samples')
   }
   ipcMain.handle('list-samples', () => {
     try {
@@ -126,55 +259,124 @@ function createWindow() {
   let previewWin = null
 
   ipcMain.handle('list-displays', () => {
-    const displays = screen.getAllDisplays()
-    const primary  = screen.getPrimaryDisplay()
-    return displays.map(d => ({
-      id: d.id,
-      label: d.label || ('Scherm ' + d.id),
-      bounds: d.bounds,
-      isPrimary: d.id === primary.id,
-      size: d.size,
-      scaleFactor: d.scaleFactor
-    }))
+    try {
+      const displays = screen.getAllDisplays()
+      const primary  = screen.getPrimaryDisplay()
+      return displays.map(d => ({
+        id: d.id,
+        label: d.label || ('Scherm ' + d.id),
+        bounds: d.bounds,
+        isPrimary: d.id === primary.id,
+        size: d.size,
+        scaleFactor: d.scaleFactor
+      }))
+    } catch (e) {
+      console.warn('[main] list-displays error:', e.message)
+      return []
+    }
   })
 
-  ipcMain.handle('open-preview', (_, { displayId }) => {
-    if (previewWin && !previewWin.isDestroyed()) { previewWin.close(); previewWin = null }
+  ipcMain.handle('open-preview', (_, args) => {
+    try {
+      const displayId = args?.displayId
+      if (previewWin && !previewWin.isDestroyed()) { previewWin.close(); previewWin = null }
 
-    const displays = screen.getAllDisplays()
-    const primary  = screen.getPrimaryDisplay()
-    let target = displays.find(d => d.id === displayId)
-    if (!target) target = displays.find(d => d.id !== primary.id) || primary
+      const displays = screen.getAllDisplays()
+      const primary  = screen.getPrimaryDisplay()
+      let target = displays.find(d => d.id === displayId)
+      if (!target) target = displays.find(d => d.id !== primary.id) || primary
+      if (!target) return { ok: false, error: 'Geen geschikt scherm gevonden' }
 
-    const b = target.bounds
-    previewWin = new BrowserWindow({
-      x: b.x, y: b.y, width: b.width, height: b.height,
-      fullscreen: true,
-      autoHideMenuBar: true,
-      backgroundColor: '#0a0f18',
-      title: 'RoomReady',
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: true,
-        preload: path.join(__dirname, 'preload.js')
+      const b = target.bounds
+      previewWin = new BrowserWindow({
+        x: b.x, y: b.y, width: b.width, height: b.height,
+        fullscreen: true,
+        autoHideMenuBar: true,
+        backgroundColor: '#0a0f18',
+        title: 'RoomReady',
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true,
+          preload: path.join(__dirname, 'preload.js')
+        }
+      })
+      previewWin.setMenuBarVisibility(false)
+      // loadFile retourneert een promise — vang rejections (display kan tussen window-creatie
+      // en load weg zijn met meerdere schermen) zodat het niet bubbelt naar een unhandled rejection.
+      previewWin.loadFile('preview.html').catch(e => {
+        console.warn('[main] preview loadFile failed:', e.message)
+      })
+      const thisWin = previewWin
+      thisWin.once('ready-to-show', () => {
+        try { if (!thisWin.isDestroyed()) thisWin.show() } catch(_){}
+      })
+      thisWin.on('closed', () => {
+        if (previewWin === thisWin) previewWin = null
+      })
+      return { ok: true, displayId: target.id }
+    } catch (e) {
+      console.warn('[main] open-preview error:', e.message)
+      previewWin = null
+      return { ok: false, error: e.message }
+    }
+  })
+
+  // Renderer → main → preview: stap-info doorsturen voor RoomTest.
+  // BroadcastChannel werkt soms niet betrouwbaar tussen Electron-windows
+  // (separate renderer processen, session-isolatie afhankelijk van versie).
+  // IPC-relay is robuust.
+  ipcMain.handle('preview-broadcast', (_, payload) => {
+    try {
+      if (previewWin && !previewWin.isDestroyed()) {
+        previewWin.webContents.send('preview-update', payload)
       }
-    })
-    previewWin.setMenuBarVisibility(false)
-    previewWin.loadFile('preview.html')
-    const thisWin = previewWin
-    thisWin.once('ready-to-show', () => {
-      if (!thisWin.isDestroyed()) thisWin.show()
-    })
-    thisWin.on('closed', () => {
-      if (previewWin === thisWin) previewWin = null
-    })
+    } catch (e) { console.warn('[main] preview-broadcast error:', e.message) }
     return { ok: true }
   })
 
   ipcMain.handle('close-preview', () => {
-    if (previewWin && !previewWin.isDestroyed()) { previewWin.close(); previewWin = null }
+    try {
+      if (previewWin && !previewWin.isDestroyed()) { previewWin.close() }
+    } catch (e) {
+      console.warn('[main] close-preview error:', e.message)
+    }
+    previewWin = null
     return { ok: true }
   })
+
+  // Als het externe scherm losgetrokken wordt, sluit het preview-venster netjes —
+  // anders blijft 'ie hangen op een coordinate-block dat niet meer bestaat en kunnen
+  // volgende open-preview calls falen op stale state.
+  const handleDisplayRemoved = () => {
+    try {
+      if (!previewWin || previewWin.isDestroyed()) return
+      const winBounds = previewWin.getBounds()
+      const stillExists = screen.getAllDisplays().some(d => {
+        const b = d.bounds
+        return winBounds.x >= b.x && winBounds.x < b.x + b.width &&
+               winBounds.y >= b.y && winBounds.y < b.y + b.height
+      })
+      if (!stillExists) {
+        previewWin.close()
+        previewWin = null
+      }
+    } catch (e) {
+      console.warn('[main] display-removed cleanup error:', e.message)
+    }
+  }
+  screen.on('display-removed', handleDisplayRemoved)
+
+  // Display changes naar renderer broadcasten zodat de Extern-Scherm
+  // dropdown automatisch ververst (nieuw aangesloten monitor verschijnt
+  // dan zonder dat de operator hoeft te klikken / app te herstarten).
+  const broadcastDisplays = () => {
+    try {
+      if (win && !win.isDestroyed()) win.webContents.send('display-changed')
+    } catch (e) { /* noop */ }
+  }
+  screen.on('display-added',           broadcastDisplays)
+  screen.on('display-removed',         broadcastDisplays)
+  screen.on('display-metrics-changed', broadcastDisplays)
 
   // ── VISCA over UDP ─────────────────────────────────────────────
   ipcMain.handle('visca-udp', (_, ip, port, hexCmd) => {
@@ -296,8 +498,7 @@ function createWindow() {
   // ══════════════════════════════════════════════════════════════
   // AV INVENTARISATIE — Logitech HID, USB UVC (Avonic), Display EDID
   // ══════════════════════════════════════════════════════════════
-
-  let inventoryWin = null
+  // (inventoryWin staat module-level zodat 't menu en IPC dezelfde ref delen)
 
   function runPowerShellJson(script, timeoutMs = 30000) {
     return new Promise((resolve) => {
@@ -696,35 +897,9 @@ if ($rows) { $rows | ConvertTo-Json -Depth 3 -Compress } else { '[]' }
   })
 
   // ── Open inventory window ───────────────────────────────────
-  ipcMain.handle('inv-open', () => {
-    if (inventoryWin && !inventoryWin.isDestroyed()) {
-      inventoryWin.focus()
-      return { ok: true, reused: true }
-    }
-    inventoryWin = new BrowserWindow({
-      width: 1200, height: 780,
-      minWidth: 900, minHeight: 600,
-      title: 'RoomReady — AV Inventaris',
-      backgroundColor: '#0e1219',
-      icon: path.join(__dirname, 'icon.ico'),
-      autoHideMenuBar: true,
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: true,
-        preload: path.join(__dirname, 'preload.js'),
-      },
-    })
-    inventoryWin.setMenuBarVisibility(false)
-    inventoryWin.loadFile('inventory.html')
-    // DevTools alleen opt-in via env — anders blijft de UI strak
-    if (process.env.RR_INV_DEVTOOLS) {
-      inventoryWin.webContents.once('did-finish-load', () => {
-        inventoryWin.webContents.openDevTools({ mode: 'right' })
-      })
-    }
-    inventoryWin.on('closed', () => { inventoryWin = null })
-    return { ok: true, reused: false }
-  })
+  // Delegeert naar de module-level helper zodat 't menu Tools→Inventaris
+  // en de (verwijderde) renderer-knop dezelfde window-instance hergebruiken.
+  ipcMain.handle('inv-open', () => openInventoryWindow())
 
   session.defaultSession.setPermissionRequestHandler((wc, permission, cb) => {
     // PTZ (pan/tilt/zoom) is een APARTE permission in Chromium — moet los toegestaan worden
@@ -734,7 +909,7 @@ if ($rows) { $rows | ConvertTo-Json -Depth 3 -Compress } else { '[]' }
   session.defaultSession.setPermissionCheckHandler(() => true)
 
   win.loadFile('renderer.html')
-  win.once('ready-to-show', () => win.show())
+  win.once('ready-to-show', () => { win.maximize(); win.show() })
 
   // Menu installeren met Kiosk Mode toggle
   Menu.setApplicationMenu(buildMenu(win))

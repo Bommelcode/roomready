@@ -53,7 +53,13 @@ Three-process Electron app with vanilla HTML/CSS/JS — **no framework, no bundl
 These have all caused real, shipped regressions. Do not reintroduce them:
 
 1. **Never** add the `use-fake-ui-for-media-stream` Chromium flag — it hides devices from `enumerateDevices()`.
-2. **Never** control Windows master volume (csc.exe / COM / `AudioServiceOutOfProcess`). Volume is **in-app digital only** via registered Web Audio `GainNode`s. An earlier version corrupted the Windows audio service system-wide.
+2. **Windows audio control: nuanced.** A prior version corrupted the Windows audio service system-wide; the exact mechanism wasn't preserved. Following the v3.4.8 retry, the rule is:
+   - **OK** — pre-compiled native helper (`helpers/audio-control.exe`, source in `audio-control.cs`) using Core Audio COM (`IMMDeviceEnumerator`, `IAudioEndpointVolume`) for read + per-endpoint volume/mute. Spawned per-action via `child_process.execFile`, COM objects released via `Marshal.ReleaseComObject`, no persistent handles, no callbacks/notifiers.
+   - **OK** — in-app digital `GainNode`s tracked via `activeGainNodes` for test playback shaping. This was always allowed and is still the right tool for test-internal volume scaling.
+   - **NEVER** — runtime C# compilation via `csc.exe` / `Add-Type -TypeDefinition`. The previous attempt did this and it's the most-likely root cause of the system-wide breakage. If you need a new COM call, add it to the pre-compiled helper and rebuild it once at dev time.
+   - **NEVER** — `AudioServiceOutOfProcess` class loading or any direct interaction with `audiosrv` / `audiodg.exe` beyond what Core Audio APIs expose to userspace.
+   - **NEVER** — registry writes under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\...` or audio-policy stores. Use COM Set methods only.
+   - **NEVER** — registering `IAudioEndpointVolumeCallback` from Electron. Subscriptions across process boundaries leak handles when the renderer reloads. Poll instead (current implementation: 2s interval).
 3. **Never** pass `{ exact: 'default' }` or `{ exact: 'communications' }` to `getUserMedia` — those are virtual Chromium aliases and crash the pipeline. Always gate with `useExact = id && id !== 'default' && id !== 'communications'`.
 4. **Never** bridge test audio through `createMediaStreamDestination()` + `<audio>` + `setSinkId()` — use `setSinkId()` on the `AudioContext` itself (Chrome 110+) and connect directly to `spkCtx.destination`.
 5. **Never** request audio + video + PTZ permissions in a single combined `getUserMedia` — request audio, then video-with-PTZ (with a plain-video fallback), **separately**, before calling `enumerateDevices()`. Combined requests can hide alternative mics from enumeration.

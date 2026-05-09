@@ -12,6 +12,54 @@ cp .snapshots/vX.Y.Z/* /home/claude/logitech-tester/
 
 ---
 
+## v3.4.8 — Snelle test vereenvoudigd: operator-gestuurde mic + subjectieve loopback
+
+**Datum:** 2026-05-04
+**Status:** UX-vereenvoudiging op verzoek
+
+**Probleem:** De Snelle test deed een passieve mic-meting van 1.5s en daarna een speaker-test met akkoord-FFT. De akkoord-test faalde inconsistent op speakerphones met hardware-AEC (zelfde audio-chip → mic cancelt het testsignaal weg) en gaf vaak verwarrende `Δ-dB` waarden waar de operator niets mee kon. De passieve mic-meting kon ook "geen signaal" rapporteren als de operator gewoon stil was.
+
+**Fix:** Stappen 2 en 3 zijn nu operator-gestuurd:
+
+- **Stap 2 — Mic:** popup toont "Spreek in de microfoon" met live mic-meter. 3.5s sample, evaluatie op piek (≥0.05 = pass, ≥0.015 = warn). De operator wéét nu wat-ie moet doen i.p.v. te raden waarom het stil is.
+- **Stap 3 — Loopback (vervangt "Speaker + mic"):** mic→DelayNode(400ms)→speaker, operator hoort zichzelf met lichte echo, live meter toont mic-niveau. Prompt **"Hoorde je jezelf luid en duidelijk?"** met Ja/Nee knoppen. Pass/fail volgt het oordeel van de operator — geen gevoeligheid voor hardware-AEC of room-akoestiek meer.
+
+**UI-wijzigingen:** popup-actief-paneel kreeg een meter-bar (`#qt-active-meter`) en prompt-area (`#qt-active-prompt`) met groene/rode Ja/Nee knoppen. Step-rij omgenoemd van `qt-speaker` ("Speaker + mic", 🔊) naar `qt-loopback` ("Loopback", 🔁).
+
+**Same-group AEC bypass (post-1):** de typische RoomReady-setup is een Logitech MeetUp/Rally-bar waar mic én speaker hetzelfde fysieke apparaat zijn — de hardware-AEC cancelt dan de mic→speaker loopback en de operator hoort niets. Stap 3 valt nu automatisch terug op een TTS-sample-playback (uit `samples/`) zodra `isSameAudioGroup()` true is: prompt wordt "Hoorde je de teststem luid en duidelijk?" i.p.v. "Hoorde je jezelf…". Echte loopback (mic→delay→speaker) blijft draaien wanneer mic en speaker op verschillende devices zitten.
+
+**Audio-graph hardening:** `lbCtx.resume()` aangeroepen vóór `setSinkId()` (na meerdere awaits start de context vaak suspended); op Ja/Nee-klik gain instant naar 0 + alle nodes disconnect *vóór* `lbCtx.close()` — anders blijft buffered audio in de DelayNode honderden ms doorspelen omdat Windows de device pas vrijgeeft als close echt afgehandeld is.
+
+**Wat blijft:** de losse speaker+mic akkoord-test in het DEV finetune-paneel (`btn-spk-test` → `qtTestSpeaker()`) is intact gelaten — handig om audio-paths objectief te benchmarken zonder operator. Alleen de RoomTest-flow zelf gebruikt 'm niet meer.
+
+**Anti-pattern check:** loopback gebruikt `echoCancellation: false`, geen `{ exact: 'default' }`, audio gerouteerd direct naar `lbCtx.destination` (geen `<audio>`-bridge), en `liveMicInhibit` wordt gezet vóór `stopLiveMic()` zodat de always-on monitor niet midden in de test herstart.
+
+**Post-2 — uitgebreide UX + tooling pass (2026-05-09):**
+
+- **Loopback finally + cancel-mechanisme:** STAP 3 herstart de live-mic in z'n eigen finally (was: pas aan 't einde van `runQuickTest`, en bleef hangen bij abort). Test-cancel via `AbortController`: modal sluiten = test stopt netjes (audio uit, mic terug, `qtPrompt` reject met AbortError). `qtCheckAbort(signal)` na elke step-`sleep`.
+- **Audio controls tile** (verhuisd naar `audio-tests-col`): Sound-settings shortcut (`ms-settings:sound`) + Windows speaker-volume slider via Core Audio COM-helper + status-row (Device / Sample rate / Status). Mic-volume slider verwijderd op verzoek; mic-mute knop verwijderd na non-werkend gedrag.
+- **Pre-compiled C# helper** `helpers/audio-control.exe` voor Core Audio COM (volume/mute lezen + zetten per endpoint). Geen runtime-csc, geen `AudioServiceOutOfProcess`, COM-objects via `Marshal.ReleaseComObject` vrijgegeven. CLAUDE.md anti-pattern #2 met nuance bijgewerkt (pre-compiled COM = OK, runtime-compile = nog steeds verboden).
+- **Latency-test, DEV-settings panel, Update drag-zone, Teams-knop, Inventaris-knop** allemaal verwijderd. Inventaris is nu te bereiken via menu **Tools → AV Inventaris…** (`Ctrl+I`). Versie-badge weg uit header → menu **Help → Over RoomReady…** (leest uit `package.json`).
+- **Extern Scherm dropdown** in device-bar — vervangt het `🖥`-knopje uit camera-tile + de oude modal-dialog. `display-changed` IPC vanuit main broadcastet display-add/remove naar renderer; preview opent automatisch bij plug-in. Selectie-wissel verhuist preview meteen.
+- **SVG icon sprite** (Lucide-stijl line-art): tile-headers, device-bar labels, primaire knoppen (`▶`/`■` → SVG), camera-controls (sun/contrast/droplet/aperture/etc.). Helper `ico(name, cls)` voor JS-aangedreven button-labels. CSS `.icon`, `.icon-lg`, `.icon-fill`, `.icon-spin`.
+- **Audio analyse tile** layout: mic-input meter (level-bar + dB + peak readouts) verhuisd binnen `spectrum-card` boven osc/spectrum split. Cell-padding `6px 8px 28px` voor bottom-alignment met video-tile. Camera-card body krijgt `--cam-bottom-pad:45px` zodat camera-image-bottom op één lijn met osc/spec/histogram canvas-bottoms ligt. Spectrum-card spant nu de hele KOL-3-RIJ-1 hoogte.
+- **Vectorscope (audio):** Lissajous L/R-plot met **phase coherence meter** (Pearson-correlatie, kleur-coded -1/0/+1, hold-then-decay). Toggle in oscilloscoop-pane: `Oscilloscoop` ↔ `Vectorscope`. Gain + Persistence (trail decay) controls in vectorscope-mode.
+- **Spectrum analyzer:** ranges `20-20k`, `100-8k`, `300-3k` (3 ipv 4). Smoothing-control. **Peak hold** per bar (1.5s vast + langzame decay) als 1px witte marker bovenop elke bar.
+- **Mic-input meter** peak-hold (`mm-peak`-element, 2px witte verticale streep met glow): hold 1.5s op nieuwe peak, daarna decay (`micPeakHoldTime`).
+- **Auto-pro-switch** op USB-aansluiting: nieuwe devices boven score-drempel 50 (Logitech, Echo Cancel, Rally, MeetUp, Poly Studio, Jabra Panacast) overschrijven huidige selectie als ze hoger scoren. `_knownDeviceIds` Set voor change-detect.
+- **Klantscherm uitgebreid:** geanimeerde colorbars (sneller shimmer, scrolling diagonal stripes, hue-pulse, scanlines), test-overlay met glas-kaart (`backdrop-filter: blur(28px)`) zodat tekst leesbaar boven flitsende bars staat. Stap-info via `setPreviewStep(name, sub)` — preview toont "Camera/Microfoon/Geluid wordt getest". Live camera-preview frame-relay (4 fps, JPEG dataURL) tijdens STAP 1, en **mirror in operator-popup** via `<video srcObject=camStream>`. STAP 1 minimaal 2s in beeld. Step-info via 2 kanalen (BroadcastChannel + IPC) voor robuustheid.
+- **Video-scope tile:** **Waveform monitor** als nieuwe default (luma + RGB parade modes met Stijl/Intensiteit controls). IRE-grid (0/25/50/75/100). Vectorscope blijft via dropdown beschikbaar. Refresh **25 fps** (was 2 fps); slow-pad voor sharpness/WB/exposure-readouts blijft op ~2 Hz om flikker te vermijden.
+- **Zebra overlay** op camera-preview (toggle in tile-header): diagonale animerende strepen op zones boven 90% IRE. Werkt in normale en fullscreen-mode via JS-positionering (`getBoundingClientRect` matched canvas exact aan `<video>` bounding rect).
+- **Camera fullscreen:** `padding-bottom:45px` body-pad + `updateRow1Height()` JS leest `--cam-bottom-pad` voor row-hoogte. Bij camera-connect ook `video-wrap.style.aspectRatio` zetten naar real ratio.
+- **Themes uitgedund:** light = nordic (default) + broadcast; dark = slate (default) + broadcast. Verwijderd: linen, studio, sage, air, void. Migratie van opgeslagen prefs naar default.
+- **Test-toon click-fix:** `makeChord` / `makePinkNoise` `scheduleFadeOut` gebruikt nu `cancelAndHoldAtTime` ipv `setValueAtTime(env.gain.value, ...)` — geen discontinuïteit-klik meer aan eind van fade-out. `stop()` heeft lineaire ramp naar exact 0 + oscs.stop() ná de ramp.
+- **Loopback delay default 750ms** (was 400).
+- **PTZ responsiveness:** coalescing-helper `requestMovePTZ` (1 in-flight + accumulator) — voorkomt queue-buildup bij snelle camera-drivers, camera blijft niet bewegen ná release. Repeat-interval 80→50ms, initial-delay 350→180ms, stepsizes ~50% groter.
+- **Build/icon:** `package.json` heeft nu `build`-config met `icon: 'icon.ico'` + `appId: 'com.bommelcode.roomready'`. `setAppUserModelId` in main.js voor Windows pinned-shortcut grouping. `rr-fix-ico.mjs` script voor PNG-encoded multi-resolutie ICO. `rcedit-x64.exe` workflow als symlink-faalpath voor electron-builder.
+- **Cleanup pass:** `qtTestLatency`, `speakerToggleSettingsPanel/Commit/ResetDefaults` weggehaald (~90 regels dead code). `[DEV]` console.log-spam gestript. `_onDisplayChanged` listener `unsubscribe`-callback bewaard voor `beforeunload`. Comment rot opgeruimd.
+
+---
+
 ## v3.4.7 — Scan-overrides voor model/serial/fabrikant + nieuw app-icoon
 
 **Datum:** 2026-04-28

@@ -14,6 +14,13 @@ const dst = path.resolve(__dirname, '..', 'resources', 'app.asar')
 const helpersSrc = path.join(__dirname, 'helpers')
 const helpersDst = path.resolve(__dirname, '..', 'helpers')
 
+// Samples (TTS-quotes voor Speaker+Mic test) leven in app/samples/ als
+// git-tracked source-of-truth en worden bij pack gespiegeld naar
+// ../resources/samples zodat de portable RoomReady.exe ze via
+// process.resourcesPath/samples vindt.
+const samplesSrc = path.join(__dirname, 'samples')
+const samplesDst = path.resolve(__dirname, '..', 'resources', 'samples')
+
 function copyDir(srcDir, dstDir) {
   if (!fs.existsSync(srcDir)) return 0
   fs.mkdirSync(dstDir, { recursive: true })
@@ -43,11 +50,14 @@ asar.createPackageWithOptions(src, dst, {
     '**/README.md',
     '**/dist/**',     // electron-builder output — niet meepacken (kan honderden MB zijn)
     '**/helpers/**',  // helpers/ wordt apart gemirrord naast app.asar (zie hieronder)
+    '**/samples/**',  // samples/ wordt naar ../resources/samples gemirrord (zie hieronder)
   ]},
 }).then(() => {
   const mb = (fs.statSync(dst).size / 1024 / 1024).toFixed(2)
   const v  = require('./package.json').version
   const helperCount = copyDir(helpersSrc, helpersDst)
+  const sampleCount = copyDir(samplesSrc, samplesDst)
   console.log(`Packed v${v} → ${dst} (${mb} MB)`)
   console.log(`Mirrored ${helperCount} helper file(s) → ${helpersDst}`)
+  console.log(`Mirrored ${sampleCount} sample file(s) → ${samplesDst}`)
 }).catch(e => { console.error('Pack failed:', e.message); process.exit(1) })

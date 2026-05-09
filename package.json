@@ -42,11 +42,12 @@
       "!make-icon.js",
       "!mic-test.html",
       "!index.html",
-      "!helpers/**"
+      "!helpers/**",
+      "!samples/**"
     ],
     "extraResources": [
       { "from": "helpers", "to": "helpers", "filter": ["**/*", "!*.cs"] },
-      { "from": "../resources/samples", "to": "samples" }
+      { "from": "samples",  "to": "samples" }
     ]
   }
 }

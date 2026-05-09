@@ -540,9 +540,27 @@ body.dark #video-wrap { border-radius: 1px; }
 #video-feed { width:100%; height:100%; object-fit:cover; display:none; }
 #camera-placeholder {
   color: var(--muted); font-size: 12px;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
 }
 #camera-placeholder .big { font-size: 30px; }
+/* USB-plug animatie tijdens 'connecting'-state — plug slidet richting de
+   slot, blijft kort vast, en herhaalt. Vervangt de generieke spinner. */
+#cam-usb-anim {
+  display: none; width: 64px; height: 64px;
+  color: var(--accent);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+#cam-usb-anim .plug { animation: usbPlugMove 1.6s ease-in-out infinite; transform-origin: 50% 100%; }
+#cam-usb-anim .slot { animation: usbSlotPulse 1.6s ease-in-out infinite; }
+@keyframes usbPlugMove {
+  0%, 100% { transform: translateY(-10px); opacity: 0.65; }
+  45%      { transform: translateY(0);     opacity: 1;    }
+  60%      { transform: translateY(0);     opacity: 1;    }
+}
+@keyframes usbSlotPulse {
+  0%, 100% { opacity: 0.25; }
+  45%      { opacity: 0.6;  }
+}
 #cam-spinner {
   display: none; width: 26px; height: 26px;
   border: 3px solid var(--border);
@@ -1416,6 +1434,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></symbol>
   <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
   <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
   <symbol id="i-square" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1"/></symbol>
@@ -1603,7 +1622,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);min-height:0;">
         <!-- Links: RGB histogram -->
         <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px;">
-          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);padding-bottom:3px;text-align:center;flex-shrink:0;">Histogram</div>
+          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);text-align:center;flex-shrink:0;height:24px;display:flex;align-items:center;justify-content:center;">Histogram</div>
           <div style="flex:1;min-height:0;position:relative;">
             <canvas id="video-histogram" style="position:absolute;inset:0;width:100%;height:100%;display:block;background:var(--bg);border-radius:4px;border:1px solid var(--border);"></canvas>
           </div>
@@ -1631,7 +1650,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
         </div>
         <!-- Rechts: Waveform (default) of Vectorscope — togglebaar via select -->
         <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px;">
-          <div style="display:flex;justify-content:center;align-items:center;padding-bottom:3px;flex-shrink:0;">
+          <div style="display:flex;justify-content:center;align-items:center;flex-shrink:0;height:24px;">
             <select id="vid-mode" onchange="videoScopeMode=this.value;updateVidScopeControls()"
                     style="font-size:9px;padding:1px 4px;background:var(--surface2);color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);border:1px solid var(--border);border-radius:3px;cursor:pointer;">
               <option value="waveform" selected>Waveform (luma)</option>
@@ -1661,6 +1680,10 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
               <input type="checkbox" id="vec-targets" checked onchange="vecTargets=this.checked" style="accent-color:var(--accent);">
             </label>
           </div>
+          <!-- Spacer matched aan Helderheid-bar-rij in 't histogram zodat
+               de waveform-canvas-bottom op gelijke hoogte ligt met de
+               histogram-canvas-bottom. Alleen zichtbaar in waveform-mode. -->
+          <div id="vid-wave-spacer" style="height:18px;flex-shrink:0;padding-top:4px;"></div>
           <div id="vid-wave-controls" style="display:flex;justify-content:space-between;padding-top:4px;flex-shrink:0;">
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:9px;color:var(--muted);">
               <span>Stijl:</span>
@@ -1702,6 +1725,24 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
         <video id="video-feed" autoplay playsinline muted></video>
         <canvas id="cam-zebra-overlay" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none;mix-blend-mode:normal;"></canvas>
         <div id="camera-placeholder">
+          <!-- USB-plug animatie tijdens 'verbinden'. Bovenste deel is de
+               plug die op-en-neer animeert; onderste deel is de slot/poort
+               die mee-pulseert. Stroke=currentColor → kleurt mee met thema. -->
+          <svg id="cam-usb-anim" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <g class="plug" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="32" y1="2" x2="32" y2="20"/>
+              <circle cx="32" cy="2" r="2" fill="currentColor"/>
+              <rect x="24" y="20" width="16" height="6" rx="0.5"/>
+              <rect x="22" y="26" width="20" height="14" rx="2"/>
+              <line x1="28" y1="30" x2="28" y2="34"/>
+              <line x1="32" y1="30" x2="32" y2="34"/>
+              <line x1="36" y1="30" x2="36" y2="34"/>
+            </g>
+            <g class="slot" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="14" y1="56" x2="50" y2="56"/>
+              <line x1="14" y1="58" x2="50" y2="58" stroke-dasharray="2 3"/>
+            </g>
+          </svg>
           <div id="cam-spinner"></div>
           <div id="cam-icon" class="big">📷</div>
           <div id="cam-msg">Verbinden…</div>
@@ -1730,15 +1771,17 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
         </div>
         <span id="mic-db-label" style="font-size:11px;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--text);width:48px;text-align:right;">– dB</span>
         <span id="mic-peak-label" style="font-size:10px;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--yellow);width:54px;text-align:right;">pk –∞</span>
+        <span id="mic-lufs-label" title="Short-term LUFS (BS.1770 K-weighted, 3 s venster) — perceptuele luidheid" style="font-size:10px;font-family:var(--font-val);font-variant-numeric:tabular-nums;color:var(--accent);width:64px;text-align:right;cursor:help;">–∞ LUFS</span>
       </div>
       <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);min-height:0;">
         <!-- Links: Oscilloscoop -->
         <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px 28px;">
-          <div style="display:flex;justify-content:center;align-items:center;padding:2px 6px 1px;flex-shrink:0;">
+          <div style="display:flex;justify-content:center;align-items:center;flex-shrink:0;height:24px;">
             <select id="osc-mode" onchange="audioOscMode=this.value;updateOscControls()"
                     style="font-size:9px;padding:1px 4px;background:var(--surface2);color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);border:1px solid var(--border);border-radius:3px;cursor:pointer;">
               <option value="osc" selected>Oscilloscoop</option>
               <option value="vector">Vectorscope</option>
+              <option value="spectrogram">Spectrogram</option>
             </select>
           </div>
           <canvas id="audio-osc" width="260" height="72" style="width:100%;flex:1;display:block;background:var(--bg);min-height:0;"></canvas>
@@ -1784,10 +1827,21 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
               </select>
             </label>
           </div>
+          <div id="spectrogram-controls" style="display:none;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
+            <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
+              <span>Range:</span>
+              <select id="sgram-range" onchange="spectrogramRange=this.value" style="font-size:9px;padding:1px 2px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:3px;">
+                <option value="full" selected>20–20k</option>
+                <option value="voice">100–8k</option>
+                <option value="speech">300–3k</option>
+              </select>
+            </label>
+            <span style="font-size:9px;color:var(--muted);" title="Kleur = niveau in dB. Donker = stil, geel/wit = luid.">tijd → · log(Hz) ↑</span>
+          </div>
         </div>
         <!-- Rechts: Spectrum analyzer -->
         <div style="background:var(--card);display:flex;flex-direction:column;min-height:0;padding:6px 8px 28px;">
-          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);padding:3px 6px 1px;text-align:center;flex-shrink:0;">Spectrum</div>
+          <div style="font-size:9px;color:var(--muted);font-family:var(--lbl-font);text-transform:var(--lbl-transform);letter-spacing:var(--lbl-spacing);text-align:center;flex-shrink:0;height:24px;display:flex;align-items:center;justify-content:center;">Spectrum</div>
           <canvas id="audio-spectrum" width="260" height="72" style="width:100%;flex:1;display:block;background:var(--bg);min-height:0;"></canvas>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 3px;font-size:9px;color:var(--muted);font-family:var(--font-val);flex-shrink:0;gap:4px;">
             <label style="display:flex;align-items:center;gap:3px;cursor:pointer;">
@@ -1883,7 +1937,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <!-- KOL 2 RIJ 2: Camera meta -->
   <div class="card" id="meta-card">
     <div class="card-header" style="padding:4px 10px;">
-      <span>📊 Camera info</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;"><svg class="icon"><use href="#i-barchart"/></svg> Camera info</span>
       <div class="badge" id="cam-meta-badge" style="font-size:9px;">–</div>
     </div>
     <div class="card-body" id="cam-meta-row" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
@@ -1944,9 +1998,6 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
         <span><svg class="icon icon-lg"><use href="#i-volume"/></svg> Speaker</span>
       </div>
       <div class="card-body" style="display:flex;flex-direction:column;gap:7px;">
-        <div style="font-size:11px;color:var(--muted);line-height:1.4;">
-          Speel een testsignaal of muziek af op de gekozen speaker. Subjectieve check.
-        </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
           <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;color:var(--text);">
             <input type="radio" name="spk-signal" value="chord" checked style="accent-color:var(--accent);"> Testtoon
@@ -2006,7 +2057,7 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
         </div>
         <div class="loopback-status" id="loop-status">
           <div class="pulse-dot" id="loop-dot"></div>
-          <span id="loop-status-text">Spreek in de mic en hoor jezelf terug</span>
+          <span id="loop-status-text"></span>
         </div>
       </div>
     </div>
@@ -2169,6 +2220,7 @@ let specRange   = 'full'
 let specSmooth  = 0.8
 let histScale   = 'log'
 let histMode    = 'overlay'
+const histSmooth = 0.9   // hoog — temporal smoothing per bin (vast, geen UI)
 let vecGain     = 2
 let vecTargets  = true
 
@@ -2268,17 +2320,20 @@ function drawAudioSpectrum(analyser, contextSampleRate) {
 
 // ── Audio oscilloscoop ─────────────────────────────────────────
 let oscCanvas = null, oscCtx2d = null
-// Audio osc-canvas mode + per-mode parameters. Vectorscope hergebruikt
-// 'audio-osc' canvas; alleen draw-functie en controls wisselen.
-let audioOscMode = 'osc'      // 'osc' | 'vector'
+// Audio osc-canvas mode + per-mode parameters. Vectorscope en spectrogram
+// hergebruiken 'audio-osc' canvas; alleen draw-functie en controls wisselen.
+let audioOscMode = 'osc'      // 'osc' | 'vector' | 'spectrogram'
 let audioVecGain = 1.0        // schaal voor X/Y-uitslag
 let audioVecTrail = 0.85      // persistence-decay voor de Lissajous-trail
+let spectrogramRange = 'full' // 'full' (20–20k) | 'voice' (100–8k) | 'speech' (300–3k)
 
 function updateOscControls() {
   const oc = document.getElementById('osc-controls')
   const vc = document.getElementById('vector-controls')
-  if (oc) oc.style.display = (audioOscMode === 'vector') ? 'none' : 'flex'
+  const sc = document.getElementById('spectrogram-controls')
+  if (oc) oc.style.display = (audioOscMode === 'osc') ? 'flex' : 'none'
   if (vc) vc.style.display = (audioOscMode === 'vector') ? 'flex' : 'none'
+  if (sc) sc.style.display = (audioOscMode === 'spectrogram') ? 'flex' : 'none'
   // Bij wissel: canvas leegmaken zodat geen oude beeld blijft hangen
   if (oscCanvas && oscCtx2d) oscCtx2d.clearRect(0, 0, oscCanvas.width, oscCanvas.height)
 }
@@ -2464,8 +2519,78 @@ function drawAudioVectorscope(anaL, anaR) {
   oscCtx2d.fillRect(fillX, trackY, fillW, trackH)
 }
 
+// ── Audio spectrogram (waterfall) ──────────────────────────────
+// Tijd × log(frequentie) × intensiteit als heatmap. Iedere frame schuift
+// het canvas 1 pixel naar links en wordt rechts een nieuwe kolom getekend.
+// Onmisbaar voor het spotten van brom (50/100 Hz lijnen), koeling-ruis
+// (band rond 1–4 kHz), of intermitterende klikken die in een momentane
+// spectrum verdwijnen.
+let _sgramColData = null  // hergebruik 1×H ImageData om GC te vermijden
+
+function drawAudioSpectrogram(analyser, contextSampleRate) {
+  if (!oscCanvas) {
+    oscCanvas = document.getElementById('audio-osc')
+    if (!oscCanvas) return
+    oscCtx2d = oscCanvas.getContext('2d')
+  }
+  const W = oscCanvas.width  || 260
+  const H = oscCanvas.height || 72
+
+  // Schuif bestaand beeld 1 pixel naar links — Chromium handelt overlap
+  // van same-canvas drawImage correct af, hardware-accelerated.
+  oscCtx2d.drawImage(oscCanvas, 1, 0, W - 1, H, 0, 0, W - 1, H)
+
+  // Lees frequentie-bins
+  const bins = analyser.frequencyBinCount
+  const data = new Uint8Array(bins)
+  analyser.getByteFrequencyData(data)
+
+  const sampleRate = contextSampleRate || 48000
+  const nyquist = sampleRate / 2
+  let minHz, maxHz
+  if (spectrogramRange === 'voice')      { minHz = 100; maxHz = Math.min(8000,  nyquist) }
+  else if (spectrogramRange === 'speech'){ minHz = 300; maxHz = Math.min(3000,  nyquist) }
+  else                                   { minHz = 20;  maxHz = Math.min(20000, nyquist) }
+  const logMin = Math.log(minHz)
+  const logMax = Math.log(maxHz)
+
+  // Hergebruik 1×H ImageData buffer
+  if (!_sgramColData || _sgramColData.height !== H) {
+    _sgramColData = oscCtx2d.createImageData(1, H)
+  }
+  const px = _sgramColData.data
+
+  // y=0 is top → hoge frequentie (broadcast-conventie)
+  for (let y = 0; y < H; y++) {
+    const norm = 1 - (y / (H - 1))
+    const hz = Math.exp(logMin + norm * (logMax - logMin))
+    const bin = Math.min(bins - 1, Math.max(0, Math.round(hz / nyquist * bins)))
+    const v = data[bin]  // 0..255
+    // "Hot" colormap: zwart → rood → geel → wit
+    let r, g, b
+    const t = v / 255
+    if      (t < 0.33) { r = (t * 3) * 255;       g = 0;                  b = 0 }
+    else if (t < 0.66) { r = 255;                 g = (t - 0.33) * 3*255; b = 0 }
+    else               { r = 255;                 g = 255;                b = (t - 0.66) * 3*255 }
+    const i = y * 4
+    px[i]   = r | 0
+    px[i+1] = g | 0
+    px[i+2] = b | 0
+    px[i+3] = 255
+  }
+  oscCtx2d.putImageData(_sgramColData, W - 1, 0)
+}
+
 // ── Video histogram ────────────────────────────────────────────
 let vidHistCanvas = null, vidHistCtx = null
+// Temporal-smoothing buffers per kanaal — gewogen gemiddelde tussen
+// vorige en huidige frame. histSmooth = aandeel van de vorige (oude)
+// waarde dat behouden blijft. 0 = geen smoothing (zenuwachtig),
+// 0.95 = heel traag (zeer kalm). Default 0.75 = "normaal".
+const _histSmoothR = new Float32Array(256)
+const _histSmoothG = new Float32Array(256)
+const _histSmoothB = new Float32Array(256)
+const _histSmoothY = new Float32Array(256)
 
 function drawVideoHistogram(imageData) {
   if (!vidHistCanvas) {
@@ -2490,20 +2615,31 @@ function drawVideoHistogram(imageData) {
     yHist[y]++
   }
 
+  // Temporal smoothing — per bin gewogen gemiddelde met vorig frame
+  const a = histSmooth, b = 1 - histSmooth
+  for (let i = 0; i < 256; i++) {
+    _histSmoothR[i] = a * _histSmoothR[i] + b * rHist[i]
+    _histSmoothG[i] = a * _histSmoothG[i] + b * gHist[i]
+    _histSmoothB[i] = a * _histSmoothB[i] + b * bHist[i]
+    _histSmoothY[i] = a * _histSmoothY[i] + b * yHist[i]
+  }
+
   vidHistCtx.clearRect(0, 0, W, H)
 
   let channels
   if (histMode === 'luma') {
-    channels = [{ data: yHist, color: 'rgba(220,220,220,0.85)' }]
+    channels = [{ data: _histSmoothY, color: 'rgba(220,220,220,0.85)' }]
   } else {
     channels = [
-      { data: rHist, color: 'rgba(220,60,60,0.65)' },
-      { data: gHist, color: 'rgba(60,180,60,0.65)' },
-      { data: bHist, color: 'rgba(60,100,220,0.65)' }
+      { data: _histSmoothR, color: 'rgba(220,60,60,0.65)' },
+      { data: _histSmoothG, color: 'rgba(60,180,60,0.65)' },
+      { data: _histSmoothB, color: 'rgba(60,100,220,0.65)' }
     ]
   }
 
-  const maxVal = Math.max(...channels.flatMap(c => [...c.data])) || 1
+  let maxVal = 0
+  for (const ch of channels) for (let i = 0; i < 256; i++) if (ch.data[i] > maxVal) maxVal = ch.data[i]
+  if (maxVal < 1) maxVal = 1
   const scaleFn = histScale === 'log'
     ? v => Math.log1p(v) / Math.log1p(maxVal)
     : v => v / maxVal
@@ -2599,10 +2735,14 @@ function updateVidScopeControls() {
   const vec = document.getElementById('vid-vec-controls')
   const wav = document.getElementById('vid-wave-controls')
   const sat = document.getElementById('vid-saturatie-row')
+  const spacer = document.getElementById('vid-wave-spacer')
   const isVec = videoScopeMode === 'vectorscope'
   if (vec) vec.style.display = isVec ? 'flex' : 'none'
   if (wav) wav.style.display = isVec ? 'none' : 'flex'
   if (sat) sat.style.display = isVec ? 'flex' : 'none'
+  // Spacer alleen in waveform-mode — vervangt de visuele Helderheid-bar
+  // ruimte zodat canvas-bottom horizontaal gelijk loopt met histogram.
+  if (spacer) spacer.style.display = isVec ? 'none' : 'block'
 }
 
 // Dispatch — vervangt direct-aanroep van drawVectorscope in de analyse-loop.
@@ -2889,8 +3029,8 @@ function toggleCamFullscreen() {
   const isFs = main.classList.toggle('cam-fullscreen')
   // Zorg dat cam-expanded uit staat in fullscreen
   if (isFs) main.classList.remove('cam-expanded')
-  btn.innerHTML = ico(isFs ? 'x' : 'maximize')
-  btn.title = isFs ? 'Fullscreen sluiten (Esc)' : 'Volledig scherm camera + PTZ'
+  btn.innerHTML = ico(isFs ? 'minimize' : 'maximize')
+  btn.title = isFs ? 'Klein scherm (Esc)' : 'Volledig scherm camera + PTZ'
 }
 
 // ── Extern scherm preview (klant-facing status) ───────────────
@@ -3159,6 +3299,15 @@ let micPeakVal = 0, micPeakTimer = null
 // is — pas na 1500ms hold start de decay.
 let micPeakHold = 0
 let micPeakHoldTime = 0
+// LUFS — short-term loudness per BS.1770. K-weighting bestaat uit een
+// hoogshelving (+4 dB @ ~1.5 kHz, fysiologisch oor-correctie) gevolgd
+// door 'n hoogdoorlaat (38 Hz, head-correctie). lufsRing houdt de
+// laatste ~3 s aan mean-square-waarden bij voor een glijdend gemiddelde
+// (BS.1770 short-term venster — rustiger dan momentary's 400 ms).
+let lufsAnalyser = null
+let lufsBuf = null
+const lufsRing = []
+const LUFS_WINDOW_MS = 3000
 
 const selCamera  = document.getElementById('sel-camera')
 const selMic     = document.getElementById('sel-mic')
@@ -3280,6 +3429,29 @@ function isAVDevice(label) {
 }
 
 // ── Device enumeration ─────────────────────────────────────────
+// USB-detectie animatie tonen vóór initDevices — geeft de operator visueel
+// signaal dat de app USB-apparaten aan 't enumereren is. Zodra initDevices
+// klaar is roept de boot-sequence dit met false aan om naar idle/camera-feed
+// over te gaan.
+function showUsbDetecting(on) {
+  const ph   = document.getElementById('camera-placeholder')
+  const usb  = document.getElementById('cam-usb-anim')
+  const spin = document.getElementById('cam-spinner')
+  const icon = document.getElementById('cam-icon')
+  const txt  = document.getElementById('cam-msg')
+  if (!ph || !usb || !icon || !txt) return
+  if (on) {
+    ph.style.display = 'flex'
+    usb.style.display = 'block'
+    if (spin) spin.style.display = 'none'
+    icon.style.display = 'none'
+    txt.textContent = 'USB-apparaten zoeken…'
+  } else {
+    usb.style.display = 'none'
+    icon.style.display = 'block'
+  }
+}
+
 async function initDevices() {
   window._camDiag = []
   camLog('Init gestart')
@@ -3577,6 +3749,23 @@ async function startLiveMic() {
       console.warn('[MIC] vectorscope-splitter init faalde:', e.message)
       liveMicAnaL = liveMicAnaR = null
     }
+    // K-weighting filter chain voor LUFS (BS.1770). Eigen analyser-tak
+    // zodat de scope/spectrum/peak-meter ongefilterd blijven werken.
+    try {
+      const hp = liveMicCtx.createBiquadFilter()
+      hp.type = 'highpass'; hp.frequency.value = 38; hp.Q.value = 0.5
+      const hs = liveMicCtx.createBiquadFilter()
+      hs.type = 'highshelf'; hs.frequency.value = 1500; hs.gain.value = 4
+      liveMicTrimGain.connect(hp); hp.connect(hs)
+      lufsAnalyser = liveMicCtx.createAnalyser()
+      lufsAnalyser.fftSize = 2048; lufsAnalyser.smoothingTimeConstant = 0
+      hs.connect(lufsAnalyser)
+      lufsBuf = new Float32Array(lufsAnalyser.fftSize)
+      lufsRing.length = 0
+    } catch(e) {
+      console.warn('[MIC] LUFS-filter init faalde:', e.message)
+      lufsAnalyser = null; lufsBuf = null
+    }
     const buf = new Uint8Array(ana.fftSize)
     if (dot) dot.className = 'active'
     const _track = liveMicStream.getTracks()[0]
@@ -3630,10 +3819,37 @@ async function startLiveMic() {
       try {
         if (audioOscMode === 'vector' && liveMicAnaL && liveMicAnaR) {
           drawAudioVectorscope(liveMicAnaL, liveMicAnaR)
+        } else if (audioOscMode === 'spectrogram') {
+          drawAudioSpectrogram(ana, liveMicCtx.sampleRate)
         } else {
           drawAudioOscilloscope(ana, liveMicCtx.sampleRate)
         }
       } catch(e) {}
+      // LUFS: K-weighted mean-square over glijdend 400 ms-venster
+      if (lufsAnalyser && lufsBuf) {
+        try {
+          lufsAnalyser.getFloatTimeDomainData(lufsBuf)
+          let sq = 0
+          for (let i = 0; i < lufsBuf.length; i++) sq += lufsBuf[i] * lufsBuf[i]
+          const ms = sq / lufsBuf.length
+          const frameMs = 1000 * lufsBuf.length / liveMicCtx.sampleRate
+          const maxFrames = Math.max(1, Math.ceil(LUFS_WINDOW_MS / frameMs))
+          lufsRing.push(ms)
+          while (lufsRing.length > maxFrames) lufsRing.shift()
+          let sum = 0
+          for (let i = 0; i < lufsRing.length; i++) sum += lufsRing[i]
+          const meanMs = sum / lufsRing.length
+          const lufsLbl = document.getElementById('mic-lufs-label')
+          if (lufsLbl) {
+            if (meanMs > 1e-10) {
+              const lufs = -0.691 + 10 * Math.log10(meanMs)
+              lufsLbl.textContent = lufs.toFixed(1) + ' LUFS'
+            } else {
+              lufsLbl.textContent = '–∞ LUFS'
+            }
+          }
+        } catch(e) {}
+      }
       liveMicAnimId = requestAnimationFrame(tick)
     }
     tick()
@@ -3657,6 +3873,9 @@ function stopLiveMic() {
   if (liveMicStream){ liveMicStream.getTracks().forEach(t => t.stop()); liveMicStream = null }
   liveMicTrimGain = null  // GainNode is dood met liveMicCtx — losse ref weg
   liveMicAnaL = liveMicAnaR = null
+  lufsAnalyser = null; lufsBuf = null; lufsRing.length = 0
+  const lufsLbl = document.getElementById('mic-lufs-label')
+  if (lufsLbl) lufsLbl.textContent = '–∞ LUFS'
   micPeakVal = 0
   micPeakHold = 0
   const c = document.getElementById('audio-spectrum')
@@ -3767,7 +3986,9 @@ async function startCamera() {
     document.getElementById('sv-res').textContent    = w + ' × ' + h
     const devEl = document.getElementById('sv-dev')
     const fullLabel = track.label || '–'
-    devEl.textContent = fullLabel.length > 28 ? fullLabel.slice(0,28) + '…' : fullLabel
+    // Strip alles vanaf de eerste open-haakje: "Integrated Webcam (1234:5678)" → "Integrated Webcam"
+    const cleanLabel = fullLabel.replace(/\s*\(.*$/, '').trim() || fullLabel
+    devEl.textContent = cleanLabel.length > 28 ? cleanLabel.slice(0,28) + '…' : cleanLabel
     devEl.title = fullLabel
     document.getElementById('sv-aspect').textContent = aspectRatio(w, h)
     document.getElementById('sv-af').textContent     = s.focusMode || (s.focusDistance !== undefined ? 'Handmatig' : '–')
@@ -3821,6 +4042,7 @@ function setCamState(state, msg) {
   const ph = document.getElementById('camera-placeholder')
   const spin = document.getElementById('cam-spinner')
   const icon = document.getElementById('cam-icon')
+  const usb  = document.getElementById('cam-usb-anim')
   const txt  = document.getElementById('cam-msg')
   const badge = document.getElementById('cam-badge')
   const btn   = document.getElementById('btn-cam-toggle')
@@ -3832,16 +4054,19 @@ function setCamState(state, msg) {
   }
   ph.style.display = 'flex'
   if (state === 'loading') {
+    if (usb)  usb.style.display='none'
     spin.style.display='block'; icon.style.display='none'
     txt.textContent='Camera starten…'
     badge.textContent='Verbinden…'; badge.className='badge warn'
     btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=true
   } else if (state === 'idle') {
+    if (usb)  usb.style.display='none'
     spin.style.display='none'; icon.style.display='block'
     icon.textContent='📷'; txt.textContent='Camera gestopt'
     badge.textContent='Gestopt'; badge.className='badge'
     btn.innerHTML=ico('play')+' Camera'; btn.className='btn btn-primary'; btn.disabled=false
   } else if (state === 'error') {
+    if (usb)  usb.style.display='none'
     spin.style.display='none'; icon.style.display='block'
     icon.textContent='⚠️'; txt.textContent='Fout: ' + (msg||'onbekend')
     badge.textContent='Fout'; badge.className='badge err'
@@ -5539,7 +5764,7 @@ async function startLoopback() {
   document.getElementById('btn-loop-stop').disabled=false
   document.getElementById('loop-badge').textContent='Actief'; document.getElementById('loop-badge').className='badge ok'
   document.getElementById('loop-dot').style.display='block'
-  document.getElementById('loop-status-text').textContent='Spreek en hoor jezelf terug…'
+  document.getElementById('loop-status-text').textContent=''
   const LOOP_TIMEOUT = 10000
   const loopStart = Date.now()
   try {
@@ -5584,7 +5809,7 @@ function stopLoopback() {
   document.getElementById('btn-loop-stop').disabled=true
   document.getElementById('loop-badge').textContent='Gestopt'; document.getElementById('loop-badge').className='badge'
   document.getElementById('loop-dot').style.display='none'
-  document.getElementById('loop-status-text').textContent='Spreek in de mic en hoor jezelf terug'
+  document.getElementById('loop-status-text').textContent=''
   setMeter('loop-meter-in-fill','loop-meter-in-db',0)
   setMeter('loop-meter-out-fill','loop-meter-out-db',0)
 }
@@ -5926,9 +6151,7 @@ function buildPTZ(track, caps, settings) {
     // (digitale zoom slider is in v3.3.5 verwijderd voor duidelijkheid)
     body.innerHTML = `
       <div style="font-size:11px;color:var(--muted);line-height:1.5;padding:6px 2px;">
-        <b>Geen PTZ-mogelijkheden gedetecteerd.</b><br>
-        Deze camera biedt geen pan/tilt/zoom.<br>
-        Voor Rally Bar, QSC, Avonic etc. gebruik de IP-knop ↑ voor VISCA over IP.
+        <b>Geen PTZ-mogelijkheden gedetecteerd.</b>
       </div>`
     badge.textContent = 'Geen PTZ'; badge.className = 'badge warn'
     return
@@ -7124,7 +7347,12 @@ updateVidScopeControls()  // toon waveform-controls, verberg vectorscope-control
 // Sequenced startup: eerst camera's/audio, dan pas extern klantscherm
 // Voorkomt race conditions tussen hoofdvenster en preview venster voor media-toegang
 ;(async () => {
-  await initDevices()
+  showUsbDetecting(true)
+  try {
+    await initDevices()
+  } finally {
+    showUsbDetecting(false)
+  }
 
   // Kiosk mode boot (checkt persistent state, installeert watcher, handelt menu-toggle af)
   await kioskBoot()

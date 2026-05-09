@@ -169,14 +169,19 @@ function createWindow() {
   // Geen runtime csc/Add-Type, geen AudioServiceOutOfProcess, geen blijvende
   // COM-handles. Zie CLAUDE.md voor de regels rond Windows audio control.
   function audioHelperPath() {
-    // Dev tree: app/helpers/audio-control.exe.
-    // Packaged: helpers/ staat naast resources/ (sibling van app.asar). De
-    // pack.js / electron-builder zet 'm daar buiten de asar omdat .exe's
-    // niet vanuit een asar gespawnd kunnen worden.
-    if (app.isPackaged) {
-      return path.join(process.resourcesPath, '..', 'helpers', 'audio-control.exe')
+    // Drie locaties checken (eerste hit wint):
+    //   1. process.resourcesPath/helpers/      ← electron-builder extraResources
+    //   2. process.resourcesPath/../helpers/   ← onze pack.js mirror-layout
+    //   3. __dirname/helpers/                  ← dev-tree (npm run start)
+    const candidates = [
+      app.isPackaged && path.join(process.resourcesPath, 'helpers', 'audio-control.exe'),
+      app.isPackaged && path.join(process.resourcesPath, '..', 'helpers', 'audio-control.exe'),
+      path.join(__dirname, 'helpers', 'audio-control.exe'),
+    ].filter(Boolean)
+    for (const p of candidates) {
+      if (fs.existsSync(p)) return p
     }
-    return path.join(__dirname, 'helpers', 'audio-control.exe')
+    return candidates[0]  // fallback voor de error-message
   }
   function audioHelperRun(args) {
     return new Promise(resolve => {

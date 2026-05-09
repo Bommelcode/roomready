@@ -22,6 +22,9 @@
       "icon": "icon.ico",
       "target": ["portable"]
     },
+    "portable": {
+      "artifactName": "RoomReady-${version}-portable.exe"
+    },
     "files": [
       "**/*",
       "!**/.snapshots/**",
@@ -38,7 +41,12 @@
       "!pack.js",
       "!make-icon.js",
       "!mic-test.html",
-      "!index.html"
+      "!index.html",
+      "!helpers/**"
+    ],
+    "extraResources": [
+      { "from": "helpers", "to": "helpers", "filter": ["**/*", "!*.cs"] },
+      { "from": "../resources/samples", "to": "samples" }
     ]
   }
 }

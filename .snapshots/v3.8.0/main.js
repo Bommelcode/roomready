@@ -708,6 +708,65 @@ if ($rows) { $rows | ConvertTo-Json -Depth 3 -Compress } else { '[]' }
     return { ok: true, devices: out }
   })
 
+  // ── Snelle registry-scan voor live ruimte-herkenning ────────
+  // Win32_PnPEntity (de inventaris-scans) is een zware WMI-class die per verse
+  // powershell.exe koud initialiseert: op sommige machines 12s+ voor de query
+  // en Get-PnpDeviceProperty (serienummer via DEVPKEY) loopt tot 90s+. Veel te
+  // traag om bij elke devicechange te draaien. De registry onder Enum\USB heeft
+  // dezelfde info in ~120ms. We lezen 'm read-only.
+  //   - Fysieke devices = instances onder keys ZONDER &MI_ (composite-parents /
+  //     single-interface). &MI_-keys zijn sub-interfaces → overslaan.
+  //   - Serienummer zit voor de meeste conf-bars al in de instance-naam (geen
+  //     '&' = echte iSerialNumber, bv. MeetUp 'F073E2BF'); DEVPKEY-lookup dus niet
+  //     nodig. uid-berekening in de renderer blijft 1:1 met inventory.html.
+  // GEEN backslash in registry-paden zonder \\ (zie WQL-waarschuwing hierboven —
+  // hier is 't gewoon JS→PS escaping: \\ in de template = één backslash in PS).
+  const PS_QUICK_SCAN = `
+$ErrorActionPreference='SilentlyContinue'
+$root='HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\USB'
+$keys = Get-ChildItem $root
+$nameByBase=@{}
+foreach ($k in $keys) {
+  $key=$k.PSChildName
+  if ($key -notmatch '&MI_') { continue }
+  $base=($key -split '&MI_')[0]
+  if ($nameByBase.ContainsKey($base)) { continue }
+  foreach ($ii in Get-ChildItem $k.PSPath) {
+    $p=Get-ItemProperty $ii.PSPath
+    $n=$p.FriendlyName; if(-not $n){$n=$p.DeviceDesc}
+    if ($n -and $n -notmatch '^@') { $nameByBase[$base]=$n; break }
+  }
+}
+$logi=@(); $usb=@()
+foreach ($k in $keys) {
+  $key=$k.PSChildName
+  if ($key -match '&MI_') { continue }
+  if ($key -match 'ROOT_HUB') { continue }
+  if ($key -notmatch '^VID_([0-9A-Fa-f]{4})&PID_([0-9A-Fa-f]{4})') { continue }
+  $vid=$Matches[1].ToUpper(); $pd=$Matches[2].ToUpper()
+  foreach ($ii in Get-ChildItem $k.PSPath) {
+    $inst=$ii.PSChildName
+    $p=Get-ItemProperty $ii.PSPath
+    if ($p.Service -match 'USBHUB') { continue }
+    $name=$p.FriendlyName
+    if (-not $name -or $name -match '^@') { if($nameByBase.ContainsKey($key)){$name=$nameByBase[$key]} }
+    if (-not $name -or $name -match '^@') { $name='' }
+    $hasReal = ($inst -notmatch '&')
+    $serial = ''; if ($hasReal) { $serial = $inst }
+    $o=[PSCustomObject]@{ vid=$vid; pid=$pd; instance=$inst; pnpDeviceId="USB\\$key\\$inst"; name=$name; serialNumber=$serial; hasRealSerial=$hasReal }
+    if ($vid -eq '046D') { $logi+=$o } else { $usb+=$o }
+  }
+}
+[PSCustomObject]@{ logitech=$logi; usb=$usb } | ConvertTo-Json -Depth 4 -Compress
+`
+  ipcMain.handle('inv-scan-quick', async () => {
+    const r = await runPowerShellJson(PS_QUICK_SCAN, 15000)
+    if (!r.ok) return { ok: false, error: r.error, logitech: [], usb: [] }
+    const obj = (r.data && r.data[0]) || {}
+    const toArr = v => Array.isArray(v) ? v : (v ? [v] : [])
+    return { ok: true, logitech: toArr(obj.logitech), usb: toArr(obj.usb) }
+  })
+
   // ── Display / EDID scan ─────────────────────────────────────
   const PNPID_VENDORS = {
     SAM: 'Samsung', SEC: 'Samsung', LGD: 'LG', GSM: 'LG', LGE: 'LG',
@@ -816,6 +875,89 @@ if ($rows) { $rows | ConvertTo-Json -Depth 3 -Compress } else { '[]' }
       }
     })
   }
+
+  // ── AV Pro (event2flow) afvink-koppeling ────────────────────
+  // Bij "Room = Ready" vinkt RoomReady de herkende ruimte af in AV Pro. De
+  // servicepagina zelf is een Streamlit-app (afvinken loopt over WebSocket,
+  // geen REST), dus dit verwacht een door de leverancier geleverd HTTP-endpoint
+  // dat dezelfde afvink-actie doet. Endpoint + auth staan in avpro-config.json;
+  // niets is hardcoded zodat we kunnen schakelen zodra de key/URL bekend is.
+  function avproConfigPath() { return path.join(app.getPath('userData'), 'avpro-config.json') }
+  const AVPRO_CONFIG_DEFAULT = {
+    enabled: false,
+    endpoint: '',                 // bv. https://.../checkoff
+    method: 'POST',
+    apiKey: '',
+    apiKeyHeader: 'X-Api-Key',
+    idField: 'id',                // JSON-veld waarin de room-id gaat
+    statusField: 'status',        // JSON-veld voor de status
+    statusValue: 'ok',
+    cfClientId: '',               // Cloudflare Access service-token (optioneel)
+    cfClientSecret: '',
+  }
+  function avproReadConfig() {
+    try {
+      const p = avproConfigPath()
+      if (!fs.existsSync(p)) return { ...AVPRO_CONFIG_DEFAULT }
+      return { ...AVPRO_CONFIG_DEFAULT, ...JSON.parse(fs.readFileSync(p, 'utf-8')) }
+    } catch (e) {
+      return { ...AVPRO_CONFIG_DEFAULT, error: e.message }
+    }
+  }
+  ipcMain.handle('avpro-config-load', () => avproReadConfig())
+  ipcMain.handle('avpro-config-save', (_, data) => {
+    try {
+      const p = avproConfigPath()
+      fs.mkdirSync(path.dirname(p), { recursive: true })
+      const merged = { ...AVPRO_CONFIG_DEFAULT, ...(data || {}) }
+      fs.writeFileSync(p, JSON.stringify(merged, null, 2), 'utf-8')
+      return { ok: true }
+    } catch (e) {
+      return { ok: false, error: e.message }
+    }
+  })
+  // Gebundelde ruimte-lijst (naam → AV Pro id). Zit in de asar naast main.js.
+  ipcMain.handle('avpro-rooms', () => {
+    try {
+      const p = path.join(__dirname, 'event2flow-rooms.json')
+      const d = JSON.parse(fs.readFileSync(p, 'utf-8'))
+      return { ok: true, rooms: d.rooms || [], count: (d.rooms || []).length }
+    } catch (e) {
+      return { ok: false, error: e.message, rooms: [] }
+    }
+  })
+  // De daadwerkelijke afvink-call. Retourneert {ok, status, body} of {ok:false, error}.
+  // Afvinken kan op ruimte-id (zaal) én/of serienummer (asset) — de n8n-webhook
+  // bepaalt waarop 'ie matcht. We sturen alles mee wat RoomReady weet.
+  ipcMain.handle('avpro-checkoff', async (_, opts = {}) => {
+    const { id, roomName, serial, serials, status } = opts
+    const cfg = avproReadConfig()
+    if (!cfg.enabled) return { ok: false, error: 'AV Pro-koppeling staat uit' }
+    if (!cfg.endpoint) return { ok: false, error: 'Geen endpoint geconfigureerd' }
+    if (!id && !serial && !(serials && serials.length)) {
+      return { ok: false, error: 'Geen ruimte-id of serienummer' }
+    }
+    let version = '?'; try { version = require('./package.json').version } catch (_) {}
+    const headers = { 'Content-Type': 'application/json' }
+    if (cfg.apiKey) headers[cfg.apiKeyHeader || 'X-Api-Key'] = cfg.apiKey
+    if (cfg.cfClientId) headers['CF-Access-Client-Id'] = cfg.cfClientId
+    if (cfg.cfClientSecret) headers['CF-Access-Client-Secret'] = cfg.cfClientSecret
+    const payload = {
+      id: id || null,
+      room_name: roomName || null,
+      serial: serial || null,
+      serials: (serials && serials.length) ? serials : (serial ? [serial] : []),
+      status: status || cfg.statusValue || 'ok',
+      source: 'RoomReady',
+      version,
+      checked_at: new Date().toISOString(),
+    }
+    const r = await httpJson(cfg.endpoint, {
+      method: cfg.method || 'POST', headers, body: JSON.stringify(payload), timeout: 8000,
+    })
+    if (r.ok) return { ok: true, status: r.status, body: r.body }
+    return { ok: false, error: r.error || ('HTTP ' + r.status), status: r.status, body: r.body }
+  })
 
   // Logitech Sync API — haalt alle enrolled devices op, geindexeerd op SN.
   // Door main.js te doen vermijden we CORS en hoeft de bearer-token niet in de renderer.

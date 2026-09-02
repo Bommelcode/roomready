@@ -1,6 +1,6 @@
 {
   "name": "roomready",
-  "version": "3.9.0",
+  "version": "3.8.0",
   "description": "RoomReady — AV kamertester voor Logitech MeetUp / Rally",
   "main": "main.js",
   "scripts": {
@@ -20,9 +20,7 @@
     "productName": "RoomReady",
     "win": {
       "icon": "icon.ico",
-      "target": [
-        "portable"
-      ]
+      "target": ["portable"]
     },
     "portable": {
       "artifactName": "RoomReady-${version}-portable.exe"
@@ -48,18 +46,8 @@
       "!samples/**"
     ],
     "extraResources": [
-      {
-        "from": "helpers",
-        "to": "helpers",
-        "filter": [
-          "**/*",
-          "!*.cs"
-        ]
-      },
-      {
-        "from": "samples",
-        "to": "samples"
-      }
+      { "from": "helpers", "to": "helpers", "filter": ["**/*", "!*.cs"] },
+      { "from": "samples",  "to": "samples" }
     ]
   }
 }

@@ -30,9 +30,9 @@ De portable Windows-build (`RoomReady.exe`) wordt gemaakt met `electron-builder`
 
 | | |
 |---|---|
-| `main.js` | Electron main process — IPC handlers, VISCA UDP/TCP, PowerShell-scans voor inventaris, drag-drop ZIP update, kiosk-state |
+| `main.js` | Electron main process — IPC handlers, VISCA UDP/TCP, PowerShell-scans voor inventaris, drag-drop ZIP update |
 | `preload.js` | Smalle `rrBridge` contextBridge surface |
-| `renderer.html` | Hele hoofd-UI, monolithisch (~5900 lijnen, vanilla HTML/JS, geen bundler) |
+| `renderer.html` | Hele hoofd-UI, monolithisch (~7100 lijnen, vanilla HTML/JS, geen bundler) |
 | `inventory.html` | Eigen `BrowserWindow` voor de AV-inventaris module |
 | `preview.html` | Klantscherm voor tweede monitor |
 | `quotes.js` | ~865 KB base64 TTS-quotes, lazy-loaded bij Spraak AEC-signaal |

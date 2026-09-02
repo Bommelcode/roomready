@@ -12,6 +12,126 @@ cp .snapshots/vX.Y.Z/* /home/claude/logitech-tester/
 
 ---
 
+## v3.9.0 — Ruimte-herkenning en AV Pro-koppeling volledig verwijderd
+
+**Datum:** 2026-09-02
+**Status:** Feature-removal
+
+**Waarom.** De ruimte-herkenning uit v3.6.0 matchte de aangesloten vergaderset tegen de AV-inventaris op uid, maar de match was niet betrouwbaar genoeg om iets op te bouwen: `cnt > bestCount` liet bij gelijkspel stil de eerste ruimte in store-volgorde winnen, één enkele match volstond, en `present` telde ook niet-AV USB-apparaten mee — een dongle of eigen webcam die ooit aan een ruimte was gekoppeld matchte daardoor overal. De strip toonde de uitkomst zonder confidence, dus een misidentificatie was voor de operator niet te zien.
+
+De AV Pro-afvinkkoppeling (v3.7.0) hing daar volledig aan vast — `avproMaybeCheckoff()` las `_rrMatchedRoom` — en vuurde zonder bevestiging bij "Room = Ready". Een verkeerde herkenning betekende dus een vinkje op de verkeerde zaal, en bij een fout een automatische storingsmelding op de verkeerde zaal. Die koppeling wachtte bovendien nog steeds op webhook-URL + token van de leverancier en heeft nooit productie gedraaid.
+
+Beide zijn er daarom uit. Terug naar de situatie vóór v3.6.0: de operator weet zelf in welke kamer hij staat.
+
+**Verwijderd — `renderer.html`:**
+- De strip `#room-recog` tussen header en device-bar (HTML + alle `.room-recog`-CSS). De device-bar sluit weer direct op de header aan.
+- Het JS-blok `RUIMTE-HERKENNING`: `recognizeRoom`/`scheduleRecognizeRoom`/`setRoomRecogState`/`openAssignModal`/`closeAssignModal`/`confirmAssignRoom`, de uid-helpers `_rrLogiUid`/`_rrUsbUid`/`_rrLogiLabel`, de PID-tabel `_RR_LOGI` en de state `_rrRecogTimer`/`_rrRecogRunning`/`_rrLastCandidates`/`_rrMatchedRoom`.
+- De koppel-modal `#rr-assign-overlay`.
+- Het AV Pro-blok: `_avproNorm`/`_avproGetRooms`/`updateAvproButton`/`openAvproConfig`/`closeAvproConfig`/`_avproReadConfigForm`/`saveAvproConfig`/`testAvproConfig`/`openAvproPicker`/`closeAvproPicker`/`renderAvproPickerList`/`pickAvproRoom`/`avproMaybeCheckoff` + `_avproRoomsCache`, en de modals `#avpro-config-overlay` en `#avpro-picker-overlay`.
+- De gedeelde `.rr-modal-*` / `.rr-picker-*` / `.rr-form-row` / `.rr-check` / `.rr-hint` / `.rr-test-result` / `.rr-assign-device` CSS — die werd nergens anders gebruikt.
+- Alle vier de herkenning-triggers: in de Vernieuwen-knop, in `_runDeviceChange`, de losse start-trigger, en die in de boot-sequence.
+
+**Verwijderd — `main.js` / `preload.js` / bestanden:**
+- IPC `inv-scan-quick` + de `PS_QUICK_SCAN` registry-scan. Die bestond alleen om de herkenning snel genoeg te maken; de inventaris-scans gebruiken nog steeds de grondige (WQL-gefixte) WMI-variant, dus de scan-fixes uit v3.6.0 blijven overeind.
+- IPC `avpro-config-load` / `avpro-config-save` / `avpro-rooms` / `avpro-checkoff`, plus `avproConfigPath`/`avproReadConfig`/`AVPRO_CONFIG_DEFAULT`.
+- Op de `rrBridge`: `invScanQuick`, `avproConfigLoad`, `avproConfigSave`, `avproRooms`, `avproCheckoff`.
+- `app/event2flow-rooms.json` (125 AV Pro-ruimtes).
+- `httpJson` houdt zijn body-support — die is generiek en wordt door de firmware-calls gebruikt.
+
+**Achtergebleven bestanden zijn inert.** `userData/avpro-config.json` wordt niet meer gelezen of geschreven; mag handmatig weg. De `event2flow_id`/`event2flow_name`-velden die de picker op inventarisruimtes schreef blijven in `inventory.json` staan en worden genegeerd.
+
+**Wat blijft.** De handover uit v3.8.0 werkt ongewijzigd: bij 0 fouten en 0 waarschuwingen geeft `releaseRoomSet()` de set vrij en flusht de device-cache. Alleen de ruimte-state is eruit — `flushDeviceCaches()` is daardoor synchroon geworden (geen checkoff-promise meer om op te wachten) en `releaseRoomSet()` neemt geen argument meer.
+
+---
+
+## v3.8.0 — Set vrijgeven + cache-flush na een schone RoomTest
+
+**Datum:** 2026-09-02
+**Status:** Feature
+
+**Waarom.** RoomReady houdt `camStream` en `liveMicStream` permanent open, ook nadat de test klaar is. Zolang dat zo is blijft de USB-bar door dit process geclaimd: de ruimte-pc krijgt 'm niet terug, en uitpluggen met open streams geeft bij de vólgende set een serie `NotReadableError`-retries (`startLiveMic` backoff) plus stale `deviceId`s in de dropdowns. Na een schone test is de kamer overgedragen — dan moet RoomReady zijn handen van de set af halen.
+
+**Wat.** Eindigt de RoomTest met **0 fouten en 0 waarschuwingen**, dan geeft de app de set vrij en flusht de device-/ruimte-cache:
+
+- `releaseUsbDevices()` — `stopLoopback()`, `speakerStopPlayback()`, `stopCamera()`, `stopLiveMic()`, `activeGainNodes.clear()`. Camera-tegel toont de nieuwe `setCamState('released')`-status ("Vergaderset vrijgegeven — klaar voor de ruimte-pc").
+- `flushDeviceCaches()` — `_knownDeviceIds`, `_rrMatchedRoom`, `_rrLastCandidates`, `_avproRoomsCache` leeg, device-selects op "Vrijgegeven", status-badge + footer-teller gereset, ruimte-strip naar neutraal, `populateDisplays()` opnieuw (flush + refresh i.p.v. de scherm-kaart blanco laten).
+- `releaseRoomSet()` — bundelt beide, idempotent via `usbReleased`.
+
+**Alleen bij een schone pass.** De waarschuwings-branch geeft *niet* vrij: bij waarschuwingen wil de operator juist de live meters houden om te diagnosticeren. Fouten en afbreken houden het bestaande gedrag (live monitor gaat weer aan).
+
+**Volgorde t.o.v. AV Pro.** `avproMaybeCheckoff()` leest `_rrMatchedRoom` pas ná een `await` (config-load + webhook-call). De flush zou die ruimte onder de checkoff vandaan trekken, dus `runQuickTest` houdt de checkoff-promise vast (`avproPending`) en `flushDeviceCaches()` await't 'm eerst. De handles gaan wél meteen los — alleen de cache-flush wacht. `updateAvproButton()` wordt bewust niet aangeroepen tijdens de flush, anders verdwijnt de zojuist getoonde "AV Pro ✓ afgevinkt"-bevestiging.
+
+**Herstel is automatisch.** De devicechange van de volgende plug loopt via `_runDeviceChange` → `populateDevices` → `_autoPickPro`, die een `change` dispatcht en dus `startCamera`/`startLiveMic` triggert; `_scheduleDeviceChange` en de Vernieuwen-knop clearen `usbReleased`. De `ended`-handler van de live mic is ook op `usbReleased` gegate, zodat een auto-herstart niet tegen de release in vecht.
+
+---
+
+## v3.7.0 — AV Pro (event2flow) afvink-koppeling
+
+**Datum:** 2026-08-19
+**Status:** Feature (scaffolding — wacht op endpoint + token van leverancier)
+
+**Waarom.** Als een RoomReady-test slaagt, moet de ruimte automatisch afgevinkt worden in de AV Pro-software (event2flow), zodat de operator dat niet meer handmatig via de Android-app hoeft te doen.
+
+**Bevinding.** De AV Pro-servicepagina (`service.event2flow.nl/?id=<10-hex>`) is een **Streamlit-app** achter **Cloudflare Access** (team `event2flow-andre.cloudflareaccess.com`). Afvinken loopt over de Streamlit-WebSocket, dus er is géén REST-endpoint om aan te roepen. De koppeling verwacht daarom een door de leverancier te leveren **HTTP-endpoint** dat dezelfde afvink-actie doet, plus een **API-key** en (zolang het achter Access staat) een **Cloudflare Access service-token**.
+
+**Wat is gebouwd (klaar om te schakelen zodra endpoint + key er zijn):**
+- `app/event2flow-rooms.json` — 125 AV Pro-ruimtes (naam/verdieping/id/url), gebundeld in de asar.
+- `main.js` — IPC `avpro-rooms` (lijst), `avpro-config-load`/`avpro-config-save` (`userData/avpro-config.json`), `avpro-checkoff` (POST naar het geconfigureerde endpoint met API-key + optionele `CF-Access-Client-Id/Secret`). `httpJson` uitgebreid met body-support.
+- `preload.js` — `avproRooms`, `avproConfigLoad`, `avproConfigSave`, `avproCheckoff`.
+- `renderer.html` — ⚙-knop in de ruimte-strip opent de **AV Pro-config** (endpoint, API-key + header, CF-token, payload-veldnamen, test-call). Bij een herkende ruimte een **AV Pro-knop** die de ruimte-picker opent (zoekbaar, voorgefilterd op naam) en het `event2flow_id` op de inventarisruimte zet (`invStoreSave`). Bij **Room = Ready** roept `avproMaybeCheckoff()` de afvink-call aan — no-op als de koppeling uitstaat of de ruimte nog geen `event2flow_id` heeft.
+
+**Nog nodig van leverancier (André):** afvink-endpoint (method + URL + payload), API-key, en Cloudflare Access service-token óf Access-bypass voor dat endpoint. Zie ook de config-modal (⚙).
+
+---
+
+## v3.6.0 — Ruimte-herkenning bij aansluiten vergaderset
+
+**Datum:** 2026-08-19
+**Status:** Feature
+
+**Waarom.** Operators testen kamer na kamer met dezelfde laptop. De vraag was: laat direct zien in wélke ruimte we staan zodra de vergaderset wordt aangesloten, zodat de tech niet handmatig hoeft op te zoeken welke kamer bij deze set hoort.
+
+**Wat.** Nieuwe ruimte-herkenning-strip tussen de header en de device-bar (`#room-recog`). Zodra media-init klaar is, én na elke USB-devicechange, én bij "Herlaad" matcht de app de aangesloten set tegen de AV-inventaris (`userData/inventory.json`) en toont de gevonden ruimte ("📍 Ruimte: 2.14 — Boardroom Noord").
+
+**Hoe.** De browser-media-API geeft géén serienummers, dus de herkenning hergebruikt de bestaande `rrBridge.invScanLogitech()` + `invScanUsb()` (PowerShell PnP-scan) en `invStoreLoad()`. De uid-berekening is 1:1 gekopieerd van `inventory.html` (Logitech → `serialNumber || pnpDeviceId`, USB → `usb:VID:PID:instance`) — anders matcht er niks. Match = de ruimte met de meeste nu-aanwezige gekoppelde uids.
+
+**Onbekende set → koppel-flow.** Staat de set nog niet in de inventaris, dan toont de strip "❓ Onbekende set (…)" met een knop "Koppel aan ruimte…". Die opent een modal (`#rr-assign-overlay`) met de bestaande ruimtes; koppelen schrijft de uid(s) naar `room.device_unique_ids` + een device-entry via `invStoreSave()`, waarna de set voortaan direct herkend wordt. Vanuit de modal is de volledige AV-inventaris te openen.
+
+**Gewijzigd:**
+- `renderer.html`: `#room-recog`-strip + CSS, `#rr-assign-overlay`-modal + CSS, JS-blok `RUIMTE-HERKENNING` (`recognizeRoom`/`scheduleRecognizeRoom`/`setRoomRecogState`/`openAssignModal`/`closeAssignModal`/`confirmAssignRoom` + uid-helpers `_rrLogiUid`/`_rrUsbUid`/`_rrLogiLabel`). Triggers gehaakt in de boot-sequence, `_runDeviceChange` en de Herlaad-knop.
+- `package.json`: versie 3.5.0 → 3.6.0.
+
+**Twee onderliggende scan-bugs gefixt (kwamen boven bij dit werk):**
+
+1. **WQL-filter met losse backslash was ongeldig op Windows PowerShell 5.1.** De inventaris-scans gebruikten `PNPDeviceID LIKE 'USB\VID_046D%'` (en `'USB\%'`). De CIM-parser van 5.1 verwerpt dat als *"Invalid query"* omdat de backslash als escape geldt; met `$ErrorActionPreference='SilentlyContinue'` werd die fout ingeslikt en kwam de scan **leeg** terug — op deze machine vond de Logitech- én USB-scan dus nooit iets. Fix: `\` → `%` in beide WQL-filters (`main.js`). Waarschuwing toegevoegd in de comments.
+
+2. **Nieuwe snelle registry-scan voor live herkenning.** `Win32_PnPEntity` + `Get-PnpDeviceProperty` is op sommige machines extreem traag (12s+ query, serienummer-lookups tot 90s+) door koude WMI-init per verse `powershell.exe`. Veel te traag om bij elke devicechange te draaien. Nieuwe IPC `inv-scan-quick` (`main.js` + `preload.js`) leest `HKLM\SYSTEM\CurrentControlSet\Enum\USB` read-only (~120ms) en levert composite-parents met uid-compatibele velden. De inventaris-scans blijven de grondige (nu WQL-gefixte) WMI-variant; alleen de ruimte-herkenning gebruikt de snelle scan.
+
+**UX:** de strip is nu **altijd zichtbaar** (idle/scanning/matched/unknown/error) i.p.v. te verdwijnen als er niks matcht — anders is "niks te zien" niet te onderscheiden van "feature ontbreekt". Bij scan-fouten toont de balk de fouttekst.
+
+**IPC toegevoegd:** `inv-scan-quick`. Rest bouwt op bestaande `inv-scan-*` / `inv-store-*` handlers.
+
+---
+
+## v3.5.0 — Kiosk-modus eruit + cue-geluid + USB-disconnect reset
+
+**Datum:** 2026-05-18
+**Status:** Feature-removal + UX-fixes
+
+**Kiosk-modus volledig verwijderd.** De fullscreen overlay-flow die in v3.3.0 was geïntroduceerd is in de praktijk niet de gewenste interactie gebleken — operators willen direct in de hoofd-UI staan, ook bij kamer-na-kamer-werk. De kamer-wisseling-functionaliteit (USB-bar eruit → reset) zit nu rechtstreeks in de algemene devicechange-handler (zie hieronder) en werkt onafhankelijk van een aparte mode.
+
+**Verwijderd:**
+- `renderer.html`: `#kiosk-overlay` HTML, alle `kiosk-*` CSS-regels, en het volledige `KIOSK MODE` JS-blok (functies `kioskBoot`/`kioskActivate`/`kioskDeactivate`/`kioskUpdateScreen`/`kioskDetectSets`/`kioskShowScreenA|B|C`/`kioskStartCamPreview`/`kioskStartMicMeter`/`kioskApplySelectionToMainApp`/`kioskStartQuickTest`/`kioskStartAnalyse`/`kioskInstallWatcher`, state-object `kiosk`, en de `KIOSK_BRANDS`-tabel).
+- `main.js`: View → Kiosk Mode menu-item, `readKioskState`/`writeKioskState`/`kioskStatePath`, IPC-handlers `kiosk-get-state`/`kiosk-set-state` en `kiosk-toggled` event.
+- `preload.js`: `kioskGetState`/`kioskSetState`/`onKioskToggled` van de `rrBridge`.
+- Het bestand `userData/kiosk-state.json` wordt niet meer gelezen of geschreven. Een achtergebleven file is inert; mag handmatig weg.
+
+**Toegevoegd — mic-test cue (Snelle test stap 2):** de Engelse TTS `'Mic check'` is vervangen door een korte gesynthetiseerde "boing" (sine 800→180 Hz, ~280 ms exponentieel pitch-drop, gain envelope met 10 ms attack + ~370 ms exp. decay). Speelt via `setSinkId(selSpeaker.value)` dus uit de room-speaker onder test, niet de laptop-luidspreker. Taalonafhankelijk en sneller herkenbaar dan een TTS-zin die afhankelijk is van Windows-stem-pack en latency.
+
+**Toegevoegd — USB-disconnect reset zonder kiosk:** in de algemene `devicechange`-handler (`renderer.html:~6700`) zit nu een early-return die `stopCamera()` + `stopLiveMic()` + `setPreviewState('idle')` + `showUsbDetecting(true)` doet wanneer (a) de eerder-geselecteerde camera of mic een AV-apparaat was volgens `isAVDevice(label)` (Logitech/Poly/Jabra/Yealink/Bose/Avonic/etc.) **en** (b) na de change geen enkel AV-apparaat meer in `enumerateDevices()` staat. Voorheen viel de app stilletjes terug op de eerste niet-AV optie (laptop-built-in cam/mic). Bij re-plug start `_autoPickPro` automatisch de nieuwe bar.
+
+---
+
 ## v3.4.8 — Snelle test vereenvoudigd: operator-gestuurde mic + subjectieve loopback
 
 **Datum:** 2026-05-04

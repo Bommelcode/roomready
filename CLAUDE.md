@@ -35,9 +35,9 @@ There is no linter and no unit-test suite. Verification is manual against the 15
 
 Three-process Electron app with vanilla HTML/CSS/JS — **no framework, no bundler, no build step for the renderer**.
 
-- **`main.js`** (~325 lines) — Electron main process. Single `BrowserWindow` (1280×820, `contextIsolation: true`, `nodeIntegration: false`). Registers all IPC handlers inside `createWindow()`. Owns the optional second-screen `previewWin`. Handles VISCA (UDP + TCP), sample-file reads, display enumeration, kiosk-state persistence (`userData/kiosk-state.json`), and the drag-drop ZIP update flow (unzip to %TEMP% → write PS1 + VBS → VBS triggers UAC → robocopy → relaunch).
+- **`main.js`** (~300 lines) — Electron main process. Single `BrowserWindow` (1280×820, `contextIsolation: true`, `nodeIntegration: false`). Registers all IPC handlers inside `createWindow()`. Owns the optional second-screen `previewWin`. Handles VISCA (UDP + TCP), sample-file reads, display enumeration, and the drag-drop ZIP update flow (unzip to %TEMP% → write PS1 + VBS → VBS triggers UAC → robocopy → relaunch).
 - **`preload.js`** — Thin `contextBridge.exposeInMainWorld('rrBridge', …)` surface. All renderer↔main calls go through `window.rrBridge.*`. Also wraps `webUtils.getPathForFile` for drag-drop.
-- **`renderer.html`** (~5900 lines, monolithic) — The entire UI. Inline `<style>` and `<script>`. Structure follows `ROOMREADY-SPEC.md` §4: header → device bar → grid (mic meter, audio analysis, AEC, loopback, camera preview, video analysis, PTZ, camera controls) → RoomTest panel → overlays/modals.
+- **`renderer.html`** (~7100 lines, monolithic) — The entire UI. Inline `<style>` and `<script>`. Structure follows `ROOMREADY-SPEC.md` §4: header → device bar → grid (mic meter, audio analysis, AEC, loopback, camera preview, video analysis, PTZ, camera controls) → RoomTest panel → overlays/modals.
 - **`preview.html`** — Minimal view shown on the second monitor for the customer: idle bars / "Bezig met test" / "Room = Ready" / "Niet klaar". Driven via IPC from the main window.
 - **`inventory.html`** — AV-inventarisatie venster (eigen `BrowserWindow`, geopend via header-knop "Inventaris"). Scant Logitech HID, USB UVC en displays via PowerShell in main.js, persisteert rooms + devices in `userData/inventory.json`, CSV-export. Schema 1:1 compatibel met de upstream Python/PyQt6 versie (`inventory/` module). **Geen `node-hid`** — serials komen via `Get-PnpDeviceProperty DEVPKEY_Device_SerialNumber` + PNPDeviceID parsing.
 - **`quotes.js`** (~865 KB) — Auto-generated base64-encoded gTTS MP3 quotes, **lazy-loaded** only when the user picks the "Spraak" (speech) AEC signal. Don't import eagerly.
@@ -46,7 +46,7 @@ Three-process Electron app with vanilla HTML/CSS/JS — **no framework, no bundl
 
 ### IPC surface (preload.js → main.js)
 
-`openExternal`, `applyUpdate`, `openCameraSettings`, `viscaUdp`, `viscaTcp`, `listDisplays`, `openPreview`, `closePreview`, `listSamples`, `readSample`, `readQuotesJson`, `kioskGetState`, `kioskSetState`, `onKioskToggled`, `getFilePath`, `invOpen`, `invScanLogitech`, `invScanUsb`, `invScanDisplays`, `invStoreLoad`, `invStoreSave`, `invFirmwareSync`, `invFirmwareXapi`, `invExportCsv`. When adding a renderer feature that needs OS access, extend both `main.js` (`ipcMain.handle`) and `preload.js` (expose on `rrBridge`) — the renderer cannot use Node APIs directly.
+`openExternal`, `applyUpdate`, `openCameraSettings`, `viscaUdp`, `viscaTcp`, `listDisplays`, `openPreview`, `closePreview`, `listSamples`, `readSample`, `readQuotesJson`, `getFilePath`, `invOpen`, `invScanLogitech`, `invScanUsb`, `invScanDisplays`, `invStoreLoad`, `invStoreSave`, `invFirmwareSync`, `invFirmwareXapi`, `invExportCsv`. When adding a renderer feature that needs OS access, extend both `main.js` (`ipcMain.handle`) and `preload.js` (expose on `rrBridge`) — the renderer cannot use Node APIs directly.
 
 ## Hard constraints (load-bearing — from spec §16 "anti-patterns")
 
@@ -66,7 +66,7 @@ These have all caused real, shipped regressions. Do not reintroduce them:
 6. **AEC test**: frequency-selective FFT energy only (bins ±15 Hz around `[220, 277.18, 329.63, 440]` Hz), `fftSize=4096`, `smoothingTimeConstant=0`, `minDecibels=-100`, `maxDecibels=0`. Never broadband RMS. Never smoothing ≠ 0 (smears the peak). Tone volumes `[0.36, 0.26, 0.20, 0.16]` are balanced for clipping-safe mix — don't raise them.
 7. **AEC scheduling**: compute `t0 = spkCtx.currentTime` **after all `await`s**, then schedule envelope and oscillator `start`/`stop` against that same `t0`. Scheduling at oscillator-construction time and starting after an `await audioEl.play()` produces "cut-off" tone artifacts.
 8. **RoomTest ordering**: render the Mic-niveau step result **before** the AEC step begins — the AEC calibration modal blocks on user input, and a deferred mic render will appear frozen on its spinner.
-9. **`app.getPath('userData')` is not valid before `app.whenReady()`.** Wrap any path that depends on it in a lazy getter (see `kioskStatePath()` in `main.js`). Doing this at module top-level silently crashes main-process init and the renderer hangs on IPC calls that never return.
+9. **`app.getPath('userData')` is not valid before `app.whenReady()`.** Wrap any path that depends on it in a lazy getter. Doing this at module top-level silently crashes main-process init and the renderer hangs on IPC calls that never return.
 
 ## Conventions worth knowing
 

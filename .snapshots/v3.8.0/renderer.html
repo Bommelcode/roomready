@@ -348,6 +348,88 @@ body:not(.dark) .badge.err  { background:#fee2e2; color:#991b1b; border-color:#f
 }
 #device-bar .icon { width:1.15em; height:1.15em; vertical-align:-0.18em; stroke-width:1.8; }
 
+/* ── Ruimte-herkenning strip ─────────────────────────────────── */
+.room-recog {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 6px 16px;
+  font-size: 13px; font-weight: 600;
+  font-family: var(--lbl-font);
+  color: var(--text);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  transition: background .2s, color .2s;
+}
+.room-recog .rr-main { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.room-recog .rr-main span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.room-recog[data-state="scanning"] { color: var(--muted); }
+.room-recog[data-state="idle"] { color: var(--muted); }
+.room-recog[data-state="error"] { background:#2e0d0d; color:var(--red); border-bottom-color:#5c1a1a; }
+body:not(.dark) .room-recog[data-state="error"] { background:#fee2e2; color:#991b1b; border-bottom-color:#fca5a5; }
+.room-recog[data-state="matched"] { background:#0d2e1a; color:var(--green);  border-bottom-color:#1a5c32; }
+.room-recog[data-state="unknown"] { background:#2e2400; color:var(--yellow); border-bottom-color:#5c4800; }
+body:not(.dark) .room-recog[data-state="matched"] { background:#dcfce7; color:#166534; border-bottom-color:#bbf7d0; }
+body:not(.dark) .room-recog[data-state="unknown"] { background:#fef9c3; color:#854d0e; border-bottom-color:#fde68a; }
+.room-recog .rr-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+#room-recog-assign, #room-recog-avpro { padding: 3px 12px; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+#room-recog-config { padding: 3px 8px; font-size: 13px; line-height: 1; flex-shrink: 0; }
+#room-recog-avpro.linked { color: var(--green); border-color: #1a5c32; }
+#room-recog-avpro.unlinked { color: var(--yellow); border-color: #5c4800; }
+#room-recog-avpro.done { color: var(--green); border-color: #1a5c32; }
+#room-recog-avpro.failed { color: var(--red); border-color: #5c1a1a; }
+.rr-form-row { display: flex; flex-direction: column; gap: 4px; }
+.rr-form-row label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.rr-form-row input[type=text], .rr-form-row input[type=password] {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--text); padding: 6px 9px; font-size: 12px; font-family: var(--font-val); outline: none;
+}
+.rr-form-row input:focus { border-color: var(--accent); }
+.rr-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+.rr-picker-search {
+  width: 100%; box-sizing: border-box; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text); padding: 7px 10px; font-size: 13px; outline: none;
+}
+.rr-picker-list { max-height: 46vh; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+.rr-picker-item {
+  display: flex; justify-content: space-between; gap: 10px; padding: 7px 11px; cursor: pointer;
+  border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.rr-picker-item:last-child { border-bottom: 0; }
+.rr-picker-item:hover { background: var(--surface2); }
+.rr-picker-item.sel { background: rgba(74,158,255,.12); }
+.rr-picker-item .flo { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.rr-hint { font-size: 11px; color: var(--muted); }
+.rr-test-result { font-size: 12px; font-family: var(--font-val); }
+.rr-test-result.ok { color: var(--green); }
+.rr-test-result.err { color: var(--red); }
+
+/* ── Koppel-aan-ruimte modal ─────────────────────────────────── */
+.rr-modal-back {
+  display: none; position: fixed; inset: 0; z-index: 10001;
+  background: rgba(0,0,0,.72); align-items: center; justify-content: center;
+}
+.rr-modal-back.open { display: flex; }
+.rr-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); width: min(460px, 92vw); max-height: 90vh;
+  overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,.5);
+  display: flex; flex-direction: column;
+}
+.rr-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px 12px; border-bottom: 1px solid var(--border);
+  font-size: 15px; font-weight: 700; color: var(--text);
+  font-family: var(--ch-font);
+}
+.rr-modal-close { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 17px; line-height: 1; padding: 0 4px; }
+.rr-modal-close:hover { color: var(--text); }
+.rr-modal-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text); }
+.rr-assign-device {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 8px 12px; font-size: 12px; font-family: var(--font-val); color: var(--muted);
+  word-break: break-all;
+}
+.rr-modal-body select { font-size: 13px; padding: 7px 10px; }
+.rr-modal-foot { display: flex; align-items: center; gap: 8px; padding: 12px 18px 16px; border-top: 1px solid var(--border); }
 select {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -1287,6 +1369,22 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
   <button class="btn-quicktest" id="btn-quicktest" style="margin-left:8px;"><svg class="icon icon-fill"><use href="#i-play"/></svg> RoomTest</button>
 </header>
 
+<!-- Ruimte-herkenning — matcht aangesloten vergaderset (serienummer via
+     USB/HID-scan) tegen de AV-inventaris en toont in welke ruimte we staan. -->
+<div id="room-recog" class="room-recog" data-state="scanning">
+  <div class="rr-main">
+    <span id="room-recog-text">Ruimte herkennen…</span>
+  </div>
+  <div class="rr-actions">
+    <button id="room-recog-avpro" class="btn btn-ghost" style="display:none;"
+            onclick="openAvproPicker()" title="Koppel deze ruimte aan AV Pro (event2flow)">AV Pro…</button>
+    <button id="room-recog-assign" class="btn btn-ghost" style="display:none;"
+            onclick="openAssignModal()" title="Koppel deze set aan een ruimte in de inventaris">Koppel aan ruimte…</button>
+    <button id="room-recog-config" class="btn btn-ghost"
+            onclick="openAvproConfig()" title="AV Pro-koppeling instellen">⚙</button>
+  </div>
+</div>
+
 <div id="device-bar">
   <div class="device-group">
     <label><svg class="icon"><use href="#i-camera"/></svg> Camera</label>
@@ -1307,6 +1405,77 @@ body:not(.dark) #room-ready-title { text-shadow: 0 0 60px rgba(5,150,105,.35), 0
       <button id="btn-display-toggle" class="btn btn-ghost"
               title="Open / sluit klantscherm op het geselecteerde display"
               style="font-size:11px;padding:3px 10px;flex-shrink:0;">Open</button>
+    </div>
+  </div>
+</div>
+
+<!-- Koppel-aan-ruimte modal (ruimte-herkenning) -->
+<div id="rr-assign-overlay" class="rr-modal-back">
+  <div class="rr-modal">
+    <div class="rr-modal-head">
+      <span>Koppel set aan ruimte</span>
+      <button class="rr-modal-close" onclick="closeAssignModal()" aria-label="Sluiten">✕</button>
+    </div>
+    <div class="rr-modal-body">
+      <div>Deze set is nog niet aan een ruimte gekoppeld:</div>
+      <div id="rr-assign-device" class="rr-assign-device">—</div>
+      <label style="font-size:12px;color:var(--muted);margin-top:2px;">Kies de ruimte waar deze set staat:</label>
+      <select id="rr-assign-room-sel"></select>
+      <div id="rr-assign-empty" style="display:none;font-size:12px;color:var(--muted);">
+        Nog geen ruimtes in de inventaris. Open de AV-inventaris om eerst een ruimte aan te maken.
+      </div>
+    </div>
+    <div class="rr-modal-foot">
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="window.rrBridge&&window.rrBridge.invOpen&&window.rrBridge.invOpen()">Inventaris openen…</button>
+      <div style="flex:1;"></div>
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="closeAssignModal()">Annuleren</button>
+      <button class="btn btn-primary" id="rr-assign-confirm" style="font-size:11px;" onclick="confirmAssignRoom()">Koppelen</button>
+    </div>
+  </div>
+</div>
+
+<!-- AV Pro-koppeling instellingen -->
+<div id="avpro-config-overlay" class="rr-modal-back">
+  <div class="rr-modal">
+    <div class="rr-modal-head">
+      <span>AV Pro-koppeling</span>
+      <button class="rr-modal-close" onclick="closeAvproConfig()" aria-label="Sluiten">✕</button>
+    </div>
+    <div class="rr-modal-body">
+      <label class="rr-check"><input type="checkbox" id="avc-enabled"> Automatisch afvinken bij "Room = Ready" (en storing melden bij een fout)</label>
+      <div class="rr-hint">n8n-webhook van AV Pro (event2flow). RoomReady POST't per test JSON met <code>id</code>, <code>room_name</code>, <code>serial(s)</code> en <code>status</code> (ok/failed).</div>
+      <div class="rr-form-row"><label>Webhook-URL</label><input type="text" id="avc-endpoint" placeholder="https://…/webhook/…"></div>
+      <div style="display:flex;gap:8px;">
+        <div class="rr-form-row" style="flex:1;"><label>Token-header</label><input type="text" id="avc-keyheader" placeholder="X-Api-Key"></div>
+        <div class="rr-form-row" style="flex:2;"><label>Token</label><input type="password" id="avc-apikey" placeholder="(testtoken van André)"></div>
+      </div>
+      <div id="avc-test-result" class="rr-test-result"></div>
+    </div>
+    <div class="rr-modal-foot">
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="testAvproConfig()">Test-call</button>
+      <div style="flex:1;"></div>
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="closeAvproConfig()">Annuleren</button>
+      <button class="btn btn-primary" style="font-size:11px;" onclick="saveAvproConfig()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- AV Pro ruimte-picker -->
+<div id="avpro-picker-overlay" class="rr-modal-back">
+  <div class="rr-modal">
+    <div class="rr-modal-head">
+      <span>Koppel aan AV Pro-ruimte</span>
+      <button class="rr-modal-close" onclick="closeAvproPicker()" aria-label="Sluiten">✕</button>
+    </div>
+    <div class="rr-modal-body">
+      <div id="avpro-picker-for" class="rr-hint"></div>
+      <input type="text" id="avpro-picker-search" class="rr-picker-search" placeholder="Zoek ruimte… (naam of id)" oninput="renderAvproPickerList(this.value)">
+      <div id="avpro-picker-list" class="rr-picker-list"></div>
+    </div>
+    <div class="rr-modal-foot">
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="pickAvproRoom(null,null)">Ontkoppelen</button>
+      <div style="flex:1;"></div>
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="closeAvproPicker()">Sluiten</button>
     </div>
   </div>
 </div>
@@ -6432,7 +6601,10 @@ async function runQuickTest() {
   btn.innerHTML = ico('loader') + ' Bezig…'
 
   // Bij een schone pass geven we de set vrij in de finally (releaseRoomSet).
+  // De AV Pro-checkoff loopt async en leest _rrMatchedRoom, dus de cache-flush
+  // moet op die promise wachten — vandaar dat we 'm hier vasthouden.
   let releaseAfterPass = false
+  let avproPending = null
 
   try {
 
@@ -6741,6 +6913,8 @@ async function runQuickTest() {
   if (failed === 0 && warned === 0) {
     qtSetSummary('pass', '✅', 'Kamer<br>gereed')
     setPreviewState('ready')
+    // AV Pro: ruimte afvinken (no-op als koppeling uit of ruimte niet gekoppeld)
+    avproPending = avproMaybeCheckoff('ok')
     // Kamer is overgedragen → USB-handles los + device-cache leeg. Gebeurt in
     // de finally zodat de verdict-UI hieronder eerst netjes afrondt.
     releaseAfterPass = true
@@ -6758,12 +6932,16 @@ async function runQuickTest() {
   } else if (failed === 0) {
     qtSetSummary('warn', '⚠️', warned + ' waarschuwing' + (warned > 1 ? 'en' : ''))
     setPreviewState('ready')  // waarschuwingen zijn OK voor klantscherm
+    // Waarschuwingen tellen als geslaagd (kamer bruikbaar) → afvinken als 'ok'
+    avproMaybeCheckoff('ok')
     setTimeout(() => {
       if (currentPreviewState === 'ready') setPreviewState('idle')
     }, 5000)
   } else {
     qtSetSummary('fail', '❌', failed + ' probleem' + (failed > 1 ? 'en' : ''))
     setPreviewState('failed')
+    // Mislukte test → status 'failed' zodat AV Pro er een storingsmelding van maakt
+    avproMaybeCheckoff('failed')
     // Failed blijft langer staan — 8s
     setTimeout(() => {
       if (currentPreviewState === 'failed') setPreviewState('idle')
@@ -6794,7 +6972,7 @@ async function runQuickTest() {
     // Schone pass → set vrijgeven. Anders (waarschuwingen, fouten, afbreken)
     // gaat de live monitor gewoon weer aan; de operator wil dan meters zien.
     if (releaseAfterPass) {
-      releaseRoomSet()
+      await releaseRoomSet(avproPending)
     } else if (!liveMicStream) {
       try { await startLiveMic() } catch(_) {}
     }
@@ -6872,6 +7050,7 @@ document.getElementById('btn-refresh').addEventListener('click', async () => {
   await populateDevices()
   if (!camStream) startCamera()
   startLiveMic()
+  scheduleRecognizeRoom(100)
 })
 // Auto-pro-switch state: Set met deviceId's die we al gezien hebben.
 // Bij elke devicechange detecteren we nieuw-aangesloten apparaten en
@@ -6962,6 +7141,8 @@ async function _runDeviceChange() {
       startLiveMic()
     }
     console.log('[USB] handler done @', (performance.now()-_t0).toFixed(0)+'ms')
+    // Ruimte opnieuw herkennen nadat de device-storm gesetteld is
+    scheduleRecognizeRoom(600)
   } finally {
     _dcRunning = false
     // Korte tail zodat de poll niet meteen weer triggert (geeft Windows
@@ -6975,13 +7156,376 @@ async function _runDeviceChange() {
 }
 navigator.mediaDevices.addEventListener('devicechange', _scheduleDeviceChange)
 
+// ── Ruimte-herkenning ──────────────────────────────────────────
+// Matcht de aangesloten vergaderset tegen de AV-inventaris
+// (userData/inventory.json) op serienummer/uid en toont in welke ruimte we
+// staan. De browser-media-API geeft geen serienummers, dus we halen die via
+// dezelfde USB/HID-scan als het inventarisvenster (rrBridge.invScan*). De
+// uid-berekening MOET 1:1 matchen met inventory.html, anders herkent 'ie niks:
+//   Logitech-scan → uid = serialNumber || pnpDeviceId
+//   USB-scan      → uid = usb:VID:PID:instance
+const _RR_LOGI = {
+  '0866':'MeetUp','086D':'MeetUp 2','089B':'Rally Camera','085E':'Brio',
+  '08D3':'Rally Bar','08D7':'Rally Bar Mini','08E3':'Rally Bar Huddle',
+  '08D5':'RoomMate','0876':'Rally Speaker','0877':'Rally Mic Pod',
+  '08D6':'Tap','08E4':'Tap IP',
+}
+function _rrLogiUid(d) { return (d.serialNumber || d.pnpDeviceId || '').trim() }
+function _rrUsbUid(d)  { return `usb:${d.vid || '????'}:${d.pid || '????'}:${d.instance || 'nomatch'}` }
+function _rrLogiLabel(d) {
+  const pid = (d.pid || '').toUpperCase()
+  if (_RR_LOGI[pid]) return 'Logitech ' + _RR_LOGI[pid]
+  return d.name || 'Logitech-apparaat'
+}
+
+let _rrRecogTimer = null
+let _rrRecogRunning = false
+let _rrLastCandidates = []   // [{uid,label,serial,source}] — onbekende sets voor de koppel-flow
+let _rrMatchedRoom = null    // huidige herkende inventarisruimte (met evt. event2flow_id)
+let _avproRoomsCache = null  // gebundelde AV Pro ruimte-lijst (lazy)
+
+function scheduleRecognizeRoom(delay = 400) {
+  if (_rrRecogTimer) clearTimeout(_rrRecogTimer)
+  _rrRecogTimer = setTimeout(recognizeRoom, delay)
+}
+
+function setRoomRecogState(state, text) {
+  const strip = document.getElementById('room-recog')
+  if (!strip) return
+  strip.dataset.state = state
+  const t = document.getElementById('room-recog-text')
+  if (t) t.textContent = text
+}
+
+async function recognizeRoom() {
+  _rrRecogTimer = null
+  if (_rrRecogRunning) return
+  const strip = document.getElementById('room-recog')
+  const assignBtn = document.getElementById('room-recog-assign')
+  if (!strip) return
+  // Strip is ALTIJD zichtbaar zodra herkenning draait — anders is "niks te zien"
+  // niet te onderscheiden van "feature ontbreekt".
+  strip.style.display = 'flex'
+  if (assignBtn) assignBtn.style.display = 'none'
+  if (!window.rrBridge || !window.rrBridge.invScanLogitech) {
+    setRoomRecogState('error', '⚠ Ruimte-herkenning niet beschikbaar (geen scan-brug)')
+    return
+  }
+  _rrRecogRunning = true
+  try {
+    setRoomRecogState('scanning', 'Ruimte herkennen…')
+    _rrMatchedRoom = null
+    updateAvproButton()
+
+    // Snelle registry-scan (~120ms) i.p.v. de trage WMI-inventaris-scans.
+    const quickP = window.rrBridge.invScanQuick
+      ? window.rrBridge.invScanQuick().catch(e => ({ ok: false, logitech: [], usb: [], error: (e && e.message) || 'scan fout' }))
+      : Promise.resolve({ ok: false, logitech: [], usb: [], error: 'geen scan-brug' })
+    const [quick, store] = await Promise.all([
+      quickP,
+      window.rrBridge.invStoreLoad().catch(e => ({ rooms: [], devices: {}, error: (e && e.message) || 'store fout' })),
+    ])
+    const logiDevices = quick.logitech || []
+    const usbDevices = quick.usb || []
+    const rooms = (store && store.rooms) || []
+    const scanErr = quick.error || null
+    console.log('[ROOM] scan: logi=%d usb=%d rooms=%d %s',
+      logiDevices.length, usbDevices.length, rooms.length,
+      [scanErr && 'scanErr:' + scanErr, store.error && 'storeErr:' + store.error].filter(Boolean).join(' '))
+
+    // Aanwezige uids exact zoals de inventaris ze indexeert
+    const present = new Map()  // uid → {uid,label,serial,source,isAv}
+    for (const d of logiDevices) {
+      const uid = _rrLogiUid(d); if (!uid) continue
+      present.set(uid, { uid, label: _rrLogiLabel(d), serial: d.serialNumber || '', source: 'logitech_hid', isAv: true })
+    }
+    for (const d of usbDevices) {
+      const uid = _rrUsbUid(d)
+      if (present.has(uid)) continue
+      present.set(uid, {
+        uid, label: d.name || 'USB-apparaat',
+        serial: d.hasRealSerial ? (d.serialNumber || '') : (d.partialMac || ''),
+        source: 'usb_uvc', isAv: isAVDevice(d.name || ''),
+      })
+    }
+
+    // Beste ruimte-match = ruimte met de meeste nu-aanwezige gekoppelde uids
+    let best = null, bestCount = 0
+    for (const r of rooms) {
+      const cnt = (r.device_unique_ids || []).filter(id => present.has(id)).length
+      if (cnt > bestCount) { bestCount = cnt; best = r }
+    }
+
+    if (best) {
+      _rrLastCandidates = []
+      // Serienummers van de aangesloten assets die deze ruimte matchten —
+      // AV Pro's av_rooms heeft één rij per asset, dus dit is de precieze sleutel.
+      const matchedUids = (best.device_unique_ids || []).filter(id => present.has(id))
+      const serials = matchedUids.map(u => (present.get(u).serial || present.get(u).uid)).filter(Boolean)
+      _rrMatchedRoom = { ...best, _serials: serials, _primarySerial: serials[0] || '' }
+      const num = best.room_number ? best.room_number + ' — ' : ''
+      setRoomRecogState('matched', '📍 Ruimte: ' + num + (best.name || 'Ruimte'))
+      console.log('[ROOM] match:', best.room_number, best.name)
+      updateAvproButton()
+      return
+    }
+
+    // Geen match → kandidaten die we kunnen koppelen (Logitech + AV-USB)
+    const candidates = []
+    for (const info of present.values()) {
+      if (info.source === 'logitech_hid' || info.isAv) candidates.push(info)
+    }
+    _rrLastCandidates = candidates
+
+    if (candidates.length) {
+      const m = candidates[0]
+      const extra = candidates.length > 1 ? ` (+${candidates.length - 1})` : ''
+      setRoomRecogState('unknown', '❓ Onbekende set: ' + m.label + (m.serial ? ' · SN ' + m.serial : '') + extra)
+      if (assignBtn) assignBtn.style.display = 'inline-flex'
+    } else if (scanErr) {
+      setRoomRecogState('error', '⚠ Scan mislukt: ' + scanErr)
+    } else {
+      // Niks herkenbaars aangesloten — strip blijft zichtbaar in rustige idle-staat
+      setRoomRecogState('idle', 'Geen vergaderset herkend — sluit een set aan')
+    }
+  } catch (e) {
+    console.warn('[ROOM] recognize fail:', (e && e.message) || e)
+    setRoomRecogState('error', '⚠ Ruimte-herkenning mislukt: ' + ((e && e.message) || e))
+  } finally {
+    _rrRecogRunning = false
+  }
+}
+
+function openAssignModal() {
+  const cands = _rrLastCandidates || []
+  if (!cands.length) return
+  const dev = cands[0]
+  const extra = cands.length > 1 ? ` (+ ${cands.length - 1} extra apparaat${cands.length - 1 === 1 ? '' : 'en'})` : ''
+  document.getElementById('rr-assign-device').textContent =
+    dev.label + (dev.serial ? ' · SN ' + dev.serial : '') + extra
+  window.rrBridge.invStoreLoad().then(store => {
+    const rooms = ((store && store.rooms) || []).slice().sort((a, b) =>
+      String(a.room_number || '').localeCompare(String(b.room_number || '')) ||
+      String(a.name || '').localeCompare(String(b.name || '')))
+    const sel = document.getElementById('rr-assign-room-sel')
+    sel.innerHTML = ''
+    for (const r of rooms) {
+      const o = document.createElement('option')
+      o.value = r.id
+      o.textContent = (r.room_number ? r.room_number + ' — ' : '') + (r.name || 'Ruimte')
+      sel.appendChild(o)
+    }
+    const hasRooms = rooms.length > 0
+    document.getElementById('rr-assign-empty').style.display = hasRooms ? 'none' : 'block'
+    sel.style.display = hasRooms ? '' : 'none'
+    document.getElementById('rr-assign-confirm').disabled = !hasRooms
+    document.getElementById('rr-assign-overlay').classList.add('open')
+  }).catch(() => {})
+}
+
+function closeAssignModal() {
+  const o = document.getElementById('rr-assign-overlay')
+  if (o) o.classList.remove('open')
+}
+
+async function confirmAssignRoom() {
+  const sel = document.getElementById('rr-assign-room-sel')
+  const roomId = sel && sel.value
+  const cands = _rrLastCandidates || []
+  if (!roomId || !cands.length) { closeAssignModal(); return }
+  const store = await window.rrBridge.invStoreLoad().catch(() => null)
+  if (!store) { closeAssignModal(); return }
+  store.rooms = store.rooms || []
+  store.devices = store.devices || {}
+  const room = store.rooms.find(r => r.id === roomId)
+  if (!room) { closeAssignModal(); return }
+  room.device_unique_ids = room.device_unique_ids || []
+  for (const c of cands) {
+    if (!room.device_unique_ids.includes(c.uid)) room.device_unique_ids.push(c.uid)
+    // Device-entry aanmaken zodat het inventarisvenster 'm ook toont. Ontbrekende
+    // velden vult inventory.html's loadStore met defaults aan.
+    if (!store.devices[c.uid]) {
+      store.devices[c.uid] = {
+        unique_id: c.uid,
+        source: c.source || 'logitech_hid',
+        model: c.label || 'Apparaat',
+        serial_number: c.serial || '',
+        firmware_version: null,
+        firmware_secondary: null,
+        product_string: c.label || '',
+        extra: {},
+      }
+    }
+  }
+  const res = await window.rrBridge.invStoreSave(store).catch(() => ({ ok: false }))
+  closeAssignModal()
+  if (!res || res.ok !== false) scheduleRecognizeRoom(50)
+}
+
+// ── AV Pro (event2flow) afvink-koppeling ───────────────────────
+// Bij een geslaagde test ("Room = Ready") vinkt RoomReady de herkende ruimte af
+// in AV Pro. Elke herkende inventarisruimte draagt een `event2flow_id` (het
+// 10-hex id uit event2flow-rooms.json). De koppeling naam↔id legt de operator
+// één keer via de AV Pro-picker; daarna gaat afvinken vanzelf.
+function _avproNorm(s) {
+  return (s || '').toString().toLowerCase().replace(/[\s\-_.]+/g, '').trim()
+}
+async function _avproGetRooms() {
+  if (_avproRoomsCache) return _avproRoomsCache
+  try {
+    const r = await window.rrBridge.avproRooms()
+    _avproRoomsCache = (r && r.rooms) || []
+  } catch (_) { _avproRoomsCache = [] }
+  return _avproRoomsCache
+}
+
+// Werk de AV Pro-knop in de strip bij op basis van de gematchte ruimte.
+function updateAvproButton(result) {
+  const btn = document.getElementById('room-recog-avpro')
+  if (!btn) return
+  const room = _rrMatchedRoom
+  if (!room) { btn.style.display = 'none'; return }
+  btn.style.display = 'inline-flex'
+  btn.className = 'btn btn-ghost'
+  if (result === 'done') { btn.classList.add('done'); btn.textContent = 'AV Pro ✓ afgevinkt'; return }
+  if (result === 'reported') { btn.classList.add('unlinked'); btn.textContent = 'AV Pro ⚠ storing gemeld'; return }
+  if (result === 'callfail') { btn.classList.add('failed'); btn.textContent = 'AV Pro ✗ call mislukt'; return }
+  if (room.event2flow_id) {
+    btn.classList.add('linked')
+    btn.textContent = 'AV Pro: ' + (room.event2flow_name || room.event2flow_id)
+  } else {
+    btn.classList.add('unlinked')
+    btn.textContent = 'AV Pro: koppelen…'
+  }
+}
+
+// ── Config-modal ───────────────────────────────────────────────
+async function openAvproConfig() {
+  const cfg = await window.rrBridge.avproConfigLoad().catch(() => null) || {}
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || '' }
+  document.getElementById('avc-enabled').checked = !!cfg.enabled
+  set('avc-endpoint', cfg.endpoint)
+  set('avc-keyheader', cfg.apiKeyHeader || 'X-Api-Key')
+  set('avc-apikey', cfg.apiKey)
+  document.getElementById('avc-test-result').textContent = ''
+  document.getElementById('avpro-config-overlay').classList.add('open')
+}
+function closeAvproConfig() { document.getElementById('avpro-config-overlay').classList.remove('open') }
+function _avproReadConfigForm() {
+  const g = id => (document.getElementById(id).value || '').trim()
+  return {
+    enabled: document.getElementById('avc-enabled').checked,
+    endpoint: g('avc-endpoint'),
+    method: 'POST',
+    apiKeyHeader: g('avc-keyheader') || 'X-Api-Key',
+    apiKey: g('avc-apikey'),
+  }
+}
+async function saveAvproConfig() {
+  const res = await window.rrBridge.avproConfigSave(_avproReadConfigForm()).catch(() => ({ ok: false }))
+  if (res && res.ok !== false) closeAvproConfig()
+  else document.getElementById('avc-test-result').textContent = 'Opslaan mislukt: ' + (res && res.error || '?')
+}
+async function testAvproConfig() {
+  const out = document.getElementById('avc-test-result')
+  out.className = 'rr-test-result'; out.textContent = 'Bezig…'
+  // Sla eerst op zodat de main-process de actuele config gebruikt
+  await window.rrBridge.avproConfigSave(_avproReadConfigForm()).catch(() => {})
+  const testId = (_rrMatchedRoom && _rrMatchedRoom.event2flow_id) || 'TEST-ID'
+  const res = await window.rrBridge.avproCheckoff({ id: testId, roomName: 'RoomReady testcall' }).catch(e => ({ ok: false, error: (e && e.message) || 'fout' }))
+  if (res && res.ok) { out.className = 'rr-test-result ok'; out.textContent = '✓ OK (HTTP ' + (res.status || '?') + ')' }
+  else { out.className = 'rr-test-result err'; out.textContent = '✗ ' + (res && res.error || 'mislukt') + (res && res.status ? ' (HTTP ' + res.status + ')' : '') }
+}
+
+// ── AV Pro ruimte-picker ───────────────────────────────────────
+async function openAvproPicker() {
+  if (!_rrMatchedRoom) return
+  const forEl = document.getElementById('avpro-picker-for')
+  const rn = _rrMatchedRoom.room_number ? _rrMatchedRoom.room_number + ' — ' : ''
+  forEl.textContent = 'RoomReady-ruimte: ' + rn + (_rrMatchedRoom.name || '')
+  await _avproGetRooms()
+  // Voorfilter op de RoomReady-naam zodat de waarschijnlijke match bovenaan staat
+  const search = document.getElementById('avpro-picker-search')
+  search.value = _rrMatchedRoom.room_number || _rrMatchedRoom.name || ''
+  renderAvproPickerList(search.value)
+  document.getElementById('avpro-picker-overlay').classList.add('open')
+  setTimeout(() => search.focus(), 50)
+}
+function closeAvproPicker() { document.getElementById('avpro-picker-overlay').classList.remove('open') }
+function renderAvproPickerList(filter) {
+  const list = document.getElementById('avpro-picker-list')
+  const rooms = _avproRoomsCache || []
+  const f = _avproNorm(filter)
+  const cur = _rrMatchedRoom && _rrMatchedRoom.event2flow_id
+  const matches = f
+    ? rooms.filter(r => _avproNorm(r.name).includes(f) || (r.id || '').includes((filter || '').trim()))
+    : rooms
+  list.innerHTML = ''
+  if (!matches.length) { list.innerHTML = '<div class="rr-picker-item"><span class="rr-hint">Geen ruimte gevonden</span></div>'; return }
+  for (const r of matches.slice(0, 200)) {
+    const div = document.createElement('div')
+    div.className = 'rr-picker-item' + (r.id === cur ? ' sel' : '')
+    div.innerHTML = '<span>' + _esc(r.name) + '</span><span class="flo">' + _esc(r.floor || '') + '</span>'
+    div.onclick = () => pickAvproRoom(r.id, r.name)
+    list.appendChild(div)
+  }
+}
+function _esc(s) { return (s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])) }
+async function pickAvproRoom(id, name) {
+  const room = _rrMatchedRoom
+  if (!room) { closeAvproPicker(); return }
+  const store = await window.rrBridge.invStoreLoad().catch(() => null)
+  if (!store) { closeAvproPicker(); return }
+  const target = (store.rooms || []).find(r => r.id === room.id)
+  if (target) {
+    if (id) { target.event2flow_id = id; target.event2flow_name = name || '' }
+    else { delete target.event2flow_id; delete target.event2flow_name }
+    await window.rrBridge.invStoreSave(store).catch(() => {})
+  }
+  // lokale match bijwerken
+  if (id) { _rrMatchedRoom.event2flow_id = id; _rrMatchedRoom.event2flow_name = name || '' }
+  else { _rrMatchedRoom.event2flow_id = null; _rrMatchedRoom.event2flow_name = null }
+  updateAvproButton()
+  closeAvproPicker()
+}
+
+// ── Afvinken bij Room = Ready ───────────────────────────────────
+async function avproMaybeCheckoff(status) {
+  status = status || 'ok'
+  try {
+    if (!window.rrBridge || !window.rrBridge.avproConfigLoad) return
+    const cfg = await window.rrBridge.avproConfigLoad().catch(() => null)
+    if (!cfg || !cfg.enabled) return
+    const room = _rrMatchedRoom
+    if (!room) { console.log('[AVPRO] geen herkende ruimte — niet gemeld'); return }
+    // AV Pro matcht op id (= qr_hash) en controleert room_name. Zonder id kan
+    // de webhook de ruimte niet vinden, dus dan slaan we over. Het serienummer
+    // gaat mee als check-detail (asset dat getest is), niet als sleutel.
+    if (!room.event2flow_id) { console.log('[AVPRO] ruimte niet aan AV Pro gekoppeld — niet gemeld'); return }
+    const res = await window.rrBridge.avproCheckoff({
+      id: room.event2flow_id,
+      roomName: room.event2flow_name || room.name || room.room_number,
+      serial: room._primarySerial || null,
+      serials: room._serials || [],
+      status,
+    })
+    if (res && res.ok) {
+      console.log('[AVPRO] gemeld (' + status + '):', room.event2flow_id)
+      updateAvproButton(status === 'failed' ? 'reported' : 'done')
+    } else {
+      console.warn('[AVPRO] call mislukt:', res && res.error)
+      updateAvproButton('callfail')
+    }
+  } catch (e) { console.warn('[AVPRO] checkoff error:', (e && e.message) || e) }
+}
+
 // ── Overdracht: vergaderset vrijgeven na een schone RoomTest ─────
 // Zolang RoomReady camStream + liveMicStream openhoudt blijft de USB-bar door
 // dit process geclaimd: de ruimte-pc krijgt 'm niet, en uitpluggen met open
 // streams levert bij de volgende set NotReadableError-retries op. Na een schone
 // test (0 fouten, 0 waarschuwingen) is de kamer overgedragen — dus laten we alle
-// handles los en gooien we de device-cache leeg, zodat de volgende set vanaf
-// nul gedetecteerd wordt i.p.v. tegen stale deviceIds aan te matchen.
+// handles los en gooien we de device- en ruimte-caches leeg, zodat de volgende
+// set vanaf nul herkend wordt i.p.v. tegen stale deviceIds aan te matchen.
 //
 // Bij waarschuwingen geven we bewust NIET vrij: dan wil de operator juist de
 // live meters houden om te diagnosticeren.
@@ -7004,9 +7548,16 @@ function releaseUsbDevices() {
   showUsbDetecting(false)
 }
 
-// Device-state leeggooien zodat de volgende plug vanaf nul detecteert.
-function flushDeviceCaches() {
+// Device- en ruimte-state leeggooien. Draait áchter de AV Pro-checkoff aan,
+// want die leest _rrMatchedRoom pas ná een await — eerder flushen sloopt de
+// afvink-melding.
+async function flushDeviceCaches(pendingCheckoff) {
+  if (pendingCheckoff) { try { await pendingCheckoff } catch (_) {} }
+
   _knownDeviceIds = new Set()
+  _rrMatchedRoom = null
+  _rrLastCandidates = []
+  _avproRoomsCache = null
 
   // Selects leeg — de volgende plug vult ze weer via populateDevices().
   for (const sel of [selCamera, selMic, selSpeaker]) {
@@ -7019,21 +7570,32 @@ function flushDeviceCaches() {
   const fd = document.getElementById('footer-devices')
   if (fd) { fd.textContent = 'Camera: – · Mic: – · Speaker: –'; fd.title = '' }
 
+  // Ruimte-strip terug naar neutraal. updateAvproButton() bewust NIET aanroepen:
+  // die zou de zojuist getoonde 'AV Pro ✓ afgevinkt'-bevestiging wegpoetsen.
+  setRoomRecogState('idle', '🔌 Set vrijgegeven — sluit de volgende vergaderset aan')
+  const assignBtn = document.getElementById('room-recog-assign')
+  if (assignBtn) assignBtn.style.display = 'none'
+
   // Displays: flush + meteen opnieuw ophalen i.p.v. de kaart blanco laten.
   populateDisplays()
 }
 
-function releaseRoomSet() {
+async function releaseRoomSet(pendingCheckoff) {
   if (usbReleased) return
   usbReleased = true
   releaseUsbDevices()
-  flushDeviceCaches()
+  await flushDeviceCaches(pendingCheckoff)
   console.log('[HANDOVER] vergaderset vrijgegeven + device-cache geflushd')
 }
 
 // Elke expliciete her-detectie (Vernieuwen, nieuwe plug) heft de release op.
 function clearUsbReleased() { usbReleased = false }
 
+
+// Onafhankelijke start-trigger: draait altijd, los van de media-init-sequence
+// (die kan bij een camera-fout vroegtijdig stoppen). Coalesceert met de andere
+// triggers via de gedeelde timer in scheduleRecognizeRoom.
+scheduleRecognizeRoom(1800)
 
 // Initial seed van _knownDeviceIds bij eerste enumerate, zodat we niet
 // alle apparaten als "net aangesloten" beschouwen bij app-start.
@@ -7087,6 +7649,10 @@ updateVidScopeControls()  // toon waveform-controls, verberg vectorscope-control
     // Init klaar → vrijgeven van USB-busy zodat audio-sync weer mag pollen
     window.__usbBusyUntil = Date.now() + 500
   }
+
+  // Ruimte herkennen zodra media-init klaar is (scan draait los van de
+  // media-pipeline, dus we wachten tot die niet meer om MMDevice vecht)
+  scheduleRecognizeRoom(800)
 
   // Klantscherm pas openen ná init. 1s wacht was overdreven — was er voor
   // race-conditions tegen media-toegang, maar initDevices is nu netjes
